@@ -1,45 +1,42 @@
-import React, {Component} from 'react'
-import logo from './logo.svg';
-import './App.css';
+import React, {Component} from 'react';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import Home from './pages/Home';
+import AdminHome from './pages/AdminHome';
+import CatalogPurchase from './pages/CatalogPurchase';
+import DriverHome from './pages/DriverHome';
+import Login from './pages/Login';
+import PointAssignment from './pages/PointAssignment';
+import PointHistory from './pages/PointHistory';
+import ShoppingCart from './pages/ShoppingCart';
+import Signup from './pages/Signup';
+import SponsorApplications from './pages/SponsorApplications';
+import SponsorCatalog from './pages/SponsorCatalog';
+import SponsorHome from './pages/SponsorHome';
+import UpdateAccount from './pages/UpdateAccount';
+import NotFound from './pages/NotFound';
 
 class App extends Component{
-  state = {
-      test: ''
-    }
-
-  componentDidMount() {
-    this.getTest();
-  }
-
-  getTest = () => {
-    fetch('http://localhost:4000/test')
-    .then(response => response.json())
-    .then(response => this.setState({test: response.message}))
-    .catch(err => console.error(err))
-  }
-
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            New React App
-          </p>
-          <p>
-            {this.state.test}
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+      <BrowserRouter>
+        <Routes>
+          <Route path="/adminhome" element={<AdminHome/>}/>
+          <Route path="/catalogpurchase" element={<CatalogPurchase/>}/>
+          <Route path="/driverhome" element={<DriverHome/>}/>
+          <Route path="/login" element={<Login/>}/>
+          <Route path="/pointassignment" element={<PointAssignment/>}/>
+          <Route path="/pointhistory" element={<PointHistory/>}/>
+          <Route path="/shoppingcart" element={<ShoppingCart/>}/>
+          <Route path="/signup" element={<Signup/>}/>
+          <Route path="/sponsorapplications" element={<SponsorApplications/>}/>
+          <Route path="/sponsorcatalog" element={<SponsorCatalog/>}/>
+          <Route path="/sponsorhome" element={<SponsorHome/>}/>
+          <Route path="/updateaccount" element={<UpdateAccount/>}/>
+          <Route path="/" element={<Home/>}/>
+          <Route path="*" element={<NotFound/>}/>
+        </Routes>
+      </BrowserRouter>
+    )
   }
 }
 
