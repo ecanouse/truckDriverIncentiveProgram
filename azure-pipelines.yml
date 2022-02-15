@@ -23,7 +23,7 @@ steps:
   displayName: npm run test
   inputs:
     command: 'custom'
-    workingDir: '$(Build.SourcesDirectory)'
+    workingDir: 'Javascript-Code/react-client'
     customCommand: 'run test:ci'
 
 - task: CopyFiles@2
