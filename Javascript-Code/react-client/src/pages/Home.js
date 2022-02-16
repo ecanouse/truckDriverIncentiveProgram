@@ -12,7 +12,7 @@ class Home extends Component{
   }
 
   getTest = () => {
-    fetch('http://localhost:4000/test')
+    fetch('http://54.87.232.198/test')
     .then(response => response.json())
     .then(response => this.setState({test: response.message}))
     .catch(err => console.error(err))
