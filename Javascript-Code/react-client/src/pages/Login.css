@@ -20,4 +20,14 @@
 }
 .Reset-UN-PASS{
     font-size: small;
+    padding-top: 20px;
+}
+
+.LoginButton {
+    float: inline-end;
+    border-radius: 8px;
+    width: 25%;
+    height: 25px;
+    border: 2px solid lightgray;
+    
 }

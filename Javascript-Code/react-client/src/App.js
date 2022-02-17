@@ -14,6 +14,8 @@ import SponsorCatalog from './pages/SponsorCatalog';
 import SponsorHome from './pages/SponsorHome';
 import UpdateAccount from './pages/UpdateAccount';
 import NotFound from './pages/NotFound';
+import ResetPass from './pages/ResetPass';
+import DiscoverUN from './pages/DiscoverUN';
 
 class App extends Component{
   render() {
@@ -34,6 +36,8 @@ class App extends Component{
           <Route path="/updateaccount" element={<UpdateAccount/>}/>
           <Route path="/" element={<Home/>}/>
           <Route path="*" element={<NotFound/>}/>
+          <Route path="ResetPass" element={<ResetPass/>}/>
+          <Route path="DiscoverUN" element={<DiscoverUN/>}/>
         </Routes>
       </BrowserRouter>
     )
