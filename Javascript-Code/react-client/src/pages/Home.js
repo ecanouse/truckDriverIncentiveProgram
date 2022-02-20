@@ -4,7 +4,7 @@ import './Home.css';
 
 class Home extends Component{
   state = {
-      test: ''
+      test: []
     }
 
   componentDidMount() {
@@ -14,10 +14,11 @@ class Home extends Component{
   getTest = () => {
     fetch('/test')
     .then(response => response.json())
-    .then(response => this.setState({test: response.message}))
+    .then(response => this.setState({test: response.data}))
     .catch(err => console.error(err))
   }
 
+  renderTest = ({id, name}) => <p key={id}>{name}</p>
   render() {
     return (
       <div className="App">
@@ -27,8 +28,11 @@ class Home extends Component{
             New React App
           </p>
           <p>
-            {this.state.test}
+            From database:
           </p>
+          <div>
+            {this.state.test.map(this.renderTest)}
+          </div>
           <a
             className="App-link"
             href="https://reactjs.org"
