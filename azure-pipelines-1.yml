@@ -9,8 +9,11 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+steps:
 - task: Bash@3
-  script: |
-     ./deploy.sh
-  failOnStderr: true
-  workingDirectory: 
+  inputs:
+    targetType: 'inline'
+    script: |
+      ./deploy.sh
+    failOnStderr: true
+    workingDirectory: "$(System.DefaultWorkingDirectory)/Deployment/"
