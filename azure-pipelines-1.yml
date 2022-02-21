@@ -18,6 +18,9 @@ steps:
 - task: Bash@3
   inputs:
    targetType: 'inline'
+  #  script: |
+  #    ssh -o StrictHostKeyChecking=no -i $(labsuser.secureFilePath) ubuntu@ec2-54-87-232-198.compute-1.amazonaws.com 'cd S22-Team04-goodwin.binz.canouse.lasher.narula.wise; git pull; cd Javascript-Code/react-client; npm run build; cd ..; forever start Node-Server/index.js'
    script: |
-     ssh -o StrictHostKeyChecking=no -i $(labsuser.secureFilePath) ubuntu@ec2-54-87-232-198.compute-1.amazonaws.com 'cd S22-Team04-goodwin.binz.canouse.lasher.narula.wise; git pull; cd Javascript-Code/react-client; npm run build; cd ..; forever start Node-Server/index.js'
+     ./deploy.sh
    failOnStderr: true
+   workingDirectory: "$(System.DefaultWorkingDirectory)/Deployment/"
