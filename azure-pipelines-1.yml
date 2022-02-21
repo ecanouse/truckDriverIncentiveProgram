@@ -3,21 +3,49 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-trigger:
+# trigger:
+# - master
+
+# pool:
+#   vmImage: ubuntu-latest
+
+# steps:
+# - task: DownloadSecureFile@1
+#   name: labsuser
+#   displayName: 'Download labsuser.pem'
+#   inputs:
+#     secureFile: 'labsuser.pem'
+# - task: Bash@3
+#   inputs:
+#    targetType: 'inline'
+#    script: |
+#      ssh -i $(labsuser.secureFilePath) ubuntu@ec2-54-87-232-198.compute-1.amazonaws.com 'cd S22-Team04-goodwin.binz.canouse.lasher.narula.wise; git pull; cd Javascript-Code/react-client; npm run build; cd ..; forever start Node-Server/index.js'
+#    failOnStderr: true
+
+trigger: 
 - master
 
-pool:
-  vmImage: ubuntu-latest
+pool: 
+   vmImage: ubuntu-latest
 
-steps:
-- task: DownloadSecureFile@1
-  name: labsuser
-  displayName: 'Download labsuser.pem'
-  inputs:
-    secureFile: 'labsuser.pem'
-- task: Bash@3
-  inputs:
-   targetType: 'inline'
-   script: |
-     ssh -i $(labsuser.secureFilePath) ubuntu@ec2-54-87-232-198.compute-1.amazonaws.com 'cd S22-Team04-goodwin.binz.canouse.lasher.narula.wise; git pull; cd Javascript-Code/react-client; npm run build; cd ..; forever start Node-Server/index.js'
-   failOnStderr: true
+jobs:
+- deployment: VMDeploy
+  displayName: Deploy to VM
+  environment: 
+   name: DeployVM
+   resourceType: VirtualMachine
+  strategy:
+     runOnce:
+        deploy:   
+          steps:
+          - task: DownloadSecureFile@1
+            name: labsuser
+            displayName: 'Download labsuser.pem'
+            inputs:
+              secureFile: 'labsuser.pem'
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                ssh -i $(labsuser.secureFilePath) ubuntu@ec2-54-87-232-198.compute-1.amazonaws.com 'cd S22-Team04-goodwin.binz.canouse.lasher.narula.wise; git pull; cd Javascript-Code/react-client; npm run build; cd ..; forever start Node-Server/index.js'
+              failOnStderr: true
