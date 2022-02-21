@@ -23,5 +23,5 @@ steps:
    script: |
      chmod 400 labsuser.pem
      ./deploy.sh
-   failOnStderr: true
+   failOnStderr: false
    workingDirectory: "$(System.DefaultWorkingDirectory)/Deployment/"
