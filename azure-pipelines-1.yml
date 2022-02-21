@@ -7,7 +7,7 @@ trigger:
 - master
 
 pool:
-  vmImage: ubuntu-latest
+  environment: DeployVM
 
 steps:
 - task: DownloadSecureFile@1
