@@ -12,8 +12,7 @@ pool:
 steps:
 - task: Bash@3
   inputs:
-    targetType: 'inline'
-    script: |
-      ./deploy.sh
+    targetType: 'filePath'
+    filePath: "$(System.DefaultWorkingDirectory)/Deployment/deploy.sh"
     failOnStderr: true
-    workingDirectory: "Deployment/"
+    workingDirectory: "$(System.DefaultWorkingDirectory)/Deployment/"
