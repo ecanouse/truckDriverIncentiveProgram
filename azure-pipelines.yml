@@ -6,7 +6,7 @@
 trigger:
 - azure-pipelines
 
-pool: Local Pool
+pool: default
 
 steps:
 - task: NodeTool@0
@@ -19,12 +19,12 @@ steps:
     npm run build
   displayName: 'npm install and build'
 
-# - task: Npm@1
-#   displayName: npm run test
-#   inputs:
-#     command: 'custom'
-#     workingDir: 'Javascript-Code/react-client'
-#     customCommand: 'run test:ci'
+- task: Npm@1
+  displayName: npm run test
+  inputs:
+    command: 'custom'
+    workingDir: 'Javascript-Code/react-client'
+    customCommand: 'run test:ci'
 
 - task: CopyFiles@2
   inputs:
