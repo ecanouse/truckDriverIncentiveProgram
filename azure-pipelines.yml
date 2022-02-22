@@ -31,7 +31,7 @@ steps:
   inputs:
     command: 'custom'
     workingDir: 'Javascript-Code/react-client'
-    customCommand: 'run test'
+    customCommand: 'run test:ci'
 
 
 # trigger:
