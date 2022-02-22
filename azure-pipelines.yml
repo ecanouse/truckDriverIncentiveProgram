@@ -35,6 +35,11 @@ steps:
     workingDir: 'Javascript-Code/react-client'
     customCommand: 'run test:ci'
 
+- task: PublishTestResults@2
+  displayName: 'summply npm test results to pipelines'
+  condition: succeededOrFailed()
+  inputs:
+    testResultsFiles: 'Javascript-Code/react-client/junit.xml'
 
 # trigger:
 # - azure-pipelines
