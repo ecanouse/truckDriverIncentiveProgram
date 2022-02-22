@@ -14,7 +14,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "test:ci": "npm run test -- --watchAll=false"
+    "test:ci": "npm run test -- --watchAll=false --reporters=jest-junit"
   },
   "eslintConfig": {
     "extends": [
@@ -35,19 +35,21 @@
     ]
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
-    "@babel/preset-env": "^7.16.11",
-    "@babel/preset-react": "^7.16.7",
     "babel-jest": "^27.5.1",
+    "jasmine-reporters": "^2.5.0",
     "jest": "^27.5.1",
+    "jest-cli": "^27.5.1",
     "jest-junit": "^13.0.0",
     "react-test-renderer": "^17.0.2"
   },
   "jest-junit": {
-        "suiteNameTemplate": "{filepath}",
-        "outputDirectory": ".",
-        "outputName": "junit.xml"
+    "suiteNameTemplate": "{filepath}",
+    "outputDirectory": ".",
+    "outputName": "junit.xml"
   }
 }
