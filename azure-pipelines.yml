@@ -1,12 +1,19 @@
+# # Node.js with React
+# # Build a Node.js project that uses React.
+# # Add steps that analyze code, save build artifacts, deploy, and more:
+# # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+
 # Node.js with React
 # Build a Node.js project that uses React.
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- azure-pipelines
+- master
 
-pool: default
+pool:
+  vmImage: ubuntu-latest
 
 steps:
 - task: NodeTool@0
@@ -24,23 +31,47 @@ steps:
   inputs:
     command: 'custom'
     workingDir: 'Javascript-Code/react-client'
-    customCommand: 'run test:ci'
+    customCommand: 'run test'
 
-- task: CopyFiles@2
-  inputs:
-    Contents: |
-      $(Build.SourcesDirectory)/src/**
-      $(Build.SourcesDirectory)/public/**
-      $(Build.SourcesDirectory)/package*.json
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)'
-    includeRootFolder: false
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/myapp_$(Build.BuildNumber).zip'
-    replaceExistingArchive: true
-- task: PublishBuildArtifacts@1
-  inputs: 
-    PathtoPublish: $(Build.ArtifactStagingDirectory)
-    ArtifactName: 'www'
+
+# trigger:
+# - azure-pipelines
+
+# pool: default
+
+# steps:
+# - task: NodeTool@0
+#   inputs:
+#     versionSpec: '10.x'
+#   displayName: 'Install Node.js'
+
+# - script: |
+#     npm install
+#     npm run build
+#   displayName: 'npm install and build'
+
+# - task: Npm@1
+#   displayName: npm run test
+#   inputs:
+#     command: 'custom'
+#     workingDir: 'Javascript-Code/react-client'
+#     customCommand: 'run test:ci'
+
+# - task: CopyFiles@2
+#   inputs:
+#     Contents: |
+#       $(Build.SourcesDirectory)/src/**
+#       $(Build.SourcesDirectory)/public/**
+#       $(Build.SourcesDirectory)/package*.json
+#     TargetFolder: '$(Build.ArtifactStagingDirectory)'
+# - task: ArchiveFiles@2
+#   inputs:
+#     rootFolderOrFile: '$(Build.ArtifactStagingDirectory)'
+#     includeRootFolder: false
+#     archiveType: 'zip'
+#     archiveFile: '$(Build.ArtifactStagingDirectory)/myapp_$(Build.BuildNumber).zip'
+#     replaceExistingArchive: true
+# - task: PublishBuildArtifacts@1
+#   inputs: 
+#     PathtoPublish: $(Build.ArtifactStagingDirectory)
+#     ArtifactName: 'www'
