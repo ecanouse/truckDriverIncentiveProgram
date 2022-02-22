@@ -10,7 +10,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- master
+- azure-pipelines
 
 pool:
   vmImage: ubuntu-latest
@@ -22,6 +22,7 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
+    cd Javascript-Code/react-client
     npm install
     npm run build
   displayName: 'npm install and build'
