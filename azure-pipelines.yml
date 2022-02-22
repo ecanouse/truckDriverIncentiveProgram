@@ -22,10 +22,11 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
+    echo '$(System.DefaultWorkingDirectory)'
+    dir
     cd Javascript-Code/react-client
     npm install
-    npm run build
-  displayName: 'npm install and build'
+  displayName: 'npm install'
 
 - task: Npm@1
   displayName: npm run test
