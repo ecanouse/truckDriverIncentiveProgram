@@ -74,6 +74,36 @@ app.post('/login-attempt', (req, res) => {
   }
 });
 
+
+//elise working on signup
+app.post('/signup-attempt', (req, res) => {
+
+  console.log('Received signup attempt');
+  console.log(req.body);
+  // get input
+  let username = req.body.username;
+  let password = req.body.password;
+  let firstname = req.body.firstname;
+  let lastname = req.body.lastname;
+  let confirmpassword = req.body.confirmpassword;
+
+  //make sure user entered each required field
+  if( username && password && firstname && lastname && confirmpassword) {
+
+    res.send('got sign up info');
+    console.log('Got sign up information.');
+    //sql query to confirm information and create an account
+    //if correct --> res.redirect('/home');
+    //else --> give error message
+  }
+  else {
+    res.send("Incorrect Sign Up info :(");
+    console.log('no sign up info.');
+    res.end()
+  }
+});
+
+
 app.use(express.static(path.join(__dirname, "../react-client", 'build')));
 
 app.get('/*', function (req, res) {
