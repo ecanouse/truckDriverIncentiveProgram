@@ -39,5 +39,10 @@
   },
   "devDependencies": {
     "jest-junit": "^13.0.0"
+  },
+  "jest-junit": {
+        "suiteNameTemplate": "{filepath}",
+        "outputDirectory": ".",
+        "outputName": "junit.xml"
   }
 }
