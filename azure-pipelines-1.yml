@@ -27,8 +27,8 @@ steps:
 - task: SSH@0
   inputs:
     sshEndpoint: 'EC2 instance'
-    runOptions: 'commands'
-    commands: |
+    runOptions: 'inline'
+    inline: |
       cd S22-Team04-goodwin.binz.canouse.lasher.narula.wise
       ls
       git pull
