@@ -1,0 +1,25 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: SSH@0
+  inputs:
+    sshEndpoint: 'EC2 instance'
+    runOptions: 'inline'
+    inline: |
+      cd S22-Team04-goodwin.binz.canouse.lasher.narula.wise
+      ls
+      git pull
+      cd Javascript-Code/react-client
+      npm run build
+      cd ..
+      forever start Node-Server/index.js
+    readyTimeout: '20000'
