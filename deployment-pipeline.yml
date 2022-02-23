@@ -16,7 +16,6 @@ steps:
     runOptions: 'inline'
     inline: |
       cd S22-Team04-goodwin.binz.canouse.lasher.narula.wise
-      ls
       git pull
       cd Javascript-Code/react-client
       npm run build
