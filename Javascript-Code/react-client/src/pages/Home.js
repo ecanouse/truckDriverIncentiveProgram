@@ -25,7 +25,7 @@ class Home extends Component{
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
-            Test change 3
+            Test change 4
           </p>
           <p>
             From database:
