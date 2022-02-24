@@ -1,3 +1,5 @@
 const home = require('./Home');
 
-test();
+test('Home page loads correctly', () => {
+expect().toBe();
+});
