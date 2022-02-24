@@ -24,7 +24,7 @@
 }
 
 .LoginButton {
-    float: inline-end;
+    float:right;
     border-radius: 8px;
     width: 25%;
     height: 25px;
