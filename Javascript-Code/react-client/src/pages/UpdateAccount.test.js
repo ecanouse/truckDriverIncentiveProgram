@@ -1,3 +1,5 @@
 const updateAcct = require('./UpdateAccount');
 
-test();
+test('Update account page loads correctly', () => {
+expect().toBe();
+});
