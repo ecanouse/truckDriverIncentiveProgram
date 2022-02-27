@@ -1,0 +1,5 @@
+CREATE TABLE `new_schema`.`DRIVER_POINTS` (
+  `DPointID` INT NOT NULL AUTO_INCREMENT,
+  `uID` INT NULL,
+  `totalPoints` INT NOT NULL,
+  PRIMARY KEY (`DPointID`));
