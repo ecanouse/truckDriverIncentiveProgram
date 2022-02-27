@@ -1,0 +1,6 @@
+CREATE TABLE `new_schema`.`ORDER` (
+  `orderID` INT NOT NULL AUTO_INCREMENT,
+  `uID` INT NULL,
+  `status` VARCHAR(50) NOT NULL,
+  `total` INT NOT NULL,
+  PRIMARY KEY (`orderID`));
