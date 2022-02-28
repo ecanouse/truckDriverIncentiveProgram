@@ -1,3 +1,5 @@
+
+const crypt = require("./services/encryption.js");
 const express = require('express');
 const path = require('path');
 const cors = require('cors')
@@ -59,7 +61,7 @@ app.post('/login-attempt', (req, res) => {
   let password = req.body.password;
 
   //make sure username & password exist
-  if( username && password ) {
+  if( username && password && !password.includes("\'") && !password.includes("\"") ) {
 
     //hash password
     // res.send('got username & password');
@@ -67,6 +69,8 @@ app.post('/login-attempt', (req, res) => {
     //sql query to compare password
     //if correct --> res.redirect('/home');
     //else --> give error message
+
+
 
     //clean username input
     const clean_username = username.split(" ");
