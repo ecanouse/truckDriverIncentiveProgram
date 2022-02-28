@@ -16,6 +16,7 @@ app.use(cors());
 
 const mysql = require('mysql');
 const { response } = require('express');
+const { rmSync } = require('fs');
 
 var connection = mysql.createConnection({
   host: "groupfour-database.crvi1tvxyfsa.us-east-1.rds.amazonaws.com",
@@ -46,7 +47,7 @@ app.get('/test', (req, res) => {
 });
 
 // API for login information
-// I will move this into it's own file/work on the structure of the node server in sprint 4
+// I will move this into it's own file/work on the structure of the node server in sprint 5
 // - joey
 
 app.post('/login-attempt', (req, res) => {
@@ -61,17 +62,43 @@ app.post('/login-attempt', (req, res) => {
   if( username && password ) {
 
     //hash password
-    res.send('got username & password');
-    console.log('Got username and password.');
+    // res.send('got username & password');
+    // console.log('Got username and password.');
     //sql query to compare password
     //if correct --> res.redirect('/home');
     //else --> give error message
-  }
+
+    //clean username input
+    const clean_username = username.split(" ");
+
+    const sel_query = "SELECT password, userType from new_schema.USER where username = \"" + clean_username[0] + "\";";
+
+    //poll db
+    connection.query(sel_query, function(err, result, fields) {
+      if(err) console.log(err);
+      console.log(result);
+      
+      const isEmpty = Object.keys(result).length === 0;
+
+      //case for successful login
+      if( (!isEmpty) && result[0].password === password ) {
+        console.log("Password Match!");
+        res.send({success: true, userType: result[0].userType});
+      }
+
+      //case for unsuccessful login
+      else {
+        console.log("password fail");
+        res.send({success: false});
+      }
+    });
+  } 
   else {
-    res.send("Incorrect Username and/or Password :(");
+    res.send({success: false});
     console.log('no username/password.');
     res.end()
   }
+
 });
 
 
@@ -102,7 +129,6 @@ app.post('/signup-attempt', (req, res) => {
     res.end()
   }
 });
-
 
 app.use(express.static(path.join(__dirname, "../react-client", 'build')));
 
