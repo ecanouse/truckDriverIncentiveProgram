@@ -56,7 +56,7 @@ class Login extends Component{
             this.setState({userType: data.userType});
             this.setState({msg: "Logging in..."});
             this.setState({redirect: true});
-            
+
           }
           else {
             //display fail message

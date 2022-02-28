@@ -4,6 +4,7 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors')
 const bodyParser = require("body-parser");
+const logs = require("./logs/logging.js");
 
 
 const PORT = process.env.PORT || 4000;
@@ -111,17 +112,20 @@ app.post('/login-attempt', (req, res) => {
       //case for successful login
       if( (!isEmpty) && crypt.validatePassword(password, result[0].password) ) {
         console.log("Password Match!");
+        logs.recordLogin(username, true, './logs/log.txt');
         res.send({success: true, userType: result[0].userType});
       }
 
       //case for unsuccessful login
       else {
         console.log("password fail");
+        logs.recordLogin(username, false, './logs/log.txt');
         res.send({success: false});
       }
     });
   } 
   else {
+    logs.recordLogin(username, false, './logs/log.txt');
     res.send({success: false});
     console.log('no username/password.');
     res.end()
