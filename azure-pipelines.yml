@@ -3,8 +3,6 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
-trigger:
-- master
 
 pool:
   vmImage: ubuntu-latest
@@ -23,11 +21,24 @@ steps:
   displayName: 'npm install'
 
 - task: Npm@1
-  displayName: npm run test
+  displayName: 'npm run test frontend'
   inputs:
     command: 'custom'
     workingDir: 'Javascript-Code/react-client'
     customCommand: 'run test:ci'
+
+# - script: |
+#     echo '$(System.DefaultWorkingDirectory)'
+#     dir
+#     cd Javascript-Code/Node-Server
+#     npm run test:ci
+
+# - task: Npm@1
+#   displayName: 'npm run test backend'
+#   inputs:
+#     command: 'custom'
+#     workingDir: 'Javascript-Code/Node-Server'
+#     customCommand: 'run test:ci'
 
 - task: PublishTestResults@2
   displayName: 'summply npm test results to pipelines'
