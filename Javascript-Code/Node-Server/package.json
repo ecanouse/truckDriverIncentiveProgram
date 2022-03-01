@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./index.js"
+    "start": "node ./index.js",
+    "test": "jest",
+    "test:ci": "npm run test -- --watchAll=false --reporters=jest-junit"
   },
   "keywords": [],
   "author": "",
@@ -14,5 +16,14 @@
     "crypto": "^1.0.1",
     "express": "^4.17.2",
     "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "jest": "^27.5.1",
+    "jest-junit": "^13.0.0"
+  },
+  "jest-junit": {
+    "suiteNameTemplate": "{filepath}",
+    "outputDirectory": ".",
+    "outputName": "junit.xml"
   }
 }
