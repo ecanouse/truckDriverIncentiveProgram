@@ -33,7 +33,8 @@ steps:
   displayName: 'summply npm test results to pipelines'
   condition: succeededOrFailed()
   inputs:
-    testResultsFiles: 'Javascript-Code/react-client/junit.xml'
+    testResultsFiles: '**/junit*.xml'
+    searchFolder: '/Javascript-Code/'
 
 - task: SSH@0
   inputs:
