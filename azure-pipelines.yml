@@ -18,21 +18,24 @@ steps:
     dir
     cd Javascript-Code/react-client
     npm install
+    cd ../Node-Server
+    npm install
+    npm run test:ci
   displayName: 'npm install'
 
-- task: Npm@1
-  displayName: 'npm run test frontend'
-  inputs:
-    command: 'custom'
-    workingDir: 'Javascript-Code/react-client'
-    customCommand: 'run test:ci'
+# - task: Npm@1
+#   displayName: 'npm run test frontend'
+#   inputs:
+#     command: 'custom'
+#     workingDir: 'Javascript-Code/react-client'
+#     customCommand: 'run test:ci'
 
-- task: Npm@1
-  displayName: 'npm run test backend'
-  inputs:
-    command: 'custom'
-    workingDir: 'Javascript-Code/Node-Server'
-    customCommand: 'run test:ci'
+# - task: Npm@1
+#   displayName: 'npm run test backend'
+#   inputs:
+#     command: 'custom'
+#     workingDir: 'Javascript-Code/Node-Server'
+#     customCommand: 'run test:ci'
 
 - task: PublishTestResults@2
   displayName: 'summply npm test results to pipelines'
