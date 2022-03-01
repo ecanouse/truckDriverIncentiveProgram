@@ -18,9 +18,6 @@ steps:
     dir
     cd Javascript-Code/react-client
     npm install
-    cd ../Node-Server
-    npm install
-    npm run test:ci
   displayName: 'npm install'
 
 # - task: Npm@1
