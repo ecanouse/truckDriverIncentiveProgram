@@ -1,0 +1,6 @@
+CREATE TABLE `new_schema`.`SPONSOR_CATALOG` (
+  `catalogID` INT NOT NULL AUTO_INCREMENT,
+  `productAmount` INT NOT NULL,
+  `productName` VARCHAR(50) NOT NULL,
+  `sponsorID` INT NOT NULL,
+  PRIMARY KEY (`catalogID`));
