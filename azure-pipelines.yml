@@ -15,18 +15,17 @@ steps:
 
 - script: |
     echo '$(System.DefaultWorkingDirectory)'
-    git branch --show-current
     dir
     cd Javascript-Code/react-client
     npm install
   displayName: 'npm install'
 
-# - task: Npm@1
-#   displayName: 'npm run test frontend'
-#   inputs:
-#     command: 'custom'
-#     workingDir: 'Javascript-Code/react-client'
-#     customCommand: 'run test:ci'
+- task: Npm@1
+  displayName: 'npm run test frontend'
+  inputs:
+    command: 'custom'
+    workingDir: 'Javascript-Code/react-client'
+    customCommand: 'run test:ci'
 
 # - task: Npm@1
 #   displayName: 'npm run test backend'
