@@ -15,6 +15,7 @@ steps:
 
 - script: |
     echo '$(System.DefaultWorkingDirectory)'
+    git branch --show-current
     dir
     cd Javascript-Code/react-client
     npm install
