@@ -25,7 +25,7 @@ class Home extends Component{
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
-            Test new EC2 instance
+            Test new EC2 instance again
           </p>
           <p>
             From database:
