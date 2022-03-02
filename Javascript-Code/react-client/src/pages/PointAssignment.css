@@ -84,3 +84,62 @@
     padding: 5px 10px;
     display: inline-block;
 }
+
+.point-form {
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px;
+    width: 100%;
+}
+
+.form-item {
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    text-align: right;
+    margin: 20px;
+    padding: 5px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.point-addsub {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    border-radius: 8px;
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.point-addsub:hover {
+    box-shadow: 1px 2px #555555;
+}
+
+.point-addbuttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.point-submit {
+    float:right;
+    border-radius: 8px;
+    width: 20%;
+    height: 30px;
+    border: 2px solid lightgray;
+}
+
+.point-submit:hover {
+    float:right;
+    border-radius: 8px;
+    width: 20%;
+    height: 30px;
+    border: 2px solid darkgray;
+}
