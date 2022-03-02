@@ -143,3 +143,21 @@
     height: 30px;
     border: 2px solid darkgray;
 }
+
+.comment-suggest {
+    float:right;
+    border-radius: 8px;
+    height: 30px;
+    background-color: #349eeb;
+    border: none;
+    margin: 5px;
+}
+
+.comment-suggest:hover {
+    float:right;
+    border-radius: 8px;
+    height: 30px;
+    background-color: #349eeb;
+    border: 2px solid lightgray;
+    margin: 5px;
+}

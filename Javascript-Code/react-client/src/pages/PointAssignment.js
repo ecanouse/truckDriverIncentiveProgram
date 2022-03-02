@@ -107,19 +107,25 @@ class PointAssignment extends Component{
           </div>
 
           <div className='form-item'>
-          <label htmlFor="driver">Comment</label>
-          <textarea
-            cols="40" 
-            rows = "7"
-            id="comment" 
-            name="comment" 
-            placeholder="Additional Comments"
-            value={this.state.comment}
-            onChange={this.handleChange}
-            required
-            minLength={1}
-            maxLength={100}
-          />
+            <label htmlFor="driver">Comment</label>
+            <textarea
+              cols="40" 
+              rows = "7"
+              id="comment" 
+              name="comment" 
+              placeholder="Additional Comments"
+              value={this.state.comment}
+              onChange={this.handleChange}
+              required
+              minLength={1}
+              maxLength={100}
+            />
+          </div>
+          <div className='form-item'>
+            <label>Suggested Comments</label>
+              <button className='comment-suggest' type="button" onClick={()=>this.setState({comment: 'Great Driving!'})}>Great Driving!</button>
+              <button className='comment-suggest' type="button" onClick={()=>this.setState({comment: 'Bad Driving!'})}>Bad Driving!</button>
+              <button className='comment-suggest' type="button" onClick={()=>this.setState({comment: 'Free Points!'})}>Free Points!</button>
           </div>
           <input className="point-submit" type="submit" value="Submit"/>
         </form>
