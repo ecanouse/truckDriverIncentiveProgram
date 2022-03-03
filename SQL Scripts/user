@@ -1,4 +1,4 @@
-CREATE TABLE `new_schema`.`USER` (
+CREATE TABLE `new_schema`.`user` (
   `uID` INT NOT NULL AUTO_INCREMENT,
   `sponsorID` VARCHAR(50) NULL,
   `lname` VARCHAR(50) NOT NULL,
