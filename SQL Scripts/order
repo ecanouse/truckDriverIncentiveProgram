@@ -3,5 +3,5 @@ CREATE TABLE `new_schema`.`order` (
   `uID` INT NULL,
   `status` VARCHAR(50) NOT NULL,
   `total` INT NOT NULL,
-  PRIMARY KEY (`orderID`)
+  PRIMARY KEY (`orderID`),
   FOREIGN KEY ('uID') REFERENCES user('uID'));
