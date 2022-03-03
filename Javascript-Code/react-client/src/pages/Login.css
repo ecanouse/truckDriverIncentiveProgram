@@ -22,9 +22,13 @@
     font-size: small;
     padding-top: 20px;
 }
+.login_displaybox{
+    padding-bottom:0px;
+    color: rgb(235, 31, 31);
+}
 
 .LoginButton {
-    float: inline-end;
+    float:right;
     border-radius: 8px;
     width: 25%;
     height: 25px;

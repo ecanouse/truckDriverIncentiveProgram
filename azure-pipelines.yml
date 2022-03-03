@@ -1,16 +1,11 @@
-# Node.js with Reac
+# Node.js with React
 # Build a Node.js project that uses React.
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 
-trigger:
-- main
-
-
 pool:
   vmImage: ubuntu-latest
-
 
 steps:
 - task: NodeTool@0
@@ -18,28 +13,49 @@ steps:
     versionSpec: '10.x'
   displayName: 'Install Node.js'
 
-
 - script: |
+    echo '$(System.DefaultWorkingDirectory)'
+    dir
+    cd Javascript-Code/react-client
     npm install
-    npm run build
-  displayName: 'npm install and build'
+  displayName: 'npm install'
 
+- task: Npm@1
+  displayName: 'npm run test frontend'
+  inputs:
+    command: 'custom'
+    workingDir: 'Javascript-Code/react-client'
+    customCommand: 'run test:ci'
 
-- task: CopyFiles@2
+# - script: |
+#     echo '$(System.DefaultWorkingDirectory)'
+#     dir
+#     cd Javascript-Code/Node-Server
+#     npm run test:ci
+
+# - task: Npm@1
+#   displayName: 'npm run test backend'
+#   inputs:
+#     command: 'custom'
+#     workingDir: 'Javascript-Code/Node-Server'
+#     customCommand: 'run test:ci'
+
+- task: PublishTestResults@2
+  displayName: 'summply npm test results to pipelines'
+  condition: succeededOrFailed()
   inputs:
-    Contents: |
-      $(Build.SourcesDirectory)/src/**
-      $(Build.SourcesDirectory)/public/**
-      $(Build.SourcesDirectory)/package*.json
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-- task: ArchiveFiles@2
+    testResultsFiles: '**/junit.xml'
+    searchFolder: '/Javascript-Code/'
+
+- task: SSH@0
   inputs:
-    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)'
-    includeRootFolder: false
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/myapp_$(Build.BuildNumber).zip'
-    replaceExistingArchive: true
-- task: PublishBuildArtifacts@1
-  inputs: 
-    PathtoPublish: $(Build.ArtifactStagingDirectory) # dist or build files
-    ArtifactName: 'www' # output artifact named www
+    sshEndpoint: 'EC2 instance'
+    runOptions: 'inline'
+    inline: |
+      cd S22-Team04-goodwin.binz.canouse.lasher.narula.wise
+      git pull 2>&1
+      cd Javascript-Code/react-client
+      npm run build
+      cd ..
+      forever start Node-Server/index.js
+    readyTimeout: '20000'

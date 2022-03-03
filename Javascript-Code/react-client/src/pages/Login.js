@@ -1,13 +1,23 @@
 import React, {Component} from 'react';
 import './Login.css';
+import { Navigate } from 'react-router-dom';
 
 class Login extends Component{
 
   //state used to store username & password from inputs
   state = {
     username: '',
-    password: ''
+    password: '',
+    redirect: false,
+    userType: -1,
+    msg: ""
   };
+
+  /* USER TYPES: (may be wise to change these to strings in the future)
+      0: DRIVER
+      1: SPONSOR
+      2: ADMIN
+  */
 
   //handleChange takes the value from input boxes & updates the state
   //param: event --> access to element calling fxn
@@ -22,10 +32,6 @@ class Login extends Component{
 
   };
 
-  //issue with preventDefault
-  //issue with not connecting to the server & json errors
-  //maybe try axion? maybe start from the beginning?
-  //learn more about fetch first.
   submit = (event) => {
     event.preventDefault(); //prevent's browser from reloading
     console.log("Submitting to server");
@@ -36,10 +42,6 @@ class Login extends Component{
     };
 
     //sending data to node server
-    //we may want to switch to using axios, a bit easier to digest than fetch commands
-    console.log("sending payload of :");
-    console.log(payload)
-    console.log("end of payload");
     fetch('/login-attempt', {
       method: 'POST', //post request
       headers: { 'Content-Type': 'application/json' },
@@ -47,21 +49,30 @@ class Login extends Component{
     })
     .then(response => {
       if( response.status === 200 ) {
-        console.log('successful!');
+        //this.setState({redirect: true});
+        response.json().then( data => {
+          if( data.success ) {
+            document.getElementById('login_displaybox').style.color = "black";
+            this.setState({userType: data.userType});
+            this.setState({msg: "Logging in..."});
+            this.setState({redirect: true});
+
+          }
+          else {
+            //display fail message
+            console.log("Username & Password do not match.")
+            this.setState({msg: "Username and Password do not match."})
+          }
+        })
       }
-    })  //checks for success
-    // .then(data => {
-    //   console.log('Success', payload);
-    // })
+    })
     .catch((error) => {
-      console.error('Error :(', error);
+      console.error('Error', error);
     });
 
   };
 
   render() {
-
-    console.log(this.state);
 
     return (
 
@@ -75,6 +86,7 @@ class Login extends Component{
         <div className='Signin-Box'>
         <form onSubmit={this.submit}>
           <h2><br/>Sign-In</h2>
+          <p className='login_displaybox' id='login_displaybox' >{this.state.msg}</p>
           <p>
             <span class='Seperate-SI-UN'></span>
             Username
@@ -102,6 +114,9 @@ class Login extends Component{
         
           <p class='Reset-UN-PASS'>Having trouble signing in?</p>
           <button type="submit" class='LoginButton'>Log-in</button>
+          { this.state.redirect && (this.state.userType === 0) ? (<Navigate to="/driverhome"/>) : null }
+          { this.state.redirect && (this.state.userType === 1) ? (<Navigate to="/sponsorhome"/>) : null }
+          { this.state.redirect && (this.state.userType === 2) ? (<Navigate to="/adminhome"/>) : null }
         </form>
           <a class='Reset-UN-PASS' href='ResetPass'>Click here to reset your Password</a>
           <a class='Reset-UN-PASS' href='DiscoverUN'><br/><br/>Click here to discover your Username</a> 
