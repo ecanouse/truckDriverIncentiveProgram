@@ -1,6 +1,7 @@
-CREATE TABLE `new_schema`.`ORDER` (
+CREATE TABLE `new_schema`.`order` (
   `orderID` INT NOT NULL AUTO_INCREMENT,
   `uID` INT NULL,
   `status` VARCHAR(50) NOT NULL,
   `total` INT NOT NULL,
-  PRIMARY KEY (`orderID`));
+  PRIMARY KEY (`orderID`)
+  FOREIGN KEY ('uID') REFERENCES user('uID'));
