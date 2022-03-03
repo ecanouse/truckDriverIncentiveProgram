@@ -8,4 +8,5 @@ CREATE TABLE `new_schema`.`user` (
   `email` VARCHAR(25) NOT NULL,
   `phone` VARCHAR(25) NOT NULL,
   `userType` INT NOT NULL,
-  PRIMARY KEY (`uID`));
+  PRIMARY KEY (`uID`),
+  FOREIGN KEY ('sponsorID') REFERENCES sponsor_org('sponsorID'));
