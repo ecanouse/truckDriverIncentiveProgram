@@ -5,6 +5,26 @@
 // Credits : https://ciphertrick.com/salt-hash-passwords-using-nodejs-crypto/
 // REQUIRE CRYPTO LIBRARY
 
+  function crypto_test() {
+    // (A) LOAD ENCRYPT LIBRARY
+    const CryptoJS = require("crypto-js");
+
+    // (B) SECRET KEY
+    var key = "ASECRET";
+
+    // (C) ENCRYPT
+    var cipher = CryptoJS.AES.encrypt("PASSWORD", key);
+    cipher = cipher.toString();
+    console.log(cipher);
+
+    // (D) DECRYPT
+    var decipher = CryptoJS.AES.decrypt(cipher, key);
+    decipher = decipher.toString(CryptoJS.enc.Utf8);
+    console.log(decipher);
+  }
+
+
+
 
 // FUNCTION TO CREATE PASSWORD HASH
 // returns hashed password & corresponding salt value
@@ -34,7 +54,7 @@ function validatePassword(userpass, storedpassword) {
   return userpass == hashedpass;
 };
 
-module.exports = { getHash, validatePassword };
+//module.exports = { getHash, validatePassword };
 
 // // TEST ENCRYPT
 // // Save BOTH the password and salt into database or file
