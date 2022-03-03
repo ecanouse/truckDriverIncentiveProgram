@@ -5,5 +5,5 @@ CREATE TABLE `new_schema`.`point_adjustment` (
   `date` VARCHAR(10) NOT NULL,
   `DPointID` INT NULL,
   `sponsor` VARCHAR(50) NOT NULL,
-  PRIMARY KEY (`adjustmentID`)
+  PRIMARY KEY (`adjustmentID`),
   FOREIGN KEY ('DPointID') REFERENCES driver_point('DPointID'));
