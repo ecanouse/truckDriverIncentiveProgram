@@ -1,8 +1,10 @@
-CREATE TABLE `new_schema`.`APPLICATION` (
+CREATE TABLE `new_schema`.`application` (
   `applicationsID` INT NOT NULL AUTO_INCREMENT,
   `uID` INT NOT NULL,
   `sponsorID` INT NULL,
   `status` INT NULL,
   `description` VARCHAR(100) NOT NULL,
   `date` DATE NOT NULL,
-  PRIMARY KEY (`applicationsID`));
+  PRIMARY KEY (`applicationsID`),
+  FOREIGN KEY ('uID') REFERENCES user('uID'),
+  FOREIGN KEY ('sponsorID') REFERENCES sponsor_org('sponsorID'));
