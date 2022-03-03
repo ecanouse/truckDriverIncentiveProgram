@@ -6,8 +6,20 @@ class PointAssignment extends Component{
     add: true,
     value: 0,
     driver: '',
-    comment: ''
+    comment: '',
+    drivers: []
   };
+
+  componentDidMount() {
+    this.getDrivers();
+  }
+
+  getDrivers = () => {
+    fetch('/getDrivers')
+    .then(response => response.json())
+    .then(response => this.setState({drivers: response.drivers}))
+    .catch(err => console.error(err))
+  }
 
   handleChange = (event) => {
     const target = event.target;
@@ -34,12 +46,29 @@ class PointAssignment extends Component{
 
   submit = (event) => {
     event.preventDefault();
-    console.log("Submit!")
-    this.setState({
-      add: true,
-      value: 0,
-      driver: '',
-      comment: ''
+    var payload = {
+      add: this.state.add,
+      value: this.state.value,
+      driver: this.state.driver,
+      comment: this.state.comment,
+    };
+    fetch('/point-assignment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(response => {
+      if( response.status === 200 ) {
+        this.setState({
+          add: true,
+          value: 0,
+          driver: '',
+          comment: ''
+        });
+      }
+    })
+    .catch((error) => {
+      console.error('Error', error);
     });
   }
   render() {
@@ -98,11 +127,9 @@ class PointAssignment extends Component{
               required
             />
             <datalist id="driver-list">
-                <option value="Driver 1"/>
-                <option value="Driver 2"/>
-                <option value="Driver 3"/>
-                <option value="Driver 4"/>
-                <option value="Driver 5"/>
+                {this.state.drivers.map((d,i) => 
+                  <option value={d} key={i}/>
+                )}
             </datalist>
           </div>
 
@@ -127,7 +154,7 @@ class PointAssignment extends Component{
               <button className='comment-suggest' type="button" onClick={()=>this.setState({comment: 'Bad Driving!'})}>Bad Driving!</button>
               <button className='comment-suggest' type="button" onClick={()=>this.setState({comment: 'Free Points!'})}>Free Points!</button>
           </div>
-          <input className="point-submit" type="submit" value="Submit"/>
+          <input className="point-submit" type="submit" value="Send Points"/>
         </form>
         
         <footer className='PointAssign-Footer'>

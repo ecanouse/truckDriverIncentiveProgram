@@ -10,6 +10,7 @@ const logs = require("./logs/logging.js");
 const PORT = process.env.PORT || 4000;
 
 const app = express();
+
 app.use(bodyParser.urlencoded({
   extended: false
 }));
@@ -36,6 +37,10 @@ connection.connect(function(err) {
   }
   console.log('Connected to database');
 })
+
+//Require endpoints from other files
+require('./endpoints/sponsorinfo')(app);
+require('./endpoints/points')(app);
 
 app.get('/test', (req, res) => {
     connection.query('SELECT * FROM test.test_table', (err, results) => {
