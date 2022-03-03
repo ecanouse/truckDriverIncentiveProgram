@@ -1,4 +1,4 @@
-CREATE TABLE `new_schema`.`SPONSOR_ORG` (
+CREATE TABLE `new_schema`.`sponsor_org` (
   `sponsorID` INT NOT NULL AUTO_INCREMENT,
   `orgName` VARCHAR(50) NOT NULL,
   `email` VARCHAR(25) NOT NULL,
