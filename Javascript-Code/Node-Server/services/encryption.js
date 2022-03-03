@@ -21,9 +21,9 @@ function crypto_test() {
   var decipher = CryptoJS.AES.decrypt(cipher, key);
   decipher = decipher.toString(CryptoJS.enc.Utf8);
   console.log(decipher);
-}
+};
 
-
+crypto_test();
 
 
 // FUNCTION TO CREATE PASSWORD HASH
