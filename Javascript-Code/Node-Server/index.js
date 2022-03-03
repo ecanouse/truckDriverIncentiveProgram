@@ -81,7 +81,7 @@ app.post('/login-attempt', (req, res) => {
     if( testing ) {
 
       //get hashed password
-      hpass = crypt.getHash(password);
+      var hpass = crypt.getHash(password);
 
       //create new driver with hashed password
       // username: driver
@@ -97,7 +97,7 @@ app.post('/login-attempt', (req, res) => {
       // username: admin
       // password: adminpassword
       const admin_query = "insert into USER values (4, -1, 'Person', 'Admin', 'admin', '" + hpass + "', 'admin@email.net', '0987654561', 2);";
-      //connection.query(admin_query);
+      // connection.query(admin_query);
     }
 
     const sel_query = "SELECT password, userType from new_schema.USER where username = \"" + clean_username[0] + "\";";
