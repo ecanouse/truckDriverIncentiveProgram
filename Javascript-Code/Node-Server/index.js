@@ -133,7 +133,7 @@ app.post('/login-attempt', (req, res) => {
 
 });
 
-
+/*
 //elise working on signup
 app.post('/signup-attempt', (req, res) => {
 
@@ -162,7 +162,7 @@ app.post('/signup-attempt', (req, res) => {
   }
 
 });
-
+*/
 
 //elise working on signup
 app.post('/signup-attempt', (req, res) => {
@@ -182,7 +182,7 @@ app.post('/signup-attempt', (req, res) => {
   if( username && password && firstname && lastname && confirmpassword && email && phone) {
     if(confirmpassword == password){
       encryptPass = crypt.getHash(password);
-      console.log('Got sign up information.');
+      //console.log('Got sign up information.');
       console.log(encryptPass);
       qstr = "INSERT INTO new_schema.USER (sponsorId, lname, fname, username, password, email, phone, usertype) VALUES (-1, '"+lastname+"', '"+firstname+"', '"+username+"', '"+encryptPass+"', '"+email+"', '"+phone+"', -1)";
       connection.query(qstr, function(err, result, fields) {
