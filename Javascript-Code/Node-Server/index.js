@@ -16,6 +16,7 @@ app.use(cors());
 
 const mysql = require('mysql');
 const { response } = require('express');
+const { rmSync } = require('fs');
 
 var connection = mysql.createConnection({
   host: "groupfour-database.crvi1tvxyfsa.us-east-1.rds.amazonaws.com",
@@ -26,7 +27,7 @@ var connection = mysql.createConnection({
 
 connection.connect(function(err) {
   if(err){
-    console.error('Database connection faild: ' + err.stack);
+    console.error('Database connection failed: ' + err.stack);
     return;
   }
   console.log('Connected to database');
@@ -46,7 +47,7 @@ app.get('/test', (req, res) => {
 });
 
 // API for login information
-// I will move this into it's own file/work on the structure of the node server in sprint 4
+// I will move this into it's own file/work on the structure of the node server in sprint 5
 // - joey
 
 app.post('/login-attempt', (req, res) => {
@@ -61,15 +62,82 @@ app.post('/login-attempt', (req, res) => {
   if( username && password ) {
 
     //hash password
-    res.send('got username & password');
-    console.log('Got username and password.');
+    // res.send('got username & password');
+    // console.log('Got username and password.');
     //sql query to compare password
     //if correct --> res.redirect('/home');
     //else --> give error message
-  }
+
+    //clean username input
+    const clean_username = username.split(" ");
+
+    const sel_query = "SELECT password, userType from new_schema.USER where username = \"" + clean_username[0] + "\";";
+
+    //poll db
+    connection.query(sel_query, function(err, result, fields) {
+      if(err) console.log(err);
+      console.log(result);
+      
+      const isEmpty = Object.keys(result).length === 0;
+
+      //case for successful login
+      if( (!isEmpty) && result[0].password === password ) {
+        console.log("Password Match!");
+        res.send({success: true, userType: result[0].userType});
+      }
+
+      //case for unsuccessful login
+      else {
+        console.log("password fail");
+        res.send({success: false});
+      }
+    });
+  } 
   else {
-    res.send("Incorrect Username and/or Password :(");
+    res.send({success: false});
     console.log('no username/password.');
+    res.end()
+  }
+
+});
+
+
+//elise working on signup
+app.post('/signup-attempt', (req, res) => {
+
+  console.log('Received signup attempt');
+  console.log(req.body);
+  // get input
+  let username = req.body.username;
+  let password = req.body.password;
+  let firstname = req.body.firstname;
+  let lastname = req.body.lastname;
+  let confirmpassword = req.body.confirmpassword;
+  let email = req.body.email;
+  let phone = req.body.phone;
+
+  //make sure user entered each required field
+  if( username && password && firstname && lastname && confirmpassword && email && phone) {
+    if(confirmpassword == password){
+      password =
+      console.log('Got sign up information.');
+      qstr = "INSERT INTO new_schema.USER (sponsorId, lname, fname, username, password, email, phone, usertype) VALUES (-1, '"+lastname+"', '"+firstname+"', '"+username+"', '"+password+"', '"+email+"', '"+phone+"', -1)";
+      connection.query(qstr, function(err, result, fields) {
+        if(err) console.log(err);
+        console.log(result);
+
+      });
+      //sql query to confirm information and create an account
+      //if correct --> res.redirect('/home');
+      //else --> give error message
+    }else {
+      res.send("Passwords do not match");
+      console.log('passwords do not match');
+      res.end()
+    }
+  }else{
+    res.send("Incorrect Sign Up info :(");
+    console.log('no sign up info.');
     res.end()
   }
 });
