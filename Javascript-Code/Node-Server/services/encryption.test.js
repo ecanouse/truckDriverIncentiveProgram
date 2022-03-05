@@ -7,6 +7,6 @@ describe("Encryption Tests", () => {
         var clearpass = "password";
         var hashpass = crypt.getHash(clearpass);
 
-        expect(hashpass).toBe(clearpass);
+        expect(hashpass).not.toBe(clearpass);
     });
 });
