@@ -7,7 +7,7 @@ trigger:
   - password-encryption
 
 pool:
-  vmImage: macOS-11
+  vmImage: macOS-latest
 
 steps:
 - task: NodeTool@0
