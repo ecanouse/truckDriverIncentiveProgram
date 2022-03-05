@@ -30,12 +30,8 @@ steps:
 - script: |
     echo '$(System.DefaultWorkingDirectory)'
     dir
+    sudo npm i -g jest
     cd Javascript-Code/Node-Server
-    sudo chown -R $(whoami) /home/ubuntu/.cache
-    sudo chown -R $(whoami) /home/ubuntu/.config
-    sudo chown -R $(whoami) /home/ubuntu/.local
-    sudo chown -R $(whoami) /home/ubuntu/.npm
-    sudo chown -R $(whoami) /home/ubuntu/.pm2
     sudo npm run test:ci
 
 # - task: Npm@1
