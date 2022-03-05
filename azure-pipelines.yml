@@ -25,16 +25,19 @@ steps:
     workingDir: 'Javascript-Code/react-client'
     customCommand: 'run test:ci'
 
-- script: |
-    cd Javascript-Code/Node-Server
-    npm run test:ci
+# - script: |
+#     cd Javascript-Code/Node-Server
+#     npm cache clean --force
+#     rmdir /S /Q node_modules
+#     npm install
+#     npm run test:ci
 
-# - task: Npm@1
-#   displayName: 'npm run test backend'
-#   inputs:
-#     command: 'custom'
-#     workingDir: 'Javascript-Code/Node-Server'
-#     customCommand: 'run test:ci'
+- task: Npm@1
+  displayName: 'npm run test backend'
+  inputs:
+    command: 'custom'
+    workingDir: 'Javascript-Code/Node-Server'
+    customCommand: 'run test:ci'
 
 - task: PublishTestResults@2
   displayName: 'summply npm test results to pipelines'
