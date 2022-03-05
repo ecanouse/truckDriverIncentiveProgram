@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-  - password-encryption
+  - master
 
 pool:
   vmImage: macOS-latest
@@ -30,6 +30,7 @@ steps:
 - script: |
     cd Javascript-Code/Node-Server
     npm install -g jest
+  displayName: 'Globally Install Jest'
 
 - script: |
     cd Javascript-Code/Node-Server
@@ -40,11 +41,6 @@ steps:
     cd Javascript-Code/Node-Server
     jest --watchAll=false --maxWorkers=2 --reporters=jest-junit
   displayName: 'Run Backend Tests'
-
-# - script: |
-#     cd Javascript-Code/Node-Server
-#     npm install
-#   displayName: 'npm install backend'
 
 # - task: Npm@1
 #   displayName: 'npm run test backend'
@@ -60,15 +56,15 @@ steps:
     testResultsFiles: '**/junit.xml'
     mergeTestResults: true
 
-# - task: SSH@0
-#   inputs:
-#     sshEndpoint: 'EC2 instance'
-#     runOptions: 'inline'
-#     inline: |
-#       cd S22-Team04-goodwin.binz.canouse.lasher.narula.wise
-#       git pull 2>&1
-#       cd Javascript-Code/react-client
-#       npm run build
-#       cd ..
-#       forever start Node-Server/index.js
-#     readyTimeout: '20000'
+- task: SSH@0
+  inputs:
+    sshEndpoint: 'EC2 instance'
+    runOptions: 'inline'
+    inline: |
+      cd S22-Team04-goodwin.binz.canouse.lasher.narula.wise
+      git pull 2>&1
+      cd Javascript-Code/react-client
+      npm run build
+      cd ..
+      forever start Node-Server/index.js
+    readyTimeout: '20000'
