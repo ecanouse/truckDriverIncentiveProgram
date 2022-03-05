@@ -27,9 +27,9 @@ steps:
 #     workingDir: 'Javascript-Code/react-client'
 #     customCommand: 'run test:ci'
 
-- script: |
-    cd Javascript-Code/Node-Server
-    npm install -g jest
+# - script: |
+#     cd Javascript-Code/Node-Server
+#     npm install -g jest
 
 - script: |
     cd Javascript-Code/Node-Server
