@@ -7,7 +7,7 @@ trigger:
   - master
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: macOS-latest
 
 steps:
 - task: NodeTool@0
@@ -16,11 +16,9 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    echo '$(System.DefaultWorkingDirectory)'
-    dir
     cd Javascript-Code/react-client
     npm install
-  displayName: 'npm install'
+  displayName: 'npm install frontend'
 
 - task: Npm@1
   displayName: 'npm run test frontend'
@@ -29,11 +27,20 @@ steps:
     workingDir: 'Javascript-Code/react-client'
     customCommand: 'run test:ci'
 
-# - script: |
-#     echo '$(System.DefaultWorkingDirectory)'
-#     dir
-#     cd Javascript-Code/Node-Server
-#     npm run test:ci
+- script: |
+    cd Javascript-Code/Node-Server
+    npm install -g jest
+  displayName: 'Globally Install Jest'
+
+- script: |
+    cd Javascript-Code/Node-Server
+    npm install
+  displayName: 'Initialize Backend'
+
+- script: |
+    cd Javascript-Code/Node-Server
+    jest --watchAll=false --maxWorkers=2 --reporters=jest-junit
+  displayName: 'Run Backend Tests'
 
 # - task: Npm@1
 #   displayName: 'npm run test backend'
@@ -47,7 +54,7 @@ steps:
   condition: succeededOrFailed()
   inputs:
     testResultsFiles: '**/junit.xml'
-    searchFolder: '/Javascript-Code/'
+    mergeTestResults: true
 
 - task: SSH@0
   inputs:
