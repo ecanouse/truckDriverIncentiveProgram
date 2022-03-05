@@ -31,8 +31,12 @@ steps:
     ls
     cd Javascript-Code/Node-Server
     npm install
+  displayName: 'Initialize Backend'
+
+- script: |
+    cd Javascript-Code/Node-Server
     npm run test:ci
-    echo "Tests have been run!"
+  displayName: 'Run Backend Tests'
 
 # - script: |
 #     cd Javascript-Code/Node-Server
