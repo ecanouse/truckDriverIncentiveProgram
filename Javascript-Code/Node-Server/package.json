@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./index.js",
     "test": "jest",
-    "test:ci": "npm run test -- --watchAll=false --reporters=jest-junit"
+    "test:ci": "sudo npm run test -- --watchAll=false --reporters=jest-junit"
   },
   "keywords": [],
   "author": "",
