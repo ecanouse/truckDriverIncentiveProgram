@@ -31,6 +31,7 @@ steps:
     echo '$(System.DefaultWorkingDirectory)'
     dir
     cd Javascript-Code/Node-Server
+    sudo npm install -g --unsafe-perm=true --allow-root
     sudo npm run test:ci
 
 # - task: Npm@1
