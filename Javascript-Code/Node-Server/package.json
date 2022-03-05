@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./index.js",
-    "test": "sudo jest",
-    "test:ci": "sudo npm run test -- --watchAll=false --reporters=jest-junit"
+    "test": "jest",
+    "test:ci": "npm run test -- --watchAll=false --reporters=jest-junit"
   },
   "keywords": [],
   "author": "",
