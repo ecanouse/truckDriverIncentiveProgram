@@ -43,7 +43,7 @@ steps:
   displayName: 'summply npm test results to pipelines'
   condition: succeededOrFailed()
   inputs:
-    testResultsFiles: '**/junit.xml'
+    testResultsFiles: 'junit.xml'
     searchFolder: '/Javascript-Code/'
 
 - task: SSH@0
