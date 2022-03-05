@@ -20,7 +20,9 @@
   },
   "devDependencies": {
     "jest": "^27.5.1",
-    "jest-junit": "^13.0.0"
+    "jest-cli": "^27.5.1",
+    "jest-junit": "^13.0.0",
+    "jest-watch-typeahead": "^1.0.0"
   },
   "jest-junit": {
     "suiteNameTemplate": "{filepath}",

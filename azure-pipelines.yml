@@ -15,17 +15,17 @@ steps:
     versionSpec: '10.x'
   displayName: 'Install Node.js'
 
-- script: |
-    cd Javascript-Code/react-client
-    npm install
-  displayName: 'npm install frontend'
+# - script: |
+#     cd Javascript-Code/react-client
+#     npm install
+#   displayName: 'npm install frontend'
 
-- task: Npm@1
-  displayName: 'npm run test frontend'
-  inputs:
-    command: 'custom'
-    workingDir: 'Javascript-Code/react-client'
-    customCommand: 'run test:ci'
+# - task: Npm@1
+#   displayName: 'npm run test frontend'
+#   inputs:
+#     command: 'custom'
+#     workingDir: 'Javascript-Code/react-client'
+#     customCommand: 'run test:ci'
 
 - script: |
     cd Javascript-Code/Node-Server
