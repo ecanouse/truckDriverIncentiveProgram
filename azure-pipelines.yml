@@ -28,6 +28,9 @@ steps:
 #     customCommand: 'run test:ci'
 
 - script: |
+    npm install -g jest
+
+- script: |
     cd Javascript-Code/Node-Server
     npm install
   displayName: 'Initialize Backend'
