@@ -1,5 +1,0 @@
-CREATE TABLE `new_schema`.`ITEM` (
-  `itemID` INT NOT NULL AUTO_INCREMENT,
-  `itemIDNum` INT NOT NULL,
-  `orderID` INT NULL,
-  PRIMARY KEY (`itemID`));

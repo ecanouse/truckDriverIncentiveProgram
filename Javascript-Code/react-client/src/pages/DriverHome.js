@@ -6,7 +6,7 @@ class DriverHome extends Component{
     return (
       <div className='DriverHomePage'>
         <header className='Driver-Header'>
-          <img src="SponsorLogo.png" alt="The Mad Lads Team Logo" width="250" height="100"></img>
+          <img src="SponsorLogo.png" alt="Sponsor Logo" width="250" height="100"></img>
           <nav className='Nav'>
             <button href='DriverHome' className='NavButtons'>Home</button>
             <button href='PointHistory' className='NavButtons'>Points</button>

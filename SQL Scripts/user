@@ -1,4 +1,4 @@
-CREATE TABLE `new_schema`.`USER` (
+CREATE TABLE `new_schema`.`user` (
   `uID` INT NOT NULL AUTO_INCREMENT,
   `sponsorID` VARCHAR(50) NULL,
   `lname` VARCHAR(50) NOT NULL,
@@ -8,4 +8,5 @@ CREATE TABLE `new_schema`.`USER` (
   `email` VARCHAR(25) NOT NULL,
   `phone` VARCHAR(25) NOT NULL,
   `userType` INT NOT NULL,
-  PRIMARY KEY (`uID`));
+  PRIMARY KEY (`uID`),
+  FOREIGN KEY ('sponsorID') REFERENCES sponsor_org('sponsorID'));
