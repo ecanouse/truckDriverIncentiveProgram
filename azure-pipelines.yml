@@ -30,7 +30,6 @@ steps:
 - script: |
     echo '$(System.DefaultWorkingDirectory)'
     dir
-    sudo npm i -g jest
     cd Javascript-Code/Node-Server
     sudo npm run test:ci
 
