@@ -43,18 +43,20 @@ steps:
   displayName: 'summply npm test results to pipelines'
   condition: succeededOrFailed()
   inputs:
-    testResultsFiles: 'junit.xml'
-    searchFolder: '/Javascript-Code/'
+    testResultsFiles: |
+      /Javascript-Code/react-client/junit.xml
+      /Javascript-Code/Node-Server/junit.xml
+    mergeTestResults: true
 
-- task: SSH@0
-  inputs:
-    sshEndpoint: 'EC2 instance'
-    runOptions: 'inline'
-    inline: |
-      cd S22-Team04-goodwin.binz.canouse.lasher.narula.wise
-      git pull 2>&1
-      cd Javascript-Code/react-client
-      npm run build
-      cd ..
-      forever start Node-Server/index.js
-    readyTimeout: '20000'
+# - task: SSH@0
+#   inputs:
+#     sshEndpoint: 'EC2 instance'
+#     runOptions: 'inline'
+#     inline: |
+#       cd S22-Team04-goodwin.binz.canouse.lasher.narula.wise
+#       git pull 2>&1
+#       cd Javascript-Code/react-client
+#       npm run build
+#       cd ..
+#       forever start Node-Server/index.js
+#     readyTimeout: '20000'
