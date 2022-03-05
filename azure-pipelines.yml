@@ -28,6 +28,7 @@ steps:
 #     customCommand: 'run test:ci'
 
 - script: |
+    cd Javascript-Code/Node-Server
     npm install -g jest
 
 - script: |
