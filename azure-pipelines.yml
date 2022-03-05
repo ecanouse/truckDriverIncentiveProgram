@@ -38,7 +38,7 @@ steps:
 
 - script: |
     cd Javascript-Code/Node-Server
-    npm run test:ci
+    jest --watchAll=false --maxWorkers=2 --reporters=jest-junit
   displayName: 'Run Backend Tests'
 
 # - script: |
