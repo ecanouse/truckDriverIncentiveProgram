@@ -53,6 +53,7 @@ class PointAssignment extends Component{
       driver: this.state.driver,
       comment: this.state.comment,
     };
+    console.log(payload)
     fetch('/point-assignment', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -66,6 +67,9 @@ class PointAssignment extends Component{
           driver: '',
           comment: ''
         });
+        document.getElementById("point-form").reset();
+        var dropDown = document.getElementById("driver-list");
+        dropDown.selectedIndex = 0;
       }
     })
     .catch((error) => {
@@ -76,7 +80,7 @@ class PointAssignment extends Component{
     return (
       <SponsorLayout>
         <div className='PointAssignPage'>
-          <form onSubmit={this.submit} className='point-form'>
+          <form id="point-form" onSubmit={this.submit} className='point-form'>
             <div className='form-item'>
               <label htmlFor="addsub">Add or Subtract Points?</label>
                 <div className='point-addbuttons' >
@@ -104,19 +108,20 @@ class PointAssignment extends Component{
 
             <div className='form-item'>
             <label htmlFor="driver">Driver</label>
-              <input 
+              {/* <input 
                 list='driver-list' 
                 name='driver' 
                 id='driver'
                 value={this.state.driver}
                 onChange={this.handleChange}
                 required
-              />
-              <datalist id="driver-list">
+              /> */}
+              <select id="driver-list" value={this.state.driver == "" ? null : this.state.driver} onChange={e => this.setState({driver: e.target.value})} required>
+                  <option disabled selected value value=""> -- select an driver -- </option>
                   {this.state.drivers.map((d,i) => 
-                    <option value={d} key={i}/>
+                    <option value={d.uID} key={i}>{`${d.fname} ${d.lname}`}</option>
                   )}
-              </datalist>
+              </select>
             </div>
 
             <div className='form-item'>
