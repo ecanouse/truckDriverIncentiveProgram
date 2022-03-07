@@ -3,24 +3,28 @@
 
 //tentative format for logging login attempts:
 //LOGIN <date> <username> <login attempt status --> "success"/""fail"><\n>
-function recordLogin( username, success, path ) {
+function recordLogin( username, success, conn ) {
     const fs = require('fs');
     var date = new Date().toLocaleString();
     var res;
     if( success ) {
-        res = "success";
+        res = 1;
     }
     else {
-        res = "fail";
+        res = 0;
     }
-    const content = "LOGIN " + date + " " + username + " " + res + "\n";
-    
-    fs.appendFileSync(path, content, err => {
+
+    record_query = "INSERT INTO LOGIN_ATTEMPTS( date, username, success ) VALUES (\'" + date + "\', \'" + username + "\'," + res + ");"
+
+    conn.query(record_query, (err) => {
         if (err) {
-            console.error(err);
-            return;
+            console.log(err);
+            return err;
         }
     });
+
+    return date;
+    
 }
 
 

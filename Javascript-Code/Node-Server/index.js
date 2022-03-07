@@ -117,20 +117,20 @@ app.post('/login-attempt', (req, res) => {
       //case for successful login
       if( (!isEmpty) && crypt.validatePassword(password, result[0].password) ) {
         console.log("Password Match!");
-        logs.recordLogin(username, true, './logs/log.txt');
+        logs.recordLogin(username, true, connection);
         res.send({success: true, userType: result[0].userType});
       }
 
       //case for unsuccessful login
       else {
         console.log("password fail");
-        logs.recordLogin(username, false, './logs/log.txt');
+        logs.recordLogin(username, false, connection);
         res.send({success: false});
       }
     });
   } 
   else {
-    logs.recordLogin(username, false, './logs/log.txt');
+    logs.recordLogin(username, false, connection);
     res.send({success: false});
     console.log('no username/password.');
     res.end()
