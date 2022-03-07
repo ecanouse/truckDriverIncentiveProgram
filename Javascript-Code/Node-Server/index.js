@@ -39,8 +39,8 @@ connection.connect(function(err) {
 })
 
 //Require endpoints from other files
-require('./endpoints/sponsorinfo')(app);
-require('./endpoints/points')(app);
+require('./endpoints/sponsorinfo')(app, connection);
+require('./endpoints/points')(app, connection);
 
 app.get('/test', (req, res) => {
     connection.query('SELECT * FROM test.test_table', (err, results) => {
