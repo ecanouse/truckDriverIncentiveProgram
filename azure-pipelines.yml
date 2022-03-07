@@ -66,5 +66,6 @@ steps:
       cd Javascript-Code/react-client
       npm run build
       cd ..
-      forever Node-Server/index.js
+      cd Node-Server
+      forever start index.js
     readyTimeout: '20000'
