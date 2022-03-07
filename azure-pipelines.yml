@@ -67,5 +67,6 @@ steps:
       npm run build
       cd ..
       cd Node-Server
+      forever stopall
       forever start index.js
     readyTimeout: '20000'
