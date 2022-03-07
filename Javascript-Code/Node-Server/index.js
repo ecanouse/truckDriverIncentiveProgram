@@ -120,12 +120,16 @@ app.post('/login-attempt', (req, res) => {
         logs.recordLogin(username, true, connection);
         res.send({success: true, userType: result[0].userType});
       }
-
-      //case for unsuccessful login
-      else {
-        console.log("password fail");
+      //case for unsuccessful logins
+      else if (isEmpty) {
+        console.log("Username/Email Not Recognized");
         logs.recordLogin(username, false, connection);
-        res.send({success: false});
+        res.send({success: false, msg: "Username/Email Not Recognized"});
+      }
+      else if (!isEmpty) {
+        console.log("Username and Password did not match");
+        logs.recordLogin(username, false, connection);
+        res.send({success: false, msg: "Username and Password did not match"});
       }
     });
   } 

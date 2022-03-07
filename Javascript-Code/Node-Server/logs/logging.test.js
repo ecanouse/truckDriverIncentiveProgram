@@ -4,16 +4,18 @@ var mysql = require('mysql');
 
 describe("Login Audit Logging Tests", () => {
 
-    //get connection to be used in testing
-    var connection = mysql.createConnection({
-        host: "groupfour-database.crvi1tvxyfsa.us-east-1.rds.amazonaws.com",
-        user: "admin",
-        password: "cpsc4910group4",
-        port: "3306",
-        database: "new_schema"
-      });
+
 
     test('Testing login audit system', async () => {
+
+            //get connection to be used in testing
+        var connection = await mysql.createConnection({
+            host: "groupfour-database.crvi1tvxyfsa.us-east-1.rds.amazonaws.com",
+            user: "admin",
+            password: "cpsc4910group4",
+            port: "3306",
+            database: "new_schema"
+        });
 
         var test_username = "testusername";
 
@@ -25,7 +27,6 @@ describe("Login Audit Logging Tests", () => {
 
         await connection.query(sel_query, function(err, result, fields) {
             if(err) console.log(err)
-            console.log(result)
 
             const isEmpty = Object.keys(result).length === 0;
             expect(isEmpty).toEqual(false);
@@ -33,7 +34,7 @@ describe("Login Audit Logging Tests", () => {
             if( !isEmpty ) {
                 expect(result[0].date).toEqual(date);
                 expect(result[0].username).toEqual(test_username);
-                expect(result[0].success).toEqual(false);
+                expect(result[0].success).toEqual(0);
             }
         })
 
