@@ -103,7 +103,7 @@ class Login extends Component{
 
           <p>Password</p>
           <input 
-            type="text" 
+            type="password" 
             id="password" 
             name="password" 
             placeholder='password' 
