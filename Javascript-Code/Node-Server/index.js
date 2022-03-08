@@ -32,7 +32,7 @@ var connection = mysql.createConnection({
 
 connection.connect(function(err) {
   if(err){
-    console.error('Database connection faild: ' + err.stack);
+    console.error('Database connection failed: ' + err.stack);
     return;
   }
   console.log('Connected to database');
@@ -143,6 +143,7 @@ app.post('/login-attempt', (req, res) => {
 });
 
 
+
 //elise working on signup
 app.post('/signup-attempt', (req, res) => {
 
@@ -154,17 +155,30 @@ app.post('/signup-attempt', (req, res) => {
   let firstname = req.body.firstname;
   let lastname = req.body.lastname;
   let confirmpassword = req.body.confirmpassword;
+  let email = req.body.email;
+  let phone = req.body.phone;
 
   //make sure user entered each required field
-  if( username && password && firstname && lastname && confirmpassword) {
-
-    res.send('got sign up info');
-    console.log('Got sign up information.');
-    //sql query to confirm information and create an account
-    //if correct --> res.redirect('/home');
-    //else --> give error message
-  }
-  else {
+  if( username && password && firstname && lastname && confirmpassword && email && phone) {
+    if(confirmpassword == password){
+      encryptPass = crypt.getHash(password);
+      //console.log('Got sign up information.');
+      console.log(encryptPass);
+      qstr = "INSERT INTO new_schema.USER (sponsorId, lname, fname, username, password, email, phone, usertype) VALUES (-1, '"+lastname+"', '"+firstname+"', '"+username+"', '"+encryptPass+"', '"+email+"', '"+phone+"', -1)";
+      connection.query(qstr, function(err, result, fields) {
+        if(err) console.log(err);
+        console.log(result);
+        res.send({success: true});
+      });
+      //sql query to confirm information and create an account
+      //if correct --> res.redirect('/home');
+      //else --> give error message
+    }else {
+      res.send("Passwords do not match");
+      console.log('passwords do not match');
+      res.end()
+    }
+  }else{
     res.send("Incorrect Sign Up info :(");
     console.log('no sign up info.');
     res.end()
