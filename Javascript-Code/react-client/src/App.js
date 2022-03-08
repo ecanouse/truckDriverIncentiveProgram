@@ -16,6 +16,7 @@ import UpdateAccount from './pages/UpdateAccount';
 import NotFound from './pages/NotFound';
 import ResetPass from './pages/ResetPass';
 import DiscoverUN from './pages/DiscoverUN';
+import DriverCatalog from './pages/DriverCatalog';
 
 class App extends Component{
   render() {
@@ -38,6 +39,7 @@ class App extends Component{
           <Route path="*" element={<NotFound/>}/>
           <Route path="ResetPass" element={<ResetPass/>}/>
           <Route path="DiscoverUN" element={<DiscoverUN/>}/>
+          <Route path='DriverCatalog' element={<DriverCatalog/>}/>
         </Routes>
       </BrowserRouter>
     )
