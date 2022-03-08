@@ -1,8 +1,0 @@
-CREATE TABLE `new_schema`.`POINT_ADJUSTMENT` (
-  `adjustmentID` INT NOT NULL AUTO_INCREMENT,
-  `pointReason` VARCHAR(50) NOT NULL,
-  `pointValue` INT NOT NULL,
-  `date` VARCHAR(10) NOT NULL,
-  `DPointID` INT NULL,
-  `sponsor` VARCHAR(50) NOT NULL,
-  PRIMARY KEY (`adjustmentID`));

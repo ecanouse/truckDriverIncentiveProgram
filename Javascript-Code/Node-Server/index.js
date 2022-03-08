@@ -1,12 +1,16 @@
+
+const crypt = require("./services/encryption.js");
 const express = require('express');
 const path = require('path');
 const cors = require('cors')
 const bodyParser = require("body-parser");
+const logs = require("./logs/logging.js");
 
 
 const PORT = process.env.PORT || 4000;
 
 const app = express();
+
 app.use(bodyParser.urlencoded({
   extended: false
 }));
@@ -23,6 +27,7 @@ var connection = mysql.createConnection({
   user: "admin",
   password: "cpsc4910group4",
   port: "3306",
+  database: "new_schema"
 });
 
 connection.connect(function(err) {
@@ -32,6 +37,10 @@ connection.connect(function(err) {
   }
   console.log('Connected to database');
 })
+
+//Require endpoints from other files
+require('./endpoints/sponsorinfo')(app, connection);
+require('./endpoints/points')(app, connection);
 
 app.get('/test', (req, res) => {
     connection.query('SELECT * FROM test.test_table', (err, results) => {
@@ -59,7 +68,7 @@ app.post('/login-attempt', (req, res) => {
   let password = req.body.password;
 
   //make sure username & password exist
-  if( username && password ) {
+  if( username && password && !password.includes("\'") && !password.includes("\"") ) {
 
     //hash password
     // res.send('got username & password');
@@ -68,8 +77,33 @@ app.post('/login-attempt', (req, res) => {
     //if correct --> res.redirect('/home');
     //else --> give error message
 
-    //clean username input
+    var testing = false; //variable for testing fxns
+
+    //clean username input to prevent SQL injections
     const clean_username = username.split(" ");
+
+    //create accounts for testing
+    if( testing ) {
+
+      //get hashed password
+      var hpass = crypt.getHash(password);
+
+      //create new driver with hashed password
+      // username: driver
+      // password: driverpassword
+      const driver_query = "insert into USER values (2, -1, 'Guy', 'Driver', 'driver', '" + hpass + "', 'driver@email.net', '0987654567', 0);";
+
+      //create new sponsor with hashed password
+      // username: sponsor
+      // password: sponsorpassword
+      const sponsor_query = "insert into USER values (3, -1, 'Girl', 'Sponsor', 'sponsor', '" + hpass + "', 'sponsor@email.net', '0987654569', 1);";
+
+      // create new amin with hashed password
+      // username: admin
+      // password: adminpassword
+      const admin_query = "insert into USER values (4, -1, 'Person', 'Admin', 'admin', '" + hpass + "', 'admin@email.net', '0987654561', 2);";
+      // connection.query(admin_query);
+    }
 
     const sel_query = "SELECT password, userType from new_schema.USER where username = \"" + clean_username[0] + "\";";
 
@@ -81,19 +115,26 @@ app.post('/login-attempt', (req, res) => {
       const isEmpty = Object.keys(result).length === 0;
 
       //case for successful login
-      if( (!isEmpty) && result[0].password === password ) {
+      if( (!isEmpty) && crypt.validatePassword(password, result[0].password) ) {
         console.log("Password Match!");
+        logs.recordLogin(username, true, connection);
         res.send({success: true, userType: result[0].userType});
       }
-
-      //case for unsuccessful login
-      else {
-        console.log("password fail");
-        res.send({success: false});
+      //case for unsuccessful logins
+      else if (isEmpty) {
+        console.log("Username/Email Not Recognized");
+        logs.recordLogin(username, false, connection);
+        res.send({success: false, msg: "Username/Email Not Recognized"});
+      }
+      else if (!isEmpty) {
+        console.log("Username and Password did not match");
+        logs.recordLogin(username, false, connection);
+        res.send({success: false, msg: "Username and Password did not match"});
       }
     });
   } 
   else {
+    logs.recordLogin(username, false, connection);
     res.send({success: false});
     console.log('no username/password.');
     res.end()

@@ -4,14 +4,31 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./index.js"
+    "start": "node ./index.js",
+    "test": "jest",
+    "test:ci": "npm run test -- --watchAll=false --reporters=jest-junit"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "crypto-js": "^4.1.1",
     "express": "^4.17.2",
     "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "jest-junit": "^13.0.0",
+    "@babel/preset-env": "^7.16.11",
+    "@testing-library/jest-dom": "^5.16.2",
+    "jest-cli": "^27.5.1",
+    "jest-watch-typeahead": "^1.0.0",
+    "react-test-renderer": "^17.0.2"
+  },
+  "jest-junit": {
+    "suiteNameTemplate": "{filepath}",
+    "outputDirectory": ".",
+    "outputName": "junit.xml"
   }
 }

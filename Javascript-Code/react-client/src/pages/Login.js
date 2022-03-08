@@ -52,13 +52,16 @@ class Login extends Component{
         //this.setState({redirect: true});
         response.json().then( data => {
           if( data.success ) {
+            document.getElementById('login_displaybox').style.color = "black";
+            this.setState({userType: data.userType});
+            this.setState({msg: "Logging in..."});
             this.setState({redirect: true});
-            this.setState({userType: data.userType})
+
           }
           else {
             //display fail message
             console.log("Username & Password do not match.")
-            this.setState({msg: "Username and Password do not match."})
+            this.setState({msg: data.msg})
           }
         })
       }
@@ -83,7 +86,7 @@ class Login extends Component{
         <div className='Signin-Box'>
         <form onSubmit={this.submit}>
           <h2><br/>Sign-In</h2>
-          <p className='login_displaybox' >{this.state.msg}</p>
+          <p className='login_displaybox' id='login_displaybox' >{this.state.msg}</p>
           <p>
             <span class='Seperate-SI-UN'></span>
             Username
