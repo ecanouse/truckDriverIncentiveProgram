@@ -8,10 +8,18 @@ class PointHistory extends Component{
         <header className='PointHistory-Header'>
           <img src="SponsorLogo.png" alt="Sponsor Logo" width="250" height="100"></img>
           <nav className='Nav'>
-            <button href='DriverHome' className='NavButtons'>Home</button>
-            <button href='PointHistory' className='NavButtons'>Points</button>
-            <button href='CatalogPurchase' className='NavButtons'>Catalog</button>
-            <button href='UpdateAccount' className='NavButtons'>Settings</button>
+            <a href='DriverHome'>
+            <button href='DriverHome' className='NavButtons' >Home</button>
+            </a>
+            <a href='PointHistory'>
+              <button className='NavButtons'>Points</button>
+            </a>
+            <a href='CatalogPurchase'>
+              <button className='NavButtons'>Catalog</button>
+            </a>
+            <a href='UpdateAccount'>
+              <button className='NavButtons'>Settings</button>
+            </a>
           </nav>
           <ul className='PointHistoryLout-UpAcc'>
             <img src='DefaultProfPic.png' alt='Default Profile Picure' width='40' height='40'/>
