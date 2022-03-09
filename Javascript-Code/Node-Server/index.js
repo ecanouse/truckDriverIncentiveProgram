@@ -154,6 +154,7 @@ app.post('/login-attempt', (req, res) => {
 
 app.get('/logout', (req, res) => {
   req.session.destroy();
+  res.send({success: true});
 });
 
 //elise working on signup
