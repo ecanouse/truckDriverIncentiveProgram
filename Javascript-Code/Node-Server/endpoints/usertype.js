@@ -1,4 +1,4 @@
-module.exports = function(app, connection, session){
+module.exports = function(app, connection){
     app.get('/isAdmin', (req, res) => {
         session=req.session;
         if(session.userid){

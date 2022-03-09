@@ -19,7 +19,7 @@ class PointAssignment extends Component{
   }
 
   getDrivers = () => {
-    fetch('/getDrivers')
+    fetch('/getSponsorDrivers')
     .then(response => response.json())
     .then(response => this.setState({drivers: response.drivers}))
     .catch(err => console.error(err))
