@@ -5,7 +5,7 @@ const path = require('path');
 const cors = require('cors')
 const bodyParser = require("body-parser");
 const logs = require("./logs/logging.js");
-
+var session = require('express-session')
 
 const PORT = process.env.PORT || 4000;
 
@@ -17,6 +17,14 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.use(cors());
+
+const oneDay = 1000 * 60 * 60 * 24;
+app.use(session({
+  secret: "secret",
+  saveUninitialized:true,
+  cookie: {maxAge: oneDay},
+  resave: false
+}));
 
 const mysql = require('mysql');
 const { response } = require('express');
@@ -41,6 +49,7 @@ connection.connect(function(err) {
 //Require endpoints from other files
 require('./endpoints/sponsorinfo')(app, connection);
 require('./endpoints/points')(app, connection);
+require('./endpoints/usertype')(app, connection);
 
 app.get('/test', (req, res) => {
     connection.query('SELECT * FROM test.test_table', (err, results) => {
@@ -66,7 +75,6 @@ app.post('/login-attempt', (req, res) => {
   // get input
   let username = req.body.username;
   let password = req.body.password;
-
   //make sure username & password exist
   if( username && password && !password.includes("\'") && !password.includes("\"") ) {
 
@@ -105,7 +113,7 @@ app.post('/login-attempt', (req, res) => {
       // connection.query(admin_query);
     }
 
-    const sel_query = "SELECT password, userType from new_schema.USER where username = \"" + clean_username[0] + "\";";
+    const sel_query = "SELECT password, userType, uID from new_schema.USER where username = \"" + clean_username[0] + "\";";
 
     //poll db
     connection.query(sel_query, function(err, result, fields) {
@@ -116,6 +124,8 @@ app.post('/login-attempt', (req, res) => {
 
       //case for successful login
       if( (!isEmpty) && crypt.validatePassword(password, result[0].password) ) {
+        session=req.session;
+        session.userid=result[0].uID;
         console.log("Password Match!");
         logs.recordLogin(username, true, connection);
         res.send({success: true, userType: result[0].userType});
@@ -142,6 +152,9 @@ app.post('/login-attempt', (req, res) => {
 
 });
 
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+});
 
 //elise working on signup
 app.post('/signup-attempt', (req, res) => {
