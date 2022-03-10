@@ -14,7 +14,6 @@ class PointAssignment extends Component{
   };
 
   componentDidMount() {
-    this.getDrivers();
     this.isSponsor();
   }
 
@@ -28,7 +27,12 @@ class PointAssignment extends Component{
   isSponsor = () => {
     fetch('/isSponsor')
     .then(response => response.json())
-    .then(response => this.setState({loading: false, isSponsor: response.is_sponsor}))
+    .then(response => {
+      this.setState({loading: false, isSponsor: response.is_sponsor});
+      if(response.is_sponsor){
+        this.getDrivers();
+      }
+    })
     .catch(err => console.error(err))
   }
 

@@ -125,7 +125,6 @@ app.post('/login-attempt', (req, res) => {
       if( (!isEmpty) && crypt.validatePassword(password, result[0].password) ) {
         session=req.session;
         session.userid=result[0].uID;
-        session.sponsorid=result[0].sponsorID;
         console.log("Password Match!");
         logs.recordLogin(username, true, connection);
         res.send({success: true, userType: result[0].userType});
