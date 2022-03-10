@@ -68,6 +68,6 @@ steps:
       cd ..
       cd Node-Server
       forever stopall
-      npm install
+      npm install 2>&1
       forever start index.js
     readyTimeout: '20000'
