@@ -112,7 +112,7 @@ app.post('/login-attempt', (req, res) => {
       // connection.query(admin_query);
     }
 
-    const sel_query = "SELECT password, userType, uID, sponsorID from new_schema.USER where username = \"" + clean_username[0] + "\";";
+    const sel_query = "SELECT password, userType, uID from new_schema.USER where username = \"" + clean_username[0] + "\";";
 
     //poll db
     connection.query(sel_query, function(err, result, fields) {
