@@ -4,7 +4,8 @@ import './PointHistory.css'
 class PointHistory extends Component{
   state = {
     loading: true,
-    isDriver: false
+    isDriver: false,
+    points: []
   }
   
   componentDidMount() {
@@ -14,7 +15,19 @@ class PointHistory extends Component{
   isDriver = () => {
     fetch('/isDriver')
     .then(response => response.json())
-    .then(response => this.setState({loading: false, isDriver: response.is_driver}))
+    .then(response => {
+      this.setState({loading: false, isDriver: response.is_driver})
+      if(response.is_driver){
+        this.getPoints()
+      }
+    })
+    .catch(err => console.error(err))
+  }
+
+  getPoints = () => {
+    fetch('/get-points')
+    .then(response => response.json())
+    .then(response => this.setState({points: response.Points}))
     .catch(err => console.error(err))
   }
 
@@ -47,6 +60,17 @@ class PointHistory extends Component{
           
           <body>
             
+          {this.state.points.map((p) => {
+            return(
+              <div>
+                <p>Total: {p.totalPoints},  For Sponsor (id): {p.sponsorID}</p>
+                <p>All adjustments</p>
+                {p.adjustments.map(a => <p>Reason: {a.pointReason}, Value: {a.pointValue}, Date: {a.date}</p> )}
+              </div>
+            )}
+
+            )}
+
           </body>
 
           <footer className='PointHistory-Footer'>

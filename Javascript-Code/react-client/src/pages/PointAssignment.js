@@ -14,7 +14,6 @@ class PointAssignment extends Component{
   };
 
   componentDidMount() {
-    this.getDrivers();
     this.isSponsor();
   }
 
@@ -28,7 +27,12 @@ class PointAssignment extends Component{
   isSponsor = () => {
     fetch('/isSponsor')
     .then(response => response.json())
-    .then(response => this.setState({loading: false, isSponsor: response.is_sponsor}))
+    .then(response => {
+      this.setState({loading: false, isSponsor: response.is_sponsor});
+      if(response.is_sponsor){
+        this.getDrivers();
+      }
+    })
     .catch(err => console.error(err))
   }
 
@@ -120,7 +124,7 @@ class PointAssignment extends Component{
               <div className='form-item'>
               <label htmlFor="driver">Driver</label>
                 <select id="driver-list" value={this.state.driver === "" ? null : this.state.driver} onChange={e => this.setState({driver: e.target.value})} required>
-                    <option disabled selected value=""> -- select an driver -- </option>
+                    <option disabled selected value=""> -- select a driver -- </option>
                     {this.state.drivers.map((d,i) => 
                       <option value={d.uID} key={i}>{`${d.fname} ${d.lname}`}</option>
                     )}
