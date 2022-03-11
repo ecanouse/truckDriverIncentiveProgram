@@ -84,4 +84,34 @@ module.exports = function(app, connection){
         })
         res.send({success: true})
     });
+
+    app.get('/get-points', (req, res) => {
+        session=req.session;
+        const total_query = `SELECT DPointID, totalPoints, sponsorID from new_schema.DRIVER_POINTS where uID = ${session.userid};`;
+        connection.query(total_query, function(err, result) {
+            if(err) {
+                console.log(err);
+                res.send({success: false})
+            }else{
+                var ret = result;
+                result.map((r,i) => {
+                    const adjustments_query = `SELECT * from new_schema.POINT_ADJUSTMENT where DPointID = ${r.DPointID};`;
+                    connection.query(adjustments_query, function(err, result2) {
+                        if(err) {
+                            console.log(err);
+                            res.send({success: false})
+                        }else{
+                            ret[i].adjustments = result2
+                            console.log(ret)
+                            if(i===ret.length-1){
+                                return res.json({
+                                    Points: ret
+                                })
+                            }
+                        }
+                    })
+                })
+            }
+        })
+    });
 }
