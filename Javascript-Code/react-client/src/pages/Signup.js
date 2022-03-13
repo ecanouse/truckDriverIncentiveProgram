@@ -9,6 +9,8 @@ class Signup extends Component{
     confirmpassword: '',
     firstname: '',
     lastname: '',
+    email: '',
+    phone: ''
   };
 
   //handleChange takes the value from input boxes & updates the state
@@ -31,6 +33,7 @@ class Signup extends Component{
   //learn more about fetch first.
   submit = (event) => {
     event.preventDefault(); //prevent's browser from reloading
+    //TODO: check to see if password meets requirements
     console.log("Submitting to server");
     //stored data
     var payload = {
@@ -38,7 +41,9 @@ class Signup extends Component{
       password: this.state.password,
       confirmpassword: this.state.confirmpassword,
       firstname: this.state.firstname,
-      lastname: this.state.lastname
+      lastname: this.state.lastname,
+      email: this.state.email,
+      phone: this.state.phone
     };
 
         //sending data to node server
@@ -116,7 +121,30 @@ class Signup extends Component{
             onChange={this.handleChange}
           />
 
+          <p>Email</p>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            placeholder='email' 
+            size="55"
+            value={this.state.email}
+            onChange={this.handleChange}
+          />
+
+          <p>Phone Number</p>
+          <input 
+            type="tel" 
+            id="phone" 
+            name="phone" 
+            placeholder='phone' 
+            size="55"
+            value={this.state.phone}
+            onChange={this.handleChange}
+          />
+
           <p>Password</p>
+          <p>Password must be 8-20 characters long and contain a lowercase letter, a capital letter, a number, and a special character.</p>
           <input 
             type="password" 
             id="password" 

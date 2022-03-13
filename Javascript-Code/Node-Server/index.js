@@ -5,7 +5,7 @@ const path = require('path');
 const cors = require('cors')
 const bodyParser = require("body-parser");
 const logs = require("./logs/logging.js");
-
+var session = require('express-session')
 
 const PORT = process.env.PORT || 4000;
 
@@ -17,6 +17,14 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.use(cors());
+
+const oneDay = 1000 * 60 * 60 * 24;
+app.use(session({
+  secret: "secret",
+  saveUninitialized:true,
+  cookie: {maxAge: oneDay},
+  resave: false
+}));
 
 const mysql = require('mysql');
 const { response } = require('express');
@@ -32,7 +40,7 @@ var connection = mysql.createConnection({
 
 connection.connect(function(err) {
   if(err){
-    console.error('Database connection faild: ' + err.stack);
+    console.error('Database connection failed: ' + err.stack);
     return;
   }
   console.log('Connected to database');
@@ -41,6 +49,7 @@ connection.connect(function(err) {
 //Require endpoints from other files
 require('./endpoints/sponsorinfo')(app, connection);
 require('./endpoints/points')(app, connection);
+require('./endpoints/usertype')(app, connection);
 
 app.get('/test', (req, res) => {
     connection.query('SELECT * FROM test.test_table', (err, results) => {
@@ -60,13 +69,11 @@ app.get('/test', (req, res) => {
 // - joey
 
 app.post('/login-attempt', (req, res) => {
-
   console.log('Recieved login attempt');
   console.log(req.body);
   // get input
   let username = req.body.username;
   let password = req.body.password;
-
   //make sure username & password exist
   if( username && password && !password.includes("\'") && !password.includes("\"") ) {
 
@@ -124,6 +131,8 @@ app.post('/login-attempt', (req, res) => {
 
       //case for successful login
       if( (!isEmpty) && crypt.validatePassword(password, result[0].password) ) {
+        session=req.session;
+        session.userid=result[0].uID;
         console.log("Password Match!");
         logs.recordLogin(username, true, connection);
         res.send({success: true, userType: result[0].userType});
@@ -150,6 +159,11 @@ app.post('/login-attempt', (req, res) => {
 
 });
 
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.send({success: true});
+});
+
 
 //elise working on signup
 app.post('/signup-attempt', (req, res) => {
@@ -162,17 +176,30 @@ app.post('/signup-attempt', (req, res) => {
   let firstname = req.body.firstname;
   let lastname = req.body.lastname;
   let confirmpassword = req.body.confirmpassword;
+  let email = req.body.email;
+  let phone = req.body.phone;
 
   //make sure user entered each required field
-  if( username && password && firstname && lastname && confirmpassword) {
-
-    res.send('got sign up info');
-    console.log('Got sign up information.');
-    //sql query to confirm information and create an account
-    //if correct --> res.redirect('/home');
-    //else --> give error message
-  }
-  else {
+  if( username && password && firstname && lastname && confirmpassword && email && phone) {
+    if(confirmpassword == password){
+      encryptPass = crypt.getHash(password);
+      //console.log('Got sign up information.');
+      console.log(encryptPass);
+      qstr = "INSERT INTO new_schema.USER (sponsorId, lname, fname, username, password, email, phone, usertype) VALUES (-1, '"+lastname+"', '"+firstname+"', '"+username+"', '"+encryptPass+"', '"+email+"', '"+phone+"', -1)";
+      connection.query(qstr, function(err, result, fields) {
+        if(err) console.log(err);
+        console.log(result);
+        res.send({success: true});
+      });
+      //sql query to confirm information and create an account
+      //if correct --> res.redirect('/home');
+      //else --> give error message
+    }else {
+      res.send("Passwords do not match");
+      console.log('passwords do not match');
+      res.end()
+    }
+  }else{
     res.send("Incorrect Sign Up info :(");
     console.log('no sign up info.');
     res.end()
