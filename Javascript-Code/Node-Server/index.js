@@ -115,10 +115,10 @@ app.post('/login-attempt', (req, res) => {
     var sel_query;
     //allow users to sign in via email
     if( clean_username[0].includes("@") ) {
-      sel_query = "SELECT password, userType from new_schema.USER where email = \"" + clean_username[0] + "\";";
+      sel_query = "SELECT password, userType, uID from new_schema.USER where email = \"" + clean_username[0] + "\";";
     }
     else {
-      sel_query = "SELECT password, userType from new_schema.USER where username = \"" + clean_username[0] + "\";";
+      sel_query = "SELECT password, userType, uID from new_schema.USER where username = \"" + clean_username[0] + "\";";
     }
 
 
