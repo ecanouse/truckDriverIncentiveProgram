@@ -10,7 +10,9 @@ class Signup extends Component{
     firstname: '',
     lastname: '',
     email: '',
-    phone: ''
+    phone: '',
+    msg: '',
+    passMsg: ''
   };
 
   //handleChange takes the value from input boxes & updates the state
@@ -25,6 +27,19 @@ class Signup extends Component{
     });
 
   };
+
+  checkComplexity = (event) => {
+    const target = event.target;
+    const value = target.value;
+    let strongPassword = new RegExp('((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,20}))');
+    if(strongPassword.test(value)){
+      this.setState({passMsg: ""})
+      document.getElementById("btn").disabled = false;
+    }else{
+      this.setState({passMsg: "Password must be at least 8 characters long and contain a lowercase letter, a capital letter, a number, and a special character."})
+    }
+  }
+
 
 
     //issue with preventDefault
@@ -56,14 +71,18 @@ class Signup extends Component{
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload) //put into json form
     })
-    .then(response => {
+    .then ( response => {
       if( response.status === 200 ) {
-        console.log('successful!');
-      }
-    })  //checks for success
-    // .then(data => {
-    //   console.log('Success', payload);
-    // })
+        //this.setState({redirect: true});
+        response.json().then( data => {
+          document.getElementById('login_displaybox').style.color = "red";
+          this.setState({msg: data.msg})
+          if( data.success ) {
+            this.setState({redirect: true});
+          }
+        })
+      }  
+    })
     .catch((error) => {
       console.error('Error :(', error);
     });
@@ -85,6 +104,7 @@ class Signup extends Component{
         <div className='Signup-Box'>
         <form onSubmit={this.submit}>
           <h2><br/>Sign-Up</h2>
+          <p className='login_displaybox' id='login_displaybox' >{this.state.msg}</p>
           <p>
             <span class='Seperate-SI-UN'></span>
             Username
@@ -144,7 +164,6 @@ class Signup extends Component{
           />
 
           <p>Password</p>
-          <p>Password must be 8-20 characters long and contain a lowercase letter, a capital letter, a number, and a special character.</p>
           <input 
             type="password" 
             id="password" 
@@ -153,7 +172,9 @@ class Signup extends Component{
             size="55"
             value={this.state.password}
             onChange={this.handleChange}
+            onInput={this.checkComplexity}
           />
+          <p className='login_displaybox' id='login_displaybox' >{this.state.passMsg}</p>
 
           <p>Confirm Password</p>
           <input 
@@ -166,7 +187,7 @@ class Signup extends Component{
             onChange={this.handleChange}
           />  
         
-          <button type="submit" class='LoginButton'>Sign Up</button>
+          <button type="submit" class='LoginButton' id="btn" disabled>Sign Up</button>
         </form>
         </div>
       </div>

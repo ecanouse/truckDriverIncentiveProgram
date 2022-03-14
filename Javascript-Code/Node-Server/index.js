@@ -152,25 +152,47 @@ app.post('/signup-attempt', (req, res) => {
   //make sure user entered each required field
   if( username && password && firstname && lastname && confirmpassword && email && phone) {
     if(confirmpassword == password){
-      encryptPass = crypt.getHash(password);
-      //console.log('Got sign up information.');
-      console.log(encryptPass);
-      qstr = "INSERT INTO new_schema.USER (sponsorId, lname, fname, username, password, email, phone, usertype) VALUES (-1, '"+lastname+"', '"+firstname+"', '"+username+"', '"+encryptPass+"', '"+email+"', '"+phone+"', -1)";
+      //check to make sure that username and email are not repeats of other accounts
+      qstr = "SELECT COUNT (*) AS count FROM new_schema.USER WHERE username = '"+username+"' OR email = '"+email+"'";
       connection.query(qstr, function(err, result, fields) {
         if(err) console.log(err);
         console.log(result);
-        res.send({success: true});
+        
+        //const repeat = Object.keys(result).length === 0;
+        string = JSON.stringify(result);
+        json = JSON.parse(string);
+        count = json[0].count;
+
+        if(count > 0){
+          res.send({success: false, msg: "Username or email belongs to another account"});
+          console.log('repeat user');
+          res.end()
+        }else{
+  
+          encryptPass = crypt.getHash(password);
+          //console.log('Got sign up information.');
+          console.log(encryptPass);
+          qstr = "INSERT INTO new_schema.USER (lname, fname, username, password, email, phone, usertype) VALUES ('"+lastname+"', '"+firstname+"', '"+username+"', '"+encryptPass+"', '"+email+"', '"+phone+"', 0)";
+          connection.query(qstr, function(err, result, fields) {
+            if(err) console.log(err);
+            console.log(result);
+            //res.redirect('/DriverHome');
+            res.send({success: true, msg: "Creating Account..."});
+          });
+        }
+        //sql query to confirm information and create an account
+        //if correct --> res.redirect('/home');
+        //else --> give error message
       });
-      //sql query to confirm information and create an account
-      //if correct --> res.redirect('/home');
-      //else --> give error message
+      
+
     }else {
-      res.send("Passwords do not match");
+      res.send({success: false, msg: "Passwords do not match"});
       console.log('passwords do not match');
       res.end()
     }
   }else{
-    res.send("Incorrect Sign Up info :(");
+    res.send({success: false, msg: "Please fill out all fields"});
     console.log('no sign up info.');
     res.end()
   }
