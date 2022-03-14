@@ -5,17 +5,26 @@ const path = require('path');
 const cors = require('cors')
 const bodyParser = require("body-parser");
 const logs = require("./logs/logging.js");
-
+var session = require('express-session')
 
 const PORT = process.env.PORT || 4000;
 
 const app = express();
+
 app.use(bodyParser.urlencoded({
   extended: false
 }));
 app.use(bodyParser.json());
 
 app.use(cors());
+
+const oneDay = 1000 * 60 * 60 * 24;
+app.use(session({
+  secret: "secret",
+  saveUninitialized:true,
+  cookie: {maxAge: oneDay},
+  resave: false
+}));
 
 const mysql = require('mysql');
 const { response } = require('express');
@@ -37,6 +46,11 @@ connection.connect(function(err) {
   console.log('Connected to database');
 })
 
+//Require endpoints from other files
+require('./endpoints/sponsorinfo')(app, connection);
+require('./endpoints/points')(app, connection);
+require('./endpoints/usertype')(app, connection);
+
 app.get('/test', (req, res) => {
     connection.query('SELECT * FROM test.test_table', (err, results) => {
       if(err){
@@ -55,13 +69,11 @@ app.get('/test', (req, res) => {
 // - joey
 
 app.post('/login-attempt', (req, res) => {
-
   console.log('Recieved login attempt');
   console.log(req.body);
   // get input
   let username = req.body.username;
   let password = req.body.password;
-
   //make sure username & password exist
   if( username && password && !password.includes("\'") && !password.includes("\"") ) {
 
@@ -81,7 +93,7 @@ app.post('/login-attempt', (req, res) => {
     if( testing ) {
 
       //get hashed password
-      hpass = crypt.getHash(password);
+      var hpass = crypt.getHash(password);
 
       //create new driver with hashed password
       // username: driver
@@ -97,10 +109,18 @@ app.post('/login-attempt', (req, res) => {
       // username: admin
       // password: adminpassword
       const admin_query = "insert into USER values (4, -1, 'Person', 'Admin', 'admin', '" + hpass + "', 'admin@email.net', '0987654561', 2);";
-      //connection.query(admin_query);
+      // connection.query(admin_query);
     }
 
-    const sel_query = "SELECT password, userType from new_schema.USER where username = \"" + clean_username[0] + "\";";
+    var sel_query;
+    //allow users to sign in via email
+    if( clean_username[0].includes("@") ) {
+      sel_query = "SELECT password, userType, uID from new_schema.USER where email = \"" + clean_username[0] + "\";";
+    }
+    else {
+      sel_query = "SELECT password, userType, uID from new_schema.USER where username = \"" + clean_username[0] + "\";";
+    }
+
 
     //poll db
     connection.query(sel_query, function(err, result, fields) {
@@ -111,21 +131,27 @@ app.post('/login-attempt', (req, res) => {
 
       //case for successful login
       if( (!isEmpty) && crypt.validatePassword(password, result[0].password) ) {
+        session=req.session;
+        session.userid=result[0].uID;
         console.log("Password Match!");
-        logs.recordLogin(username, true, './logs/log.txt');
+        logs.recordLogin(username, true, connection);
         res.send({success: true, userType: result[0].userType});
       }
-
-      //case for unsuccessful login
-      else {
-        console.log("password fail");
-        logs.recordLogin(username, false, './logs/log.txt');
-        res.send({success: false});
+      //case for unsuccessful logins
+      else if (isEmpty) {
+        console.log("Username/Email Not Recognized");
+        logs.recordLogin(username, false, connection);
+        res.send({success: false, msg: "Username/Email Not Recognized"});
+      }
+      else if (!isEmpty) {
+        console.log("Username and Password did not match");
+        logs.recordLogin(username, false, connection);
+        res.send({success: false, msg: "Username and Password did not match"});
       }
     });
   } 
   else {
-    logs.recordLogin(username, false, './logs/log.txt');
+    logs.recordLogin(username, false, connection);
     res.send({success: false});
     console.log('no username/password.');
     res.end()
@@ -133,6 +159,10 @@ app.post('/login-attempt', (req, res) => {
 
 });
 
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.send({success: true});
+});
 
 
 //elise working on signup

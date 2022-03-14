@@ -61,7 +61,7 @@ class Login extends Component{
           else {
             //display fail message
             console.log("Username & Password do not match.")
-            this.setState({msg: "Username and Password do not match."})
+            this.setState({msg: data.msg})
           }
         })
       }
@@ -103,7 +103,7 @@ class Login extends Component{
 
           <p>Password</p>
           <input 
-            type="text" 
+            type="password" 
             id="password" 
             name="password" 
             placeholder='password' 
