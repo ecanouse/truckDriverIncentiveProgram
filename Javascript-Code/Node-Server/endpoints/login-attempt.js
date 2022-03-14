@@ -12,13 +12,6 @@ module.exports = function( app, connection ) {
         //make sure username & password exist
         if( username && password && !password.includes("\'") && !password.includes("\"") ) {
       
-          //hash password
-          // res.send('got username & password');
-          // console.log('Got username and password.');
-          //sql query to compare password
-          //if correct --> res.redirect('/home');
-          //else --> give error message
-      
           var testing = false; //variable for testing fxns
       
           //clean username input to prevent SQL injections

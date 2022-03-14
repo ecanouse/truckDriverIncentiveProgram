@@ -1,10 +1,7 @@
-
-const crypt = require("./services/encryption.js");
 const express = require('express');
 const path = require('path');
 const cors = require('cors')
 const bodyParser = require("body-parser");
-const logs = require("./logs/logging.js");
 var session = require('express-session')
 
 const PORT = process.env.PORT || 4000;
@@ -65,24 +62,6 @@ app.get('/test', (req, res) => {
       }
     })
 });
-
-// API for login information
-// I will move this into it's own file/work on the structure of the node server in sprint 5
-// - joey
-
-// ------------------ start login stuff
-
-
-
-
-// ------------------------------ end login stuff 
-
-// start signup stuff
-
-//elise working on signup
-
-
-// end signup stuff
 
 app.use(express.static(path.join(__dirname, "../react-client", 'build')));
 
