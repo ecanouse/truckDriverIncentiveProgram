@@ -43,10 +43,10 @@ module.exports = function( app, connection ) {
           var sel_query;
           //allow users to sign in via email
           if( clean_username[0].includes("@") ) {
-            sel_query = "SELECT password, userType, uID from new_schema.USER where email = \"" + clean_username[0] + "\";";
+            sel_query = "SELECT password, userType, uID, username from new_schema.USER where email = \"" + clean_username[0] + "\";";
           }
           else {
-            sel_query = "SELECT password, userType, uID from new_schema.USER where username = \"" + clean_username[0] + "\";";
+            sel_query = "SELECT password, userType, uID, username from new_schema.USER where username = \"" + clean_username[0] + "\";";
           }
       
       
@@ -62,18 +62,18 @@ module.exports = function( app, connection ) {
               session=req.session;
               session.userid=result[0].uID;
               console.log("Password Match!");
-              logs.recordLogin(username, true, connection);
+              logs.recordLogin(result[0].username, true, result[0].uID, connection);
               res.send({success: true, userType: result[0].userType});
             }
             //case for unsuccessful logins
             else if (isEmpty) {
               console.log("Username/Email Not Recognized");
-              logs.recordLogin(username, false, connection);
+              logs.recordLogin(clean_username[0], false, -1, connection);
               res.send({success: false, msg: "Username/Email Not Recognized"});
             }
             else if (!isEmpty) {
               console.log("Username and Password did not match");
-              logs.recordLogin(username, false, connection);
+              logs.recordLogin(username, false, result[0], connection);
               res.send({success: false, msg: "Username and Password did not match"});
             }
           });

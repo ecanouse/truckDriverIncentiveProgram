@@ -3,7 +3,7 @@
 
 //tentative format for logging login attempts:
 //LOGIN <date> <username> <login attempt status --> "success"/""fail"><\n>
-function recordLogin( username, success, conn ) {
+function recordLogin( username, success, uID, conn ) {
     const fs = require('fs');
     var date = new Date().toLocaleString();
     var res;
@@ -14,7 +14,7 @@ function recordLogin( username, success, conn ) {
         res = 0;
     }
 
-    record_query = "INSERT INTO LOGIN_ATTEMPTS( date, username, success ) VALUES (\'" + date + "\', \'" + username + "\'," + res + ");"
+    var record_query = "INSERT INTO LOGIN_ATTEMPTS( date, username, success, uID ) VALUES (\'" + date + "\', \'" + username + "\'," + res + "," + uID + ");";
 
     conn.query(record_query, (err) => {
         if (err) {
