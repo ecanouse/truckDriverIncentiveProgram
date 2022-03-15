@@ -59,18 +59,31 @@ class PointHistory extends Component{
           </header>
           
           <body>
-            
-          {this.state.points.map((p) => {
-            return(
-              <div>
-                <p>Total: {p.totalPoints},  For Sponsor (id): {p.sponsorID}</p>
-                <p>All adjustments</p>
-                {p.adjustments.map(a => <p>Reason: {a.pointReason}, Value: {a.pointValue}, Date: {a.date}</p> )}
-              </div>
-            )}
+            <select className='SortByDrop' id='SortByDrop'>
+              <option disabled selected hidden>Sort By</option>
+              <option>All Time</option>
+              <option>Last 24 Hours</option>
+              <option>Last 7 Days</option>
+              <option>Last 30 Days</option>
+            </select>
 
+            {this.state.points.map((p) => {
+              return(
+                <div className='PointDisplay'>
+                  
+                  <p>Total: {p.totalPoints},  For Sponsor (id): {p.sponsorID}</p>
+                  <p>All adjustments</p>
+                  {p.adjustments.map(a => 
+                    <p>Reason: {a.pointReason}, <span className='Alignment'>Value: {a.pointValue},</span>
+                    <br/> 
+                        Date: {a.date}
+                        <br/><hr/><br/>
+                    </p> 
+                    )}   
+                       
+                </div>
+              )}
             )}
-
           </body>
 
           <footer className='PointHistory-Footer'>
