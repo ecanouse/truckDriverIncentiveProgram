@@ -48,8 +48,10 @@ connection.connect(function(err) {
 require('./endpoints/sponsorinfo')(app, connection);
 require('./endpoints/points')(app, connection);
 require('./endpoints/usertype')(app, connection);
-require('./endpoints/login-attempt')(app, connection)
-require('./endpoints/signup-attempt')(app, connection)
+require('./endpoints/login-attempt')(app, connection);
+require('./endpoints/signup-attempt')(app, connection);
+require('./endpoints/resetemail-attempt')(app, connection);
+//require('./endpoints/resetpass-attempt')(app, connection);
 
 app.get('/test', (req, res) => {
     connection.query('SELECT * FROM test.test_table', (err, results) => {
