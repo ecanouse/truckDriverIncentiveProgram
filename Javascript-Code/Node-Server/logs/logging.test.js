@@ -19,7 +19,7 @@ describe("Login Audit Logging Tests", () => {
 
         var test_username = "testusername";
 
-        var date = await loginlogs.recordLogin(test_username, false, connection);
+        var date = await loginlogs.recordLogin(test_username, false, -1, connection);
 
         //check if recorded
 
