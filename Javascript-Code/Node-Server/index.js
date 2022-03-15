@@ -45,7 +45,7 @@ connection.connect(function(err) {
 })
 
 //Require endpoints from other files
-require('./endpoints/sponsorinfo')(app, connection);
+require('./endpoints/listusers')(app, connection);
 require('./endpoints/points')(app, connection);
 require('./endpoints/usertype')(app, connection);
 require('./endpoints/login-attempt')(app, connection);

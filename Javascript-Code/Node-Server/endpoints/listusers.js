@@ -47,6 +47,16 @@ module.exports = function(app, connection){
       })
     });
 
+    app.get('/getAllSponsors', (req, res) => {
+      const driver_query = "SELECT uID, fname, lname from new_schema.USER where userType = 1;";
+      connection.query(driver_query, function(err, result) {
+        if(err) console.log(err);
+        return res.json({
+          sponsors: result
+        })
+      })
+    });
+
     app.get('/getSponsorDrivers', (req, res) => {
       session=req.session;
       const org_query = `SELECT sponsorID from new_schema.USER_SPONSOR_REL where uID=${session.userid};`;
