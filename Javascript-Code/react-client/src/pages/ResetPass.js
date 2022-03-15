@@ -33,9 +33,89 @@ class ResetPass extends Component{
       this.setState({passMsg: ""})
       document.getElementById("btn").disabled = false;
     }else{
-      this.setState({passMsg: "Password must be at least 8 characters long and contain a lowercase letter, a capital letter, a number, and a special character."})
+      this.setState({passMsg: "Password must be 8-20 characters long and contain a lowercase letter, a capital letter, a number, and a special character."})
     }
   }
+
+
+  submit = (event) => {
+    event.preventDefault(); //prevent's browser from reloading
+    console.log("Submitting to server");
+    //stored data
+    var payload = {
+      email: this.state.email
+    };
+
+    //sending data to node server
+    fetch('/resetemail-attempt', {
+      method: 'POST', //post request
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload) //put into json form
+    })
+    .then(response => {
+      if( response.status === 200 ) {
+        response.json().then( data => {
+          if( data.success ) {
+            document.getElementById('login_displaybox').style.color = "black";
+            this.setState({msg: "Email has been sent with reset instructions"});
+            //this.setState({redirect: true});
+
+          }
+          else {
+            //display fail message
+            console.log("Email not found.")
+            this.setState({msg: "Email not found."})
+          }
+        })
+      }
+    })
+    .catch((error) => {
+      console.error('Error', error);
+    });
+
+  };
+
+
+  submitPass = (event) => {
+    event.preventDefault(); //prevent's browser from reloading
+    console.log("Submitting to server");
+    //stored data
+    var payload = {
+      code: this.state.code,
+      newPass: this.state.newPass,
+      newPassConf: this.state.newPassConf
+    };
+
+    //sending data to node server
+    fetch('/resetpass-attempt', {
+      method: 'POST', //post request
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload) //put into json form
+    })
+    .then(response => {
+      if( response.status === 200 ) {
+        response.json().then( data => {
+          if( data.success ) {
+            document.getElementById('login_displaybox').style.color = "black";
+            this.setState({msg: "Email has been sent with reset instructions"});
+            //this.setState({redirect: true});
+
+          }
+          else {
+            //display fail message
+            console.log("Code does not match.")
+            this.setState({msg: "Code does not match or is expired."})
+          }
+        })
+      }
+    })
+    .catch((error) => {
+      console.error('Error', error);
+    });
+
+  };
+
+
 
 
 
@@ -43,7 +123,8 @@ class ResetPass extends Component{
   render() {
     return (
       <body>
-        <form onSubmit={this.submitEmail}>
+        <div className='ResetPassPage'>
+        <form onSubmit={this.submit}>
           <h2><br/>Input Email</h2>
           <p className='login_displaybox' id='login_displaybox' >{this.state.msg}</p>
           <p>
@@ -67,7 +148,6 @@ class ResetPass extends Component{
 
         <form onSubmit={this.submitPass}>
           <h2><br/>Input Code</h2>
-          <p className='login_displaybox' id='login_displaybox' >{this.state.passMsg}</p>
           <p>
             <span class='Seperate-SI-UN'></span>
             Code
@@ -84,8 +164,8 @@ class ResetPass extends Component{
           <p>New Password</p>
           <input 
             type="password" 
-            id="password" 
-            name="password" 
+            id="newPass" 
+            name="newPass" 
             placeholder='password' 
             size="55"
             value={this.state.newPass}
@@ -97,18 +177,18 @@ class ResetPass extends Component{
           <p>Confirm Password</p>
           <input 
             type="password" 
-            id="confirmpassword" 
-            name="confirmpassword" 
+            id="newPassConf" 
+            name="newPassConf" 
             placeholder='confirm password' 
             size="55"
             value={this.state.newPassConf}
             onChange={this.handleChange}
           />  
         
-          <button type="submit" class='LoginButton'>Reset Password</button>
+          <button type="submit" class='LoginButton' id='btn' disabled>Reset Password</button>
 
         </form>
-
+      </div>
       </body>
       
     );

@@ -36,7 +36,7 @@ class Signup extends Component{
       this.setState({passMsg: ""})
       document.getElementById("btn").disabled = false;
     }else{
-      this.setState({passMsg: "Password must be at least 8 characters long and contain a lowercase letter, a capital letter, a number, and a special character."})
+      this.setState({passMsg: "Password must be 8-20 characters long and contain a lowercase letter, a capital letter, a number, and a special character."})
     }
   }
 
