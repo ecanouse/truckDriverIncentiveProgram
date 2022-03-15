@@ -128,7 +128,6 @@ class ResetPass extends Component{
           <h2><br/>Input Email</h2>
           <p className='login_displaybox' id='login_displaybox' >{this.state.msg}</p>
           <p>
-            <span class='Seperate-SI-UN'></span>
             Email
           </p>
           <input 
@@ -149,7 +148,6 @@ class ResetPass extends Component{
         <form onSubmit={this.submitPass}>
           <h2><br/>Input Code</h2>
           <p>
-            <span class='Seperate-SI-UN'></span>
             Code
           </p>
           <input 
