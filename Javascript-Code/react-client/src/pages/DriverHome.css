@@ -8,6 +8,16 @@
     text-align: center;   
     margin: -70px;
 }
+
+.nav select {
+    display: none;
+}
+
+@media (max-width: 960px) {
+    Nav a     { display: none; }
+    Nav select { display: inline-block; }
+  }
+
 .NavButtons {
     font-size: 18px;
     background-color: #ced4e3;
