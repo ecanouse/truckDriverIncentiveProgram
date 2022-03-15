@@ -1,9 +1,11 @@
+const nodemailer = require("nodemailer");
+
 module.exports = function( app, connection ) {
     app.post('/resetemail-attempt', (req, res) => {
         console.log("Received email for password reset.");
         console.log(req.body);
 
-        let email = req.body.username;
+        let email = req.body.email;
 
         const transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -18,7 +20,24 @@ module.exports = function( app, connection ) {
             connection.query(qstr, function(err, result, fields) {
                 if(err) console.log(err);
                 console.log(result);
-                msgText = "Your reset code is: " + 123456 + ".  This code will expire in 24 hours";
+
+
+
+                //generate random 6 digit code to send to user
+                code = 123456;
+                min = Math.ceil(1000000);
+                max = Math.floor(100000);
+                code = Math.floor(Math.random() * (max-min) + min);
+
+                //enter password reset code into database
+                qstr = "INSERT INTO new_schema.RESET_CODE (code, email) VALUES ('"+code+"', '"+email+"')";
+                connection.query(qstr, function(err, result, fields) {
+                    if(err) console.log(err);
+                    console.log(result);
+                });
+
+                //define email
+                msgText = "Your reset code is: " + code + ".  This code will expire in 24 hours";
                 const mailOptions = {
                     from: 'madlads4910@gmail.com',
                     to: email,
@@ -26,6 +45,7 @@ module.exports = function( app, connection ) {
                     text: msgText
                 }
 
+                //send email
                 transporter.sendMail(mailOptions, function(error, info){
                     if(error){
                         console.log(error);
@@ -37,10 +57,10 @@ module.exports = function( app, connection ) {
 
 
 
-                res.send({success: true, msg: "Email has been sent."});
+                res.send({success: true, msg: "Email has been sent with reset instructions"});
               });
         }else{
-            res.semd({success: false, msg: "Please input an email"});
+            res.send({success: false, msg: "Please input an email"});
             console.log("empty email");
             res.end()
         }
