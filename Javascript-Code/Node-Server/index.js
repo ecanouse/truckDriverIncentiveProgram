@@ -51,6 +51,7 @@ require('./endpoints/usertype')(app, connection);
 require('./endpoints/login-attempt')(app, connection);
 require('./endpoints/signup-attempt')(app, connection);
 require('./endpoints/resetemail-attempt')(app, connection);
+require('./endpoints/updateaccount')(app, connection);
 //require('./endpoints/resetpass-attempt')(app, connection);
 
 app.get('/test', (req, res) => {

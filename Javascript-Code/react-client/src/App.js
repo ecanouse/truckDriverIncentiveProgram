@@ -17,6 +17,7 @@ import NotFound from './pages/NotFound';
 import ResetPass from './pages/ResetPass';
 import DiscoverUN from './pages/DiscoverUN';
 import DriverCatalog from './pages/DriverCatalog';
+import AdminUpdateAccount from './pages/AdminUpdateAccount';
 
 class App extends Component{
   render() {
@@ -35,6 +36,7 @@ class App extends Component{
           <Route path="/sponsorcatalog" element={<SponsorCatalog/>}/>
           <Route path="/sponsorhome" element={<SponsorHome/>}/>
           <Route path="/updateaccount" element={<UpdateAccount/>}/>
+          <Route path="/adminupdateaccount" element={<AdminUpdateAccount/>}/>
           <Route path="/" element={<Home/>}/>
           <Route path="*" element={<NotFound/>}/>
           <Route path="ResetPass" element={<ResetPass/>}/>

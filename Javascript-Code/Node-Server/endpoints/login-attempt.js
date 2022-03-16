@@ -43,10 +43,10 @@ module.exports = function( app, connection ) {
           var sel_query;
           //allow users to sign in via email
           if( clean_username[0].includes("@") ) {
-            sel_query = "SELECT password, userType, uID, username from new_schema.USER where email = \"" + clean_username[0] + "\";";
+            sel_query = "SELECT password, userType, uID, username, status from new_schema.USER where email = \"" + clean_username[0] + "\";";
           }
           else {
-            sel_query = "SELECT password, userType, uID, username from new_schema.USER where username = \"" + clean_username[0] + "\";";
+            sel_query = "SELECT password, userType, uID, username, status from new_schema.USER where username = \"" + clean_username[0] + "\";";
           }
       
       
@@ -59,11 +59,17 @@ module.exports = function( app, connection ) {
       
             //case for successful login
             if( (!isEmpty) && crypt.validatePassword(password, result[0].password) ) {
-              session=req.session;
-              session.userid=result[0].uID;
-              console.log("Password Match!");
-              logs.recordLogin(result[0].username, true, result[0].uID, connection);
-              res.send({success: true, userType: result[0].userType});
+              if(!result[0].status){
+                console.log("Inactive user");
+                logs.recordLogin(clean_username[0], false, -1, connection);
+                res.send({success: false, msg: "Account Suspended. Contact Admin"});
+              }else{
+                session=req.session;
+                session.userid=result[0].uID;
+                console.log("Password Match!");
+                logs.recordLogin(result[0].username, true, result[0].uID, connection);
+                res.send({success: true, userType: result[0].userType});
+              }
             }
             //case for unsuccessful logins
             else if (isEmpty) {

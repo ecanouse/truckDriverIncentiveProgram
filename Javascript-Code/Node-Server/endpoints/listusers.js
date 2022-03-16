@@ -38,7 +38,7 @@ module.exports = function(app, connection){
       })
     }
     app.get('/getAllDrivers', (req, res) => {
-      const driver_query = "SELECT uID, fname, lname from new_schema.USER where userType = 0;";
+      const driver_query = "SELECT uID, fname, lname, status from new_schema.USER where userType = 0;";
       connection.query(driver_query, function(err, result) {
         if(err) console.log(err);
         return res.json({
@@ -48,8 +48,8 @@ module.exports = function(app, connection){
     });
 
     app.get('/getAllSponsors', (req, res) => {
-      const driver_query = "SELECT uID, fname, lname from new_schema.USER where userType = 1;";
-      connection.query(driver_query, function(err, result) {
+      const sponsor_query = "SELECT uID, fname, lname, status from new_schema.USER where userType = 1;";
+      connection.query(sponsor_query, function(err, result) {
         if(err) console.log(err);
         return res.json({
           sponsors: result

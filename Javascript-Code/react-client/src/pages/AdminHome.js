@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import './AdminHome.css'
-
 class AdminHome extends Component{
   state = {
     loading: true,
@@ -34,6 +33,25 @@ class AdminHome extends Component{
     .then(response => {
       this.setState({loading: false, isAdmin: response.is_admin})
       if(response.is_admin){
+        this.getDrivers()
+        this.getSponsors()
+      }
+    })
+    .catch(err => console.error(err))
+  }
+
+  toggleActive = (user) => {
+    var payload = {
+      active: !user.status,
+      uID: user.uID
+    };
+    fetch('/toggle-active', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(response => {
+      if(response.status === 200){
         this.getDrivers()
         this.getSponsors()
       }
@@ -90,14 +108,17 @@ class AdminHome extends Component{
             </div>
 
             <div className='show-users'>
-              <div className='users-heading'>
+              {/* <div className='users-heading'>
                   <div className='blank'></div>
                   <p className='user-info'>Name</p>
-              </div>
-              {users.map((driver, i) => {return(
+              </div> */}
+              {users.map((user, i) => {return(
                 <div className='individual-user' key={i}>
                     <img className='profile-pic' src='DefaultProfPic.png' alt='Default Profile Picure'/>
-                    <p className='user-info'>{driver.fname} {driver.lname}</p>
+                    <p className='user-info'>{user.fname} {user.lname}</p>
+                    <p className='user-info'>{user.status ? 'Active' : 'Suspended'}</p>
+                    <a className='user-info' href='AdminUpdateAccount' target="_blank"><button>Update Account</button></a>
+                    <button className='user-info' onClick={() => this.toggleActive(user)}>Change Status</button>
                 </div>
               )})}
             </div>
