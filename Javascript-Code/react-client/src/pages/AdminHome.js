@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import AdminUpdateAccount from '../components/AdminUpdateAccount';
 import './AdminHome.css'
 class AdminHome extends Component{
   state = {
@@ -7,6 +8,7 @@ class AdminHome extends Component{
     drivers: [],
     sponsors: [],
     displayDrivers: true,
+    updating: -1,
   }
   
   componentDidMount() {
@@ -57,6 +59,20 @@ class AdminHome extends Component{
       }
     })
     .catch(err => console.error(err))
+  }
+
+  updateAccount = (user) => {
+    this.setState({
+      updating: user.uID
+    })
+  }
+
+  exitUpdateInfo = () => {
+    this.setState({
+      updating: -1
+    })
+    this.getDrivers()
+    this.getSponsors();
   }
 
   render() {
@@ -117,12 +133,14 @@ class AdminHome extends Component{
                     <img className='profile-pic' src='DefaultProfPic.png' alt='Default Profile Picure'/>
                     <p className='user-info'>{user.fname} {user.lname}</p>
                     <p className='user-info'>{user.status ? 'Active' : 'Suspended'}</p>
-                    <a className='user-info' href='AdminUpdateAccount' target="_blank"><button>Update Account</button></a>
+                    <button  className='user-info' onClick={() => this.updateAccount(user)}>Update Account</button>
                     <button className='user-info' onClick={() => this.toggleActive(user)}>Change Status</button>
                 </div>
               )})}
             </div>
             
+            {this.state.updating !== -1 && <AdminUpdateAccount uID={this.state.updating} exitUpdateInfo={this.exitUpdateInfo} />}
+
           </body>
   
           <footer className='Admin-Footer'>
