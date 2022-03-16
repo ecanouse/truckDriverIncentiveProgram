@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import './UpdateAccount.css'
 
-class UpdateAccount extends Component{
+class AdminUpdateAccount extends Component{
   state = {
     loading: true,
-    isLoggedIn: false
+    isAdmin: false
   }
   
   componentDidMount() {
@@ -12,14 +12,14 @@ class UpdateAccount extends Component{
   }
 
   isLoggedIn = () => {
-    fetch('/isLoggedIn')
+    fetch('/isAdmin')
     .then(response => response.json())
-    .then(response => this.setState({loading: false, isLoggedIn: response.is_loggedin}))
+    .then(response => this.setState({loading: false, isAdmin: response.is_admin}))
     .catch(err => console.error(err))
   }
 
   render() {
-    if (this.state.isLoggedIn){
+    if (this.state.isAdmin){
       return (
         <body>
           <div className='UpdateAccount'>
@@ -38,22 +38,22 @@ class UpdateAccount extends Component{
               </ul>
             </header>
             <div className='UpdateAcc-Body'>
-              <label className='inputs' for='userFirstName'><br/>Update your First Name<br/></label>
+              <label className='inputs' for='userFirstName'><br/>Update First Name<br/></label>
                 <input type='text' id='userFirstName' name='userFirstName' placeholder='John' size='45'></input>
-              <label className='inputs' for='userLastName'><br/>Update your Last Name<br/></label>
+              <label className='inputs' for='userLastName'><br/>Update Last Name<br/></label>
                 <input type='text' id='userLastName' name='userLastName' placeholder='Doe' size='45'></input>
-              <label className='inputs' for='userBirthday'><br/>Update your Birthday<br/></label>
+              <label className='inputs' for='userBirthday'><br/>Update Birthday<br/></label>
                 <input type='date' id='userBirthday' name='userBirthday'></input>
-              <label className='inputs' for='userName'><br/>Username<br/></label>
+              <label className='inputs' for='userName'><br/>Update Username<br/></label>
                 <input type='text' id='userName' name='userName' placeholder='jondoe' size='45'></input>  
-              <label className='inputs' for='userEmail'><br/>Update your Email<br/></label>
+              <label className='inputs' for='userEmail'><br/>Update Email<br/></label>
                   <input type='email' id='userEmail' name='userEmail' placeholder='johndoe@email.com' size='45'></input>
-              <label className='inputs' for='userPassword'><br/>Update your Password<br/></label>
+              <label className='inputs' for='userPassword'><br/>Update Password<br/></label>
                   <input type='password' id='userPassword' name='userPassword' placeholder='password' size='45'></input> 
-              <label className='inputs' for='userPhoneNum'><br/>Update for Phone Number<br/></label>
+              <label className='inputs' for='userPhoneNum'><br/>Update Phone Number<br/></label>
                 <input type='tel' id='userPhoneNum' name='userPhoneNum' pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" placeholder='888 888 8888' size='45'></input>
               
-              <label className='inputs' for='userProfilePicture'><br/>Update your Profile Picture<br/></label>
+              <label className='inputs' for='userProfilePicture'><br/>Update Profile Picture<br/></label>
                 <input type="file" id='userProfilePicture' name='userProfilePicture' accept="image/*"></input> 
               <button className='saveChanges'>Save Changes</button>
 
@@ -72,4 +72,4 @@ class UpdateAccount extends Component{
   }
 }
 
-export default UpdateAccount;
+export default AdminUpdateAccount;

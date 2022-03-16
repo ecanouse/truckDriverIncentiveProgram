@@ -1,24 +1,66 @@
 import React, {Component} from 'react';
 import './AdminHome.css'
-
 class AdminHome extends Component{
   state = {
     loading: true,
-    isAdmin: false
+    isAdmin: false,
+    drivers: [],
+    sponsors: [],
+    displayDrivers: true,
   }
   
   componentDidMount() {
     this.isAdmin();
   }
 
+  getDrivers = () => {
+    fetch('/getAllDrivers')
+    .then(response => response.json())
+    .then(response => this.setState({drivers: response.drivers}))
+    .catch(err => console.error(err))
+  }
+
+  getSponsors = () => {
+    fetch('/getAllSponsors')
+    .then(response => response.json())
+    .then(response => this.setState({sponsors: response.sponsors}))
+    .catch(err => console.error(err))
+  }
+
   isAdmin = () => {
     fetch('/isAdmin')
     .then(response => response.json())
-    .then(response => this.setState({loading: false, isAdmin: response.is_admin}))
+    .then(response => {
+      this.setState({loading: false, isAdmin: response.is_admin})
+      if(response.is_admin){
+        this.getDrivers()
+        this.getSponsors()
+      }
+    })
+    .catch(err => console.error(err))
+  }
+
+  toggleActive = (user) => {
+    var payload = {
+      active: !user.status,
+      uID: user.uID
+    };
+    fetch('/toggle-active', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(response => {
+      if(response.status === 200){
+        this.getDrivers()
+        this.getSponsors()
+      }
+    })
     .catch(err => console.error(err))
   }
 
   render() {
+    const users = this.state.displayDrivers ? this.state.drivers : this.state.sponsors
     if (this.state.isAdmin){
       return (
         <div className='AdminHomePage'>
@@ -47,13 +89,40 @@ class AdminHome extends Component{
           </header>
           <body>
             
-            <select className='SortByDrop' id='SortByDrop'>
+            {/* <select className='SortByDrop' id='SortByDrop'>
               <option disabled selected hidden>Sort By</option>
               <option>All Time</option>
               <option>Last 24 Hours</option>
               <option>Last 7 Days</option>
               <option>Last 30 Days</option>
-            </select>
+            </select> */}
+            <div className='userbuttons'>
+              <p>View Users:</p>
+
+              <div>
+                <input type="radio" id="drivers" name="usertype" value="drivers" checked={this.state.displayDrivers} onChange={() => this.setState({displayDrivers: true})}/>
+                <label for="drivers">Drivers</label>
+                <input type="radio" id="sponsors" name="usertype" value="sponsors" checked={!this.state.displayDrivers} onChange={() => this.setState({displayDrivers: false})}/>
+                <label for="sponsors">Sponsors</label>
+              </div>
+            </div>
+
+            <div className='show-users'>
+              {/* <div className='users-heading'>
+                  <div className='blank'></div>
+                  <p className='user-info'>Name</p>
+              </div> */}
+              {users.map((user, i) => {return(
+                <div className='individual-user' key={i}>
+                    <img className='profile-pic' src='DefaultProfPic.png' alt='Default Profile Picure'/>
+                    <p className='user-info'>{user.fname} {user.lname}</p>
+                    <p className='user-info'>{user.status ? 'Active' : 'Suspended'}</p>
+                    <a className='user-info' href='AdminUpdateAccount' target="_blank"><button>Update Account</button></a>
+                    <button className='user-info' onClick={() => this.toggleActive(user)}>Change Status</button>
+                </div>
+              )})}
+            </div>
+            
           </body>
   
           <footer className='Admin-Footer'>
