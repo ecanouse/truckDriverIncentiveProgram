@@ -7,7 +7,8 @@ class AdminHome extends Component{
     isAdmin: false,
     drivers: [],
     sponsors: [],
-    displayDrivers: true,
+    admin: [],
+    userType: 0,
     updating: -1,
   }
   
@@ -29,6 +30,13 @@ class AdminHome extends Component{
     .catch(err => console.error(err))
   }
 
+  getAdmin = () => {
+    fetch('/getAllAdmin')
+    .then(response => response.json())
+    .then(response => this.setState({admin: response.admin}))
+    .catch(err => console.error(err))
+  }
+
   isAdmin = () => {
     fetch('/isAdmin')
     .then(response => response.json())
@@ -37,6 +45,7 @@ class AdminHome extends Component{
       if(response.is_admin){
         this.getDrivers()
         this.getSponsors()
+        this.getAdmin()
       }
     })
     .catch(err => console.error(err))
@@ -56,6 +65,7 @@ class AdminHome extends Component{
       if(response.status === 200){
         this.getDrivers()
         this.getSponsors()
+        this.getAdmin()
       }
     })
     .catch(err => console.error(err))
@@ -73,10 +83,11 @@ class AdminHome extends Component{
     })
     this.getDrivers()
     this.getSponsors();
+    this.getAdmin();
   }
 
   render() {
-    const users = this.state.displayDrivers ? this.state.drivers : this.state.sponsors
+    const users = this.state.userType === 2 ? this.state.admin : this.state.userType === 1 ? this.state.sponsors : this.state.drivers
     if (this.state.isAdmin){
       return (
         <div className='AdminHomePage'>
@@ -116,10 +127,12 @@ class AdminHome extends Component{
               <p>View Users:</p>
 
               <div>
-                <input type="radio" id="drivers" name="usertype" value="drivers" checked={this.state.displayDrivers} onChange={() => this.setState({displayDrivers: true})}/>
+                <input type="radio" id="drivers" name="usertype" value="drivers" checked={this.state.userType===0} onChange={() => this.setState({userType: 0})}/>
                 <label for="drivers">Drivers</label>
-                <input type="radio" id="sponsors" name="usertype" value="sponsors" checked={!this.state.displayDrivers} onChange={() => this.setState({displayDrivers: false})}/>
+                <input type="radio" id="sponsors" name="usertype" value="sponsors" checked={this.state.userType===1} onChange={() => this.setState({userType: 1})}/>
                 <label for="sponsors">Sponsors</label>
+                <input type="radio" id="admin" name="usertype" value="admin" checked={this.state.userType===2} onChange={() => this.setState({userType: 2})}/>
+                <label for="admin">Admin</label>
               </div>
             </div>
 
