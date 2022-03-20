@@ -88,6 +88,7 @@ class AdminUpdateAccount extends Component{
     render() {
         return (
               <div className='UpdateAcc-Body'>
+                <h1 className='UpdateAcc-heading'>View/Update Account</h1>
                 <form id='info-form' onSubmit={this.submit}>
                 <label className='inputs' for='fname'><br/>Update First Name<br/></label>
                   <input required type='text' id='fname' name='fname'  size='45' value={this.state.fname} onChange={this.handleChange}></input>

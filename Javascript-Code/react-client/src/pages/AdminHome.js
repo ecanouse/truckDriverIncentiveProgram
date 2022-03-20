@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import AdminUpdateAccount from '../components/AdminUpdateAccount';
+import AdminUpdateOrgs from '../components/AdminUpdateOrgs';
+import AdminAddUser from '../components/AdminAddUser';
 import './AdminHome.css'
 class AdminHome extends Component{
   state = {
@@ -10,6 +12,8 @@ class AdminHome extends Component{
     admin: [],
     userType: 0,
     updating: -1,
+    updatingOrgs: -1,
+    adding: false
   }
   
   componentDidMount() {
@@ -77,6 +81,12 @@ class AdminHome extends Component{
     })
   }
 
+  updateOrgs = (user) => {
+    this.setState({
+      updatingOrgs: user.uID
+    })
+  }
+
   exitUpdateInfo = () => {
     this.setState({
       updating: -1
@@ -84,6 +94,18 @@ class AdminHome extends Component{
     this.getDrivers()
     this.getSponsors();
     this.getAdmin();
+  }
+
+  exitUpdateOrgs = () => {
+    this.setState({
+      updatingOrgs: -1
+    })
+  }
+
+  exitAddUser = () => {
+    this.setState({
+      adding: false
+    })
   }
 
   render() {
@@ -135,8 +157,10 @@ class AdminHome extends Component{
                 <label for="admin">Admin</label>
               </div>
             </div>
-
             <div className='show-users'>
+              {this.state.userType === 0 && <button onClick={() => this.setState({adding: true})}>Add New Driver</button>}
+              {this.state.userType === 1 && <button onClick={() => this.setState({adding: true})}>Add New Sponsor</button>}
+              {this.state.userType === 2 && <button onClick={() => this.setState({adding: true})}>Add New Admin</button>}
               {/* <div className='users-heading'>
                   <div className='blank'></div>
                   <p className='user-info'>Name</p>
@@ -146,13 +170,17 @@ class AdminHome extends Component{
                     <img className='profile-pic' src='DefaultProfPic.png' alt='Default Profile Picure'/>
                     <p className='user-info'>{user.fname} {user.lname}</p>
                     <p className='user-info'>{user.status ? 'Active' : 'Suspended'}</p>
+                    {this.state.userType === 1 && <p className='user-info'>{user.orgName}</p>}
                     <button  className='user-info' onClick={() => this.updateAccount(user)}>Update Account</button>
                     <button className='user-info' onClick={() => this.toggleActive(user)}>Change Status</button>
+                    {this.state.userType === 0 && <button className='user-info' onClick={() => this.updateOrgs(user)}>View Organizations</button>}
                 </div>
               )})}
             </div>
             
             {this.state.updating !== -1 && <AdminUpdateAccount uID={this.state.updating} exitUpdateInfo={this.exitUpdateInfo} />}
+            {this.state.updatingOrgs !== -1 && <AdminUpdateOrgs uID={this.state.updatingOrgs} exitUpdateOrgs={this.exitUpdateOrgs} />}
+            {this.state.adding && <AdminAddUser userType={this.state.userType} exitAddUser={this.exitAddUser} />}
 
           </body>
   

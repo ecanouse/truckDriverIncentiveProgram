@@ -62,6 +62,10 @@
     transform: translateX(-50%);
 }
 
+.UpdateAcc-heading {
+    font-size: 20px;
+}
+
 .inputs {
     line-height: 25px;
 }
