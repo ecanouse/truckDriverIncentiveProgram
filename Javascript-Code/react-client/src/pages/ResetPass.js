@@ -185,7 +185,7 @@ class ResetPass extends Component{
             onChange={this.handleChange}
           />  
         
-          <button type="submit" class='LoginButton' id='btn' disabled>Reset Password</button>
+          <button type="submit" className='LoginButton' id='btn' disabled>Reset Password</button>
 
         </form>
       </div>
