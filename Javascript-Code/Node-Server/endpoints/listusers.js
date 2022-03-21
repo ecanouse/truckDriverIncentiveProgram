@@ -48,11 +48,21 @@ module.exports = function(app, connection){
     });
 
     app.get('/getAllSponsors', (req, res) => {
-      const sponsor_query = "SELECT uID, fname, lname, status from new_schema.USER where userType = 1;";
+      const sponsor_query = "SELECT u.uID, fname, lname, status, orgName from new_schema.USER u INNER JOIN new_schema.USER_SPONSOR_REL r INNER JOIN new_schema.SPONSOR_ORG o where userType = 1 AND r.uID=u.UID AND o.sponsorID = r.sponsorID;";
       connection.query(sponsor_query, function(err, result) {
         if(err) console.log(err);
         return res.json({
           sponsors: result
+        })
+      })
+    });
+
+    app.get('/getAllAdmin', (req, res) => {
+      const admin_query = "SELECT uID, fname, lname, status from new_schema.USER where userType = 2;";
+      connection.query(admin_query, function(err, result) {
+        if(err) console.log(err);
+        return res.json({
+          admin: result
         })
       })
     });
