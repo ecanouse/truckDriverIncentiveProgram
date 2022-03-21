@@ -33,7 +33,9 @@ module.exports = function( app, connection ) {
                 if(err) console.log(err);
                 console.log(result);
                 //res.redirect('/DriverHome');
-                res.send({success: true, msg: "Creating Account..."});
+                if(req.body.userType !== 1){
+                    res.send({success: true, msg: "Creating Account..."});
+                }
                 const transporter = nodemailer.createTransport({
                     service: 'gmail',
                     auth: {
@@ -57,6 +59,13 @@ module.exports = function( app, connection ) {
                     }
                     
                 });
+                if(req.body.userType === 1){
+                    qstr = "INSERT INTO new_schema.USER_SPONSOR_REL (uID, sponsorID) VALUES ('"+result.insertId+"', '"+req.body.org+"')";
+                    connection.query(qstr, function(err, result, fields) {
+                        if(err) console.log(err);
+                        res.send({success: true, msg: "Creating Account..."});
+                    });
+                }
             });
             }
         });

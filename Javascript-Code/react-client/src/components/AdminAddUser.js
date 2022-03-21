@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './AdminAddUser.css'
 
-class AdminUpdateAccount extends Component{
+class AdminAddUser extends Component{
     state = {
       loading: true,
       isLoggedIn: false,
@@ -10,7 +10,8 @@ class AdminUpdateAccount extends Component{
       username: '',
       email: '',
       phone: '',
-      allOrgs: []
+      allOrgs: [],
+      org: null
     }
     
     componentDidMount() {
@@ -63,7 +64,8 @@ class AdminUpdateAccount extends Component{
         firstname: this.state.fname,
         username: this.state.username,
         email: this.state.email,
-        phone: this.state.phone
+        phone: this.state.phone,
+        org: this.state.org
       };
       fetch('/add-user', {
         method: 'POST',
@@ -96,7 +98,7 @@ class AdminUpdateAccount extends Component{
                     <label className='AddUser-inputs' for='phone'><br/>Phone Number<br/></label>
                     <input required type='tel' id='phone' name='phone' maxLength={10} minLength={10} size='45' value={this.state.phone} onChange={this.handleChange}></input>
                     {this.props.userType === 1 && <label className='AddUser-inputs' for='orgs-list'><br/>Organization<br/></label>}
-                    {this.props.userType === 1 && <select id="orgs-list" value={this.state.driver === "" ? null : this.state.driver} onChange={e => this.setState({sponsorID: e.target.value})} required>
+                    {this.props.userType === 1 && <select id="orgs-list" value={this.state.org === "" ? null : this.state.org} onChange={e => this.setState({org: e.target.value})} required>
                         <option disabled selected value=""> -- select an organization -- </option>
                         {this.state.allOrgs.map((o,i) =>
                          <option value={o.sponsorID} key={i}>{o.orgName}</option>
@@ -110,4 +112,4 @@ class AdminUpdateAccount extends Component{
     }
   }
 
-export default AdminUpdateAccount
+export default AdminAddUser
