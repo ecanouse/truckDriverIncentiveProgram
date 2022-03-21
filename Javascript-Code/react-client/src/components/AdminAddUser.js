@@ -54,13 +54,13 @@ class AdminUpdateAccount extends Component{
         [name]: value
       });
     };
-  
+
     submit = (event) => {
       event.preventDefault();
       var payload = {
         userType: this.props.userType,
-        lname: this.state.lname,
-        fname: this.state.fname,
+        lastname: this.state.lname,
+        firstname: this.state.fname,
         username: this.state.username,
         email: this.state.email,
         phone: this.state.phone
@@ -72,7 +72,7 @@ class AdminUpdateAccount extends Component{
       })
       .then(response => {
         if( response.status === 200 ) {
-            this.props.exitUpdateInfo()
+            this.props.exitAddUser()
         }
       })
       .catch((error) => {
@@ -102,8 +102,8 @@ class AdminUpdateAccount extends Component{
                          <option value={o.sponsorID} key={i}>{o.orgName}</option>
                         )}
                     </select>}
+                    <button className='AddUser-Exit' type="submit">Add User</button>
                 </form>
-                <button className='AddUser-Exit' onClick={this.submit}>Add User</button>
                 <button className='AddUser-Exit' onClick={this.props.exitAddUser}>Exit</button>
               </div> 
         );

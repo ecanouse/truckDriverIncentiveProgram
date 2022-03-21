@@ -106,6 +106,9 @@ class AdminHome extends Component{
     this.setState({
       adding: false
     })
+    this.getDrivers()
+    this.getSponsors();
+    this.getAdmin();
   }
 
   render() {

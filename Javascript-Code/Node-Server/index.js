@@ -53,6 +53,7 @@ require('./endpoints/signup-attempt')(app, connection);
 require('./endpoints/resetemail-attempt')(app, connection);
 require('./endpoints/updateaccount')(app, connection);
 require('./endpoints/organizations')(app, connection);
+require('./endpoints/adduser')(app, connection);
 //require('./endpoints/resetpass-attempt')(app, connection);
 
 app.get('/test', (req, res) => {
