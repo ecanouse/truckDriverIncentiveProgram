@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 
+
 class ResetPass extends Component{
 
   state = {
@@ -36,6 +37,7 @@ class ResetPass extends Component{
       this.setState({passMsg: "Password must be 8-20 characters long and contain a lowercase letter, a capital letter, a number, and a special character."})
     }
   }
+
 
 
   submit = (event) => {
@@ -183,7 +185,7 @@ class ResetPass extends Component{
             onChange={this.handleChange}
           />  
         
-          <button type="submit" class='LoginButton' id='btn' disabled>Reset Password</button>
+          <button type="submit" className='LoginButton' id='btn' disabled>Reset Password</button>
 
         </form>
       </div>
