@@ -2,22 +2,6 @@ import React, {Component} from 'react';
 import './Home.css';
 
 class Home extends Component{
-  state = {
-      test: []
-    }
-
-  componentDidMount() {
-    this.getTest();
-  }
-
-  getTest = () => {
-    fetch('/test')
-    .then(response => response.json())
-    .then(response => this.setState({test: response.data}))
-    .catch(err => console.error(err))
-  }
-
-  renderTest = ({id, name}) => <p key={id}>{name}</p>
   render() {
     return (
       <div className='HomePage'>
