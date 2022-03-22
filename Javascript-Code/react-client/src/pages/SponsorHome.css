@@ -95,3 +95,45 @@
     padding: 5px 10px;
     display: inline-block;
 } */
+
+.driverlist-heading{
+    font-size: 30px;
+}
+.show-users {
+    font-size: 18px;
+    background-color: #ffffff;
+    z-index: 2;
+    margin-top: 30px;
+    align-items: center;
+    justify-content: center;
+    display: flex;   
+    flex-direction: column;
+}
+
+.individual-user {
+    font-size: 16px;
+    border: 1px solid;
+    background-color: #ffffff;
+    width: 400px;
+    z-index: 2;
+    margin-top: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    align-items: center;
+    justify-content: flex-end;
+    display: flex;   
+}
+
+.profile-pic {
+    float: right;
+    border: 1px solid black;
+    border-radius: 50%;
+    margin-right: 10px;
+    width: 40px;
+    height: 40px;
+}
+
+.user-info {
+    padding-left: 10px;
+    margin-right: auto;
+}

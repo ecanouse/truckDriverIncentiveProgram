@@ -7,8 +7,8 @@ class SponsorLayout extends Component {
     render() {
         return (
             <div className='Layout-Container'> 
+                <SponsorHeader />
                 <div className='Layout-Content'>
-                    <SponsorHeader />
                     {this.props.children}
                 </div>
                 <SponsorFooter />
