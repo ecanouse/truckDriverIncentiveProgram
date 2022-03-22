@@ -116,7 +116,7 @@ class AdminHome extends Component{
     const users = this.state.userType === 2 ? this.state.admin : this.state.userType === 1 ? this.state.sponsors : this.state.drivers
     if (this.state.isAdmin){
       return (
-        <Layout userType={2}>
+        <Layout userType={2} isUser={this.isAdmin}>
           {/* <select className='SortByDrop' id='SortByDrop'>
               <option disabled selected hidden>Sort By</option>
               <option>All Time</option>

@@ -22,7 +22,7 @@ class DriverHome extends Component{
   render() {
     if (this.state.isDriver){
       return (
-        <Layout userType={0}>
+        <Layout userType={0} isUser={this.isDriver}>
             <select className='SortByDrop' id='SortByDrop'>
               <option disabled selected hidden>Sort By</option>
               <option>All Time</option>

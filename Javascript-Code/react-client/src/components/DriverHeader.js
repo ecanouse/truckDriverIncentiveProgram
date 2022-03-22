@@ -2,6 +2,33 @@ import React, {Component} from 'react';
 import './DriverHeader.css'
 
 class DriverHeader extends Component {
+    state = {
+        username: ''
+    }
+
+    componentDidMount(){
+        this.getUsername();
+    }
+
+    getUsername = () => {
+        fetch('/get-acc-info?' + new URLSearchParams({
+          uID: '-1'
+        }))
+        .then(response => response.json())
+        .then(response => {
+          console.log(response)
+          this.setState({
+            username: response.user.username,
+          })
+        })
+        .catch(err => console.error(err))
+      }
+
+    logout = () => {
+        fetch('/logout')
+        .catch(err => console.error(err))
+        this.props.isUser()
+    }
     render() {
         return (
             <div className='Driver-Header'>
@@ -33,8 +60,8 @@ class DriverHeader extends Component {
 
             <ul className='DriverLout-UpAcc'>
               <img src='DefaultProfPic.png' alt='Default Profile Picure' width='40' height='40'/>
-              <li><a href='UpdateAccount'>Username</a></li>
-              <li><a href='Home'>Logout</a></li>
+              <li><a href='UpdateAccount'>{this.state.username}</a></li>
+              <li><a href='login' onClick={() => this.logout()}>Logout</a></li>
             </ul>
           </div>
         )

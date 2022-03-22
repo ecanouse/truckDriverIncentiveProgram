@@ -50,7 +50,7 @@ class SponsorHome extends Component{
   render() {
     if (this.state.isSponsor){
       return (
-        <Layout userType={1}>
+        <Layout userType={1} isUser={this.isSponsor}>
           {/* <div className='SponsorHomePage'> */}
             {/* <body> */}
               

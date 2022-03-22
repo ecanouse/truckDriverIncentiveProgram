@@ -11,9 +11,9 @@ class Layout extends Component {
     render() {
         return (
             <div className='Layout-Container'> 
-                {this.props.userType === 0 && <DriverHeader />}
-                {this.props.userType === 1 && <SponsorHeader />}
-                {this.props.userType === 2 && <AdminHeader />}
+                {this.props.userType === 0 && <DriverHeader isUser={this.props.isUser}/>}
+                {this.props.userType === 1 && <SponsorHeader isUser={this.props.isUser}/>}
+                {this.props.userType === 2 && <AdminHeader isUser={this.props.isUser}/>}
                 <div className='Layout-Content'>
                     {this.props.children}
                 </div>
