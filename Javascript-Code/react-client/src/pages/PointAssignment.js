@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import SponsorLayout from '../components/SponsorLayout';
+import Layout from '../components/Layout';
 import './PointAssignment.css'
 
 class PointAssignment extends Component{
@@ -93,7 +93,7 @@ class PointAssignment extends Component{
   render() {
     if (this.state.isSponsor){
       return (
-        <SponsorLayout>
+        <Layout userType={1}>
             <form id="point-form" onSubmit={this.submit} className='point-form'>
               <div className='form-item'>
                 <label htmlFor="addsub">Add or Subtract Points?</label>
@@ -153,7 +153,7 @@ class PointAssignment extends Component{
               </div>
               <input className="point-submit" type="submit" value="Send Points"/>
             </form>
-        </SponsorLayout>
+        </Layout>
       );
     }else{
       return (

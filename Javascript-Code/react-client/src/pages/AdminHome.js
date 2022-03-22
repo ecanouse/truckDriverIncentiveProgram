@@ -3,6 +3,7 @@ import AdminUpdateAccount from '../components/AdminUpdateAccount';
 import AdminUpdateOrgs from '../components/AdminUpdateOrgs';
 import AdminAddUser from '../components/AdminAddUser';
 import './AdminHome.css'
+import Layout from '../components/Layout';
 class AdminHome extends Component{
   state = {
     loading: true,
@@ -115,33 +116,8 @@ class AdminHome extends Component{
     const users = this.state.userType === 2 ? this.state.admin : this.state.userType === 1 ? this.state.sponsors : this.state.drivers
     if (this.state.isAdmin){
       return (
-        <div className='AdminHomePage'>
-          <header className='Admin-Header'>
-            <img src="teamLogo.png" alt="The Mad Lads Team Logo" width="250" height="100"></img>
-            <nav className='Nav'>
-              <a href='AdminHome'>
-                <button  className='NavButtons'>Home</button>
-              </a>
-              <a href='PointHistory'>
-                <button className='NavButtons'>Points</button>
-              </a>
-              <a  href='CatalogPurchase'>
-                <button className='NavButtons'>Catalog</button>
-              </a>
-              <a href='UpdateAccount'>
-              <button className='NavButtons'>Settings</button>
-              </a>
-                
-            </nav>
-            <ul className='AdminLout-UpAcc'>
-              <img src='DefaultProfPic.png' alt='Default Profile Picure' width='40' height='40'/>
-              <li><a href='UpdateAccount'>Username</a></li>
-              <li><a href='Home'>Logout</a></li>
-            </ul>
-          </header>
-          <body>
-            
-            {/* <select className='SortByDrop' id='SortByDrop'>
+        <Layout userType={2}>
+          {/* <select className='SortByDrop' id='SortByDrop'>
               <option disabled selected hidden>Sort By</option>
               <option>All Time</option>
               <option>Last 24 Hours</option>
@@ -184,13 +160,7 @@ class AdminHome extends Component{
             {this.state.updating !== -1 && <AdminUpdateAccount uID={this.state.updating} exitUpdateInfo={this.exitUpdateInfo} />}
             {this.state.updatingOrgs !== -1 && <AdminUpdateOrgs uID={this.state.updatingOrgs} exitUpdateOrgs={this.exitUpdateOrgs} />}
             {this.state.adding && <AdminAddUser userType={this.state.userType} exitAddUser={this.exitAddUser} />}
-
-          </body>
-  
-          <footer className='Admin-Footer'>
-            <img src="teamLogo.png" alt="The Mad Lads Team Logo" width="200" height="70"></img>
-          </footer>
-        </div>
+        </Layout>
       );
     }else{
       return(

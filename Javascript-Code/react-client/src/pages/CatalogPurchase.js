@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Layout from '../components/Layout';
 import './CatalogPurchase.css'
 
 class CatalogPurchase extends Component{
@@ -21,22 +22,7 @@ class CatalogPurchase extends Component{
   render() {
     if (this.state.isDriver){
       return (
-        <div className='DriverCatalogPurchase'>
-          <header className='DCP-Header'>
-            <img src="SponsorLogo.png" alt="Sponsor Logo" width="250" height="100"></img>
-            <nav className='Nav'>
-              <button href='DriverHome' className='NavButtons'>Home</button>
-              <button href='PointHistory' className='NavButtons'>Points</button>
-              <button href='CatalogPurchase' className='NavButtons'>Catalog</button>
-              <button href='UpdateAccount' className='NavButtons'>Settings</button>
-            </nav>
-            <ul className='DCPLout-UpAcc'>
-              <img src='DefaultProfPic.png' alt='Default Profile Picure' width='40' height='40'/>
-              <li><a href='UpdateAccount'>Username</a></li>
-              <li><a href='Home'>Logout</a></li>
-            </ul>
-          </header>
-          <body>
+        <Layout userType={0}>
             <h1 align='center'><br/><br/>Thank you For Your Order!<br/></h1>
             <p align='center'>We will be sending a shipping confirmation email when the item has shipped successfully.<br/></p>  
             <div className='OrderConfirm'>         
@@ -52,12 +38,8 @@ class CatalogPurchase extends Component{
                 <h3>Total</h3>
               </div>
             </div>
-          </body>
-
-          <footer className='DCP-Footer'>
-            <img src="teamLogo.png" alt="The Mad Lads Team Logo" width="200" height="70"></img>
-          </footer>
-        </div>
+        </Layout>
+          
       );
     }else{
       return (

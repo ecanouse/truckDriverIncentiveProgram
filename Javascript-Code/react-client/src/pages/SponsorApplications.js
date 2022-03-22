@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Layout from '../components/Layout';
 
 class SponsorApplications extends Component{
   state = {
@@ -20,9 +21,11 @@ class SponsorApplications extends Component{
   render() {
     if (this.state.isSponsor){
       return (
-        <h1>
+        <Layout userType={1}>
+          <h1>
             Sponsor View Applications
-        </h1>
+          </h1>
+        </Layout>
       );
     }else{
       return (

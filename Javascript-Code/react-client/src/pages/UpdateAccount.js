@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Layout from '../components/Layout';
 import './UpdateAccount.css'
 
 class UpdateAccount extends Component{
@@ -9,7 +10,8 @@ class UpdateAccount extends Component{
     fname: '',
     username: '',
     email: '',
-    phone: ''
+    phone: '',
+    userType: -1
   }
   
   componentDidMount() {
@@ -41,7 +43,17 @@ class UpdateAccount extends Component{
       this.setState({loading: false, isLoggedIn: response.is_loggedin})
       if(response.is_loggedin){
         this.getInfo()
+        this.getUserType()
       }
+    })
+    .catch(err => console.error(err))
+  }
+
+  getUserType = () => {
+    fetch('/currentUserType')
+    .then(response => response.json())
+    .then(response => {
+      this.setState({userType: response.userType})
     })
     .catch(err => console.error(err))
   }
@@ -83,24 +95,9 @@ class UpdateAccount extends Component{
   render() {
     if (this.state.isLoggedIn){
       return (
-        <body>
-          <div className='UpdateAccount'>
-            <header className='UpdateAcc-Header'>
-                <img src="teamLogo.png" alt="The Mad Lads Team Logo" width="250" height="100"></img>
-              <nav className='Nav'>
-                <button href='AdminHome' className='NavButtons'>Home</button>
-                <button href='PointHistory' className='NavButtons'>Points</button>
-                <button href='CatalogPurchase' className='NavButtons'>Catalog</button>
-                <button href='UpdateAccount' className='NavButtons'>Settings</button>
-              </nav>
-              <ul className='UpdateAccLout-UpAcc'>
-                <img src='DefaultProfPic.png' alt='Default Profile Picure' width='40' height='40'/>
-                <li><a href='UpdateAccount'>Username</a></li>
-                <li><a href='Home'>Logout</a></li>
-              </ul>
-            </header>
+          <Layout userType={this.state.userType}>
             <div className='UpdateAcc-Body'>
-              <form id='info-form' onSubmit={this.submit}>
+            <form id='info-form' onSubmit={this.submit}>
               <label className='inputs' for='fname'><br/>Update your First Name<br/></label>
                 <input required type='text' id='fname' name='fname'  size='45' value={this.state.fname} onChange={this.handleChange}></input>
               <label className='inputs' for='lname'><br/>Update your Last Name<br/></label>
@@ -121,11 +118,7 @@ class UpdateAccount extends Component{
               <button type="submit" className='saveChanges'>Save Changes</button>
               </form>
             </div>
-            <footer className='UpdateAcc-Footer'>
-              <img src="teamLogo.png" alt="The Mad Lads Team Logo" width="200" height="70"></img>
-            </footer>
-          </div>
-        </body>
+          </Layout>
       );
     }else{
       return (

@@ -7,10 +7,18 @@ class SponsorHeader extends Component {
             <div className='Sponsor-Header'>
                 <img src="SponsorLogo.png" alt="The Mad Lads Team Logo" width="250" height="100"></img>
                 <nav className='Nav'>
-                    <button href='SponsorHome' className='NavButtons'>Home</button>
-                    <button href='PointHistory' className='NavButtons'>Points</button>
-                    <button href='CatalogPurchase' className='NavButtons'>Catalog</button>
-                    <button href='UpdateAccount' className='NavButtons'>Settings</button>
+                    <a href='SponsorHome'>
+                        <button href='DriverHome' className='NavButtons' >Home</button>
+                    </a>
+                    <a href='PointAssignment'>
+                        <button className='NavButtons'>Points</button>
+                    </a>
+                    <a href='SponsorCatalog'>
+                        <button className='NavButtons'>Catalog</button>
+                    </a>
+                    <a href='UpdateAccount'>
+                        <button className='NavButtons'>Settings</button>
+                    </a>
                 </nav>
                 <ul className='Sponsor-Header-UpAcc'>
                     <img src='DefaultProfPic.png' alt='Default Profile Picure' width='40' height='40'/>
