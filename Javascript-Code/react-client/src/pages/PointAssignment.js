@@ -94,7 +94,6 @@ class PointAssignment extends Component{
     if (this.state.isSponsor){
       return (
         <SponsorLayout>
-          <div className='PointAssignPage'>
             <form id="point-form" onSubmit={this.submit} className='point-form'>
               <div className='form-item'>
                 <label htmlFor="addsub">Add or Subtract Points?</label>
@@ -154,7 +153,6 @@ class PointAssignment extends Component{
               </div>
               <input className="point-submit" type="submit" value="Send Points"/>
             </form>
-          </div>
         </SponsorLayout>
       );
     }else{

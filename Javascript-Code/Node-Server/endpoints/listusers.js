@@ -29,7 +29,7 @@ module.exports = function(app, connection){
       //   })
       // })
 
-      const driver_query = `SELECT u.uID, fname, lname from new_schema.USER u INNER JOIN new_schema.USER_SPONSOR_REL r ON u.uID = r.uID where u.userType = 0 AND r.sponsorID=${sponsorID};`;
+      const driver_query = `SELECT u.uID, fname, lname, status from new_schema.USER u INNER JOIN new_schema.USER_SPONSOR_REL r ON u.uID = r.uID where u.userType = 0 AND r.sponsorID=${sponsorID};`;
       connection.query(driver_query, function(err, result) {
         if(err) console.log(err);
         return res.json({
