@@ -75,10 +75,6 @@ class Login extends Component{
   render() {
 
     return (
-
-      //note that I'm getting some errors/warnings with a body element
-      //being rendered inside a div element, we may want to fix that
-      <body>
       <div className='LoginPage'>
         <header className='Login-Header'>
           <img src="teamLogo.png" alt="The Mad Lads Team Logo" width="250" height="100"></img>
@@ -88,7 +84,7 @@ class Login extends Component{
           <h2><br/>Sign-In</h2>
           <p className='login_displaybox' id='login_displaybox' >{this.state.msg}</p>
           <p>
-            <span class='Seperate-SI-UN'></span>
+            <span className='Seperate-SI-UN'></span>
             Username
           </p>
           <input 
@@ -112,18 +108,16 @@ class Login extends Component{
             onChange={this.handleChange}
           />
         
-          <p class='Reset-UN-PASS'>Having trouble signing in?</p>
-          <button type="submit" class='LoginButton'>Log-in</button>
+          <p className='Reset-UN-PASS'>Having trouble signing in?</p>
+          <button type="submit" className='LoginButton'>Log-in</button>
           { this.state.redirect && (this.state.userType === 0) ? (<Navigate to="/driverhome"/>) : null }
           { this.state.redirect && (this.state.userType === 1) ? (<Navigate to="/sponsorhome"/>) : null }
           { this.state.redirect && (this.state.userType === 2) ? (<Navigate to="/adminhome"/>) : null }
         </form>
-          <a class='Reset-UN-PASS' href='ResetPass'>Click here to reset your Password</a>
-          <a class='Reset-UN-PASS' href='DiscoverUN'><br/><br/>Click here to discover your Username</a> 
+          <a className='Reset-UN-PASS' href='ResetPass'>Click here to reset your Password</a>
+          <a className='Reset-UN-PASS' href='DiscoverUN'><br/><br/>Click here to discover your Username</a> 
         </div>
-      </div>
-      </body>
-      
+      </div>      
     );
   }
 

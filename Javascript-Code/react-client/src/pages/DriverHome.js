@@ -23,8 +23,8 @@ class DriverHome extends Component{
     if (this.state.isDriver){
       return (
         <Layout userType={0} isUser={this.isDriver}>
-            <select className='SortByDrop' id='SortByDrop'>
-              <option disabled selected hidden>Sort By</option>
+            <select className='SortByDrop' id='SortByDrop' defaultValue={"sort"}>
+              <option disabled hidden value={"sort"}>Sort By</option>
               <option>All Time</option>
               <option>Last 24 Hours</option>
               <option>Last 7 Days</option>

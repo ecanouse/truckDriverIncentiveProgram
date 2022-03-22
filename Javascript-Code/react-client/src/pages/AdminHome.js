@@ -129,11 +129,11 @@ class AdminHome extends Component{
 
               <div>
                 <input type="radio" id="drivers" name="usertype" value="drivers" checked={this.state.userType===0} onChange={() => this.setState({userType: 0})}/>
-                <label for="drivers">Drivers</label>
+                <label htmlFor="drivers">Drivers</label>
                 <input type="radio" id="sponsors" name="usertype" value="sponsors" checked={this.state.userType===1} onChange={() => this.setState({userType: 1})}/>
-                <label for="sponsors">Sponsors</label>
+                <label htmlFor="sponsors">Sponsors</label>
                 <input type="radio" id="admin" name="usertype" value="admin" checked={this.state.userType===2} onChange={() => this.setState({userType: 2})}/>
-                <label for="admin">Admin</label>
+                <label htmlFor="admin">Admin</label>
               </div>
             </div>
             <div className='show-users'>

@@ -98,22 +98,22 @@ class UpdateAccount extends Component{
           <Layout userType={this.state.userType}>
             <div className='UpdateAcc-Body'>
             <form id='info-form' onSubmit={this.submit}>
-              <label className='inputs' for='fname'><br/>Update your First Name<br/></label>
+              <label className='inputs' htmlFor='fname'><br/>Update your First Name<br/></label>
                 <input required type='text' id='fname' name='fname'  size='45' value={this.state.fname} onChange={this.handleChange}></input>
-              <label className='inputs' for='lname'><br/>Update your Last Name<br/></label>
+              <label className='inputs' htmlFor='lname'><br/>Update your Last Name<br/></label>
                 <input required type='text' id='lname' name='lname'size='45' value={this.state.lname} onChange={this.handleChange}></input>
               {/* <label className='inputs' for='userBirthday'><br/>Update your Birthday<br/></label>
                 <input type='date' id='userBirthday' name='userBirthday'></input> */}
-              <label className='inputs' for='username'><br/>Username<br/></label>
+              <label className='inputs' htmlFor='username'><br/>Username<br/></label>
                 <input required type='text' id='username' name='username' size='45' value={this.state.username} onChange={this.handleChange}></input>  
-              <label className='inputs' for='email'><br/>Update your Email<br/></label>
+              <label className='inputs' htmlFor='email'><br/>Update your Email<br/></label>
                   <input required type='email' id='email' name='email' size='45' value={this.state.email} onChange={this.handleChange}></input>
-              <label className='inputs' for='userPassword'><br/>Update your Password<br/></label>
+              <label className='inputs' htmlFor='userPassword'><br/>Update your Password<br/></label>
                   <input type='password' id='userPassword' name='userPassword' placeholder='password' size='45'></input> 
-              <label className='inputs' for='phone'><br/>Update for Phone Number<br/></label>
+              <label className='inputs' htmlFor='phone'><br/>Update for Phone Number<br/></label>
                 <input required type='tel' id='phone' name='phone' maxLength={10} minLength={10} size='45' value={this.state.phone} onChange={this.handleChange}></input>
               
-              <label className='inputs' for='userProfilePicture'><br/>Update your Profile Picture<br/></label>
+              <label className='inputs' htmlFor='userProfilePicture'><br/>Update your Profile Picture<br/></label>
                 <input type="file" id='userProfilePicture' name='userProfilePicture' accept="image/*"></input> 
               <button type="submit" className='saveChanges'>Save Changes</button>
               </form>

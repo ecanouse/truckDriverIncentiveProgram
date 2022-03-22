@@ -122,8 +122,8 @@ class PointAssignment extends Component{
 
               <div className='form-item'>
               <label htmlFor="driver">Driver</label>
-                <select id="driver-list" value={this.state.driver === "" ? null : this.state.driver} onChange={e => this.setState({driver: e.target.value})} required>
-                    <option disabled selected value=""> -- select a driver -- </option>
+                <select id="driver-list" value={this.state.driver} onChange={e => this.setState({driver: e.target.value})} required>
+                    <option disabled value=""> -- select a driver -- </option>
                     {this.state.drivers.map((d,i) => 
                       <option value={d.uID} key={i}>{`${d.fname} ${d.lname}`}</option>
                     )}
