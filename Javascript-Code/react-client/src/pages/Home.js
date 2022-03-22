@@ -21,28 +21,15 @@ class Home extends Component{
   renderTest = ({id, name}) => <p key={id}>{name}</p>
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Test new EC2 instance again
-          </p>
-          <p>
-            From database:
-          </p>
-          <div>
-            {this.state.test.map(this.renderTest)}
-          </div>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
+      <div className='HomePage'>
+        <header className='Home-Header'>
+          <img src="teamLogo.png" alt="The Mad Lads Team Logo" width="250" height="100"></img>
         </header>
-      </div>
+        <div className='home-buttons'>
+          <a href='login'><button className='home-button'>Login</button></a>
+          <a href='signup'><button className='home-button'>Signup</button></a>
+        </div>
+      </div>      
     );
   }
 }

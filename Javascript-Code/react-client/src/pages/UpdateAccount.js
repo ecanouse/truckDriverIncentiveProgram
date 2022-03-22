@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Layout from '../components/Layout';
 import './UpdateAccount.css'
 
 class UpdateAccount extends Component{
@@ -9,7 +10,8 @@ class UpdateAccount extends Component{
     fname: '',
     username: '',
     email: '',
-    phone: ''
+    phone: '',
+    userType: -1
   }
   
   componentDidMount() {
@@ -41,7 +43,17 @@ class UpdateAccount extends Component{
       this.setState({loading: false, isLoggedIn: response.is_loggedin})
       if(response.is_loggedin){
         this.getInfo()
+        this.getUserType()
       }
+    })
+    .catch(err => console.error(err))
+  }
+
+  getUserType = () => {
+    fetch('/currentUserType')
+    .then(response => response.json())
+    .then(response => {
+      this.setState({userType: response.userType})
     })
     .catch(err => console.error(err))
   }
@@ -83,49 +95,30 @@ class UpdateAccount extends Component{
   render() {
     if (this.state.isLoggedIn){
       return (
-        <body>
-          <div className='UpdateAccount'>
-            <header className='UpdateAcc-Header'>
-                <img src="teamLogo.png" alt="The Mad Lads Team Logo" width="250" height="100"></img>
-              <nav className='Nav'>
-                <button href='AdminHome' className='NavButtons'>Home</button>
-                <button href='PointHistory' className='NavButtons'>Points</button>
-                <button href='CatalogPurchase' className='NavButtons'>Catalog</button>
-                <button href='UpdateAccount' className='NavButtons'>Settings</button>
-              </nav>
-              <ul className='UpdateAccLout-UpAcc'>
-                <img src='DefaultProfPic.png' alt='Default Profile Picure' width='40' height='40'/>
-                <li><a href='UpdateAccount'>Username</a></li>
-                <li><a href='Home'>Logout</a></li>
-              </ul>
-            </header>
+          <Layout userType={this.state.userType}>
             <div className='UpdateAcc-Body'>
-              <form id='info-form' onSubmit={this.submit}>
-              <label className='inputs' for='fname'><br/>Update your First Name<br/></label>
+            <form id='info-form' onSubmit={this.submit}>
+              <label className='inputs' htmlFor='fname'><br/>Update your First Name<br/></label>
                 <input required type='text' id='fname' name='fname'  size='45' value={this.state.fname} onChange={this.handleChange}></input>
-              <label className='inputs' for='lname'><br/>Update your Last Name<br/></label>
+              <label className='inputs' htmlFor='lname'><br/>Update your Last Name<br/></label>
                 <input required type='text' id='lname' name='lname'size='45' value={this.state.lname} onChange={this.handleChange}></input>
               {/* <label className='inputs' for='userBirthday'><br/>Update your Birthday<br/></label>
                 <input type='date' id='userBirthday' name='userBirthday'></input> */}
-              <label className='inputs' for='username'><br/>Username<br/></label>
+              <label className='inputs' htmlFor='username'><br/>Username<br/></label>
                 <input required type='text' id='username' name='username' size='45' value={this.state.username} onChange={this.handleChange}></input>  
-              <label className='inputs' for='email'><br/>Update your Email<br/></label>
+              <label className='inputs' htmlFor='email'><br/>Update your Email<br/></label>
                   <input required type='email' id='email' name='email' size='45' value={this.state.email} onChange={this.handleChange}></input>
-              <label className='inputs' for='userPassword'><br/>Update your Password<br/></label>
+              <label className='inputs' htmlFor='userPassword'><br/>Update your Password<br/></label>
                   <input type='password' id='userPassword' name='userPassword' placeholder='password' size='45'></input> 
-              <label className='inputs' for='phone'><br/>Update for Phone Number<br/></label>
+              <label className='inputs' htmlFor='phone'><br/>Update for Phone Number<br/></label>
                 <input required type='tel' id='phone' name='phone' maxLength={10} minLength={10} size='45' value={this.state.phone} onChange={this.handleChange}></input>
               
-              <label className='inputs' for='userProfilePicture'><br/>Update your Profile Picture<br/></label>
+              <label className='inputs' htmlFor='userProfilePicture'><br/>Update your Profile Picture<br/></label>
                 <input type="file" id='userProfilePicture' name='userProfilePicture' accept="image/*"></input> 
               <button type="submit" className='saveChanges'>Save Changes</button>
               </form>
             </div>
-            <footer className='UpdateAcc-Footer'>
-              <img src="teamLogo.png" alt="The Mad Lads Team Logo" width="200" height="70"></img>
-            </footer>
-          </div>
-        </body>
+          </Layout>
       );
     }else{
       return (

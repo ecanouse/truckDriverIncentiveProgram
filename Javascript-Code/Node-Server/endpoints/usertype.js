@@ -80,4 +80,22 @@ module.exports = function(app, connection){
             })
         }
     });
+
+    app.get('/currentUserType', (req, res) => {
+        session=req.session;
+        if(session.userid){
+            const user_query = `SELECT userType from new_schema.USER where uID = ${session.userid};`;
+            connection.query(user_query, function(err, result) {
+                if(err) console.log(err);
+                console.log(result);
+                    return res.json({
+                        userType: result[0].userType
+                    })
+            })
+        }else{
+            return res.json({
+                userType: -1
+            })
+        }
+    });
 }

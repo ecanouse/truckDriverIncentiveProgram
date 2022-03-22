@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import SponsorLayout from '../components/SponsorLayout';
+import Layout from '../components/Layout';
 import AdminUpdateAccount from '../components/AdminUpdateAccount';
 import './SponsorHome.css'
 
@@ -50,7 +50,7 @@ class SponsorHome extends Component{
   render() {
     if (this.state.isSponsor){
       return (
-        <SponsorLayout>
+        <Layout userType={1} isUser={this.isSponsor}>
           {/* <div className='SponsorHomePage'> */}
             {/* <body> */}
               
@@ -62,10 +62,10 @@ class SponsorHome extends Component{
                 <option>Last 30 Days</option>
               </select> */}
 
-              <div className='show-users'>
+              <div className='Sponsor-show-users'>
                 <h1 className='driverlist-heading'>All Drivers:</h1>
                 {this.state.drivers.map((user, i) => {return(
-                  <div className='individual-user' key={i}>
+                  <div className='Sponsor-individual-user' key={i}>
                       <img className='profile-pic' src='DefaultProfPic.png' alt='Default Profile Picure'/>
                       <p className='user-info'>{user.fname} {user.lname}</p>
                       <p className='user-info'>{user.status ? 'Active' : 'Suspended'}</p>
@@ -78,7 +78,7 @@ class SponsorHome extends Component{
             {this.state.updating !== -1 && <AdminUpdateAccount uID={this.state.updating} exitUpdateInfo={this.exitUpdateInfo} />}
             {/* </body> */}
           {/* </div> */}
-        </SponsorLayout>
+        </Layout>
       );
     }else{
       return (

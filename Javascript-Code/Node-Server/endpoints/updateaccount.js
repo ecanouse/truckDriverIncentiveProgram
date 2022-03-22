@@ -13,6 +13,7 @@ module.exports = function(app, connection){
 
     app.get('/get-acc-info', (req, res) => {
         session = req.session;
+        console.log(session.userid)
         userid = req.query.uID === '-1' ? session.userid : req.query.uID;
         const user_query = `SELECT fname, lname, username, email, phone from new_schema.USER where uID = ${userid};`;
         connection.query(user_query, function(err, result) {
