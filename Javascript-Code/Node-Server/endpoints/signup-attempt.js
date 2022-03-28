@@ -49,9 +49,6 @@ module.exports = function( app, connection ) {
                 encryptPass = crypt.getHash(password);
                 //console.log('Got sign up information.');
                 qstr = "INSERT INTO new_schema.USER (lname, fname, username, password, email, phone, usertype, status) VALUES ('"+lastname+"', '"+firstname+"', '"+username+"', '"+encryptPass+"', '"+email+"', '"+phone+"', 0, 1)";
-=======
-                qstr = "INSERT INTO new_schema.USER (lname, fname, username, password, email, phone, usertype) VALUES ('"+lastname+"', '"+firstname+"', '"+username+"', '"+encryptPass+"', '"+email+"', '"+phone+"', '"+uType+"')";
->>>>>>> loginbackend
                 connection.query(qstr, function(err, result, fields) {
                   if(err) console.log(err);
                   console.log(result);

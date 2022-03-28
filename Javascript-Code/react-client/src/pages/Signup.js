@@ -205,8 +205,8 @@ class Signup extends Component{
         
           <button type="submit" class='LoginButton' id="btn" disabled>Sign Up</button>
           { this.state.redirect && (this.state.userType === 0) ? (<Navigate to="/driverhome"/>) : null }
-          { this.state.redirect && (this.state.userType === 1) ? (<Navigate to="/sponsorhome"/>) : null }
-          { this.state.redirect && (this.state.userType === 2) ? (<Navigate to="/adminhome"/>) : null }
+          { this.state.redirect && (this.state.userType === 1) ? (<Navigate to="/SponsorHome"/>) : null }
+          { this.state.redirect && (this.state.userType === 2) ? (<Navigate to="/AdminHome"/>) : null }
         </form>
         </div>
       </div>
