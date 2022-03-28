@@ -52,19 +52,9 @@ module.exports = function( app, connection ) {
                 connection.query(qstr, function(err, result, fields) {
                   if(err) console.log(err);
                   console.log(result);
-                  //get user Id
-                  qstr = "SELECT uID FROM new_schema.USER WHERE username = '"+username+"'";
-                  connection.query(qstr, function(err, result, fields) {
-                    if(err) console.log(err);
-                    console.log(result);
 
-                    const isEmpty = Object.keys(result).length === 0;
-
-                    if(!isEmpty){
-                      session=req.session;
-                      session.userid=result[0].uID;
-                    }
-                  });
+                  session=req.session;
+                  session.userid=result.insertId;
 
                   res.send({success: true, msg: "Creating Account...", uType: uType});
                 });
