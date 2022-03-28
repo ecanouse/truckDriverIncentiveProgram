@@ -10,7 +10,7 @@ module.exports = function( app, connection ) {
 
         if(code && newPass && newPassConf){
             if(newPass == newPassConf){
-                qstr = "SELECT * AS count FROM new_schema.RESET_CODE WHERE code = '"+code+"' AND time >= NOW() - INTERVAL 1 DAY";
+                qstr = "SELECT * FROM new_schema.RESET_CODE WHERE code = '"+code+"' AND time >= NOW() - INTERVAL 1 DAY";
                 //check that code matches and is in range, then change password
                 connection.query(qstr, function(err, result, fields) {
                     if(err) console.log(err);
