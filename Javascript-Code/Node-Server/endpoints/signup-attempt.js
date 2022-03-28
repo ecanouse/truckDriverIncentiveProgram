@@ -48,7 +48,6 @@ module.exports = function( app, connection ) {
                 }
                 encryptPass = crypt.getHash(password);
                 //console.log('Got sign up information.');
-<<<<<<< HEAD
                 qstr = "INSERT INTO new_schema.USER (lname, fname, username, password, email, phone, usertype, status) VALUES ('"+lastname+"', '"+firstname+"', '"+username+"', '"+encryptPass+"', '"+email+"', '"+phone+"', 0, 1)";
 =======
                 qstr = "INSERT INTO new_schema.USER (lname, fname, username, password, email, phone, usertype) VALUES ('"+lastname+"', '"+firstname+"', '"+username+"', '"+encryptPass+"', '"+email+"', '"+phone+"', '"+uType+"')";
