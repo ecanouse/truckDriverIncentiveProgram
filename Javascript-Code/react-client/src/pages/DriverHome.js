@@ -3,8 +3,6 @@ import './DriverHome.css'
 
 class DriverHome extends Component{
   render() {
-            <button href='UpdateAccount' className='NavButtons'>Settings</button>
-          <ul className='DriverLout-UpAcc'>
     if (this.state.isDriver){
       return (
         <div className='DriverHomePage'>
@@ -24,15 +22,19 @@ class DriverHome extends Component{
               <a href='UpdateAccount'>
                 <button className='NavButtons'>Settings</button>
               </a>
+              </nav>
 
+              <nav className='Nav'>
               <select>
               <option>select</option>
               <option href='DriverHome'>Home</option>
               <option href='PointHistory'>Points</option>
               <option href='CatalogPurchase'>Catalog</option>
               <option href='UpdateAccount'>Settings</option>
-            </select>
-            </nav>
+            </select>  
+              </nav>
+              
+        
   
 
             <ul className='DriverLout-UpAcc'>
