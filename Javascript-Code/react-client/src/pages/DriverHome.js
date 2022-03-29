@@ -1,7 +1,24 @@
 import React, {Component} from 'react';
+import Layout from '../components/Layout';
 import './DriverHome.css'
 
 class DriverHome extends Component{
+  state = {
+    loading: true,
+    isDriver: false
+  }
+  
+  componentDidMount() {
+    this.isDriver();
+  }
+
+  isDriver = () => {
+    fetch('/isDriver')
+    .then(response => response.json())
+    .then(response => this.setState({loading: false, isDriver: response.is_driver}))
+    .catch(err => console.error(err))
+  }
+
   render() {
     if (this.state.isDriver){
       return (
@@ -43,7 +60,7 @@ class DriverHome extends Component{
               <li><a href='Home'>Logout</a></li>
             </ul>
           </header>
-          <body>
+          
             
             <select className='SortByDrop' id='SortByDrop'>
               <option disabled selected hidden>Sort By</option>
@@ -52,14 +69,16 @@ class DriverHome extends Component{
               <option>Last 7 Days</option>
               <option>Last 30 Days</option>
             </select>
-          </body>
-
-        <footer className='Driver-Footer'>
-          <img src="teamLogo.png" alt="The Mad Lads Team Logo" width="200" height="70"></img>
-        </footer>
-      </div>
-    );
+        </div>
+        
+        
+      );
+    }else{
+      return (
+        <h1>{this.state.loading ? "" : "401: Unauthorized"}</h1>
+      );
+    }
   }
-}}
+}
 
 export default DriverHome;

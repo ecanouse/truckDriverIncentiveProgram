@@ -1,37 +1,45 @@
 import React, {Component} from 'react';
+import Layout from '../components/Layout';
 import './PointHistory.css'
+import { AiOutlineArrowUp } from 'react-icons/ai';
+
 
 class PointHistory extends Component{
+  state = {
+    loading: true,
+    isDriver: false,
+    points: []
+  }
+  
+  componentDidMount() {
+    this.isDriver();
+  }
+
+  isDriver = () => {
+    fetch('/isDriver')
+    .then(response => response.json())
+    .then(response => {
+      this.setState({loading: false, isDriver: response.is_driver})
+      if(response.is_driver){
+        this.getPoints()
+      }
+    })
+    .catch(err => console.error(err))
+  }
+
+  getPoints = () => {
+    fetch('/get-points')
+    .then(response => response.json())
+    .then(response => this.setState({points: response.Points}))
+    .catch(err => console.error(err))
+  }
+
   render() {
     if (this.state.isDriver){
       return (
-        <div className='PointHistoryPage'>
-          <header className='PointHistory-Header'>
-            <img src="SponsorLogo.png" alt="Sponsor Logo" width="250" height="100"></img>
-            <nav className='Nav'>
-              <a href='DriverHome'>
-                <button href='DriverHome' className='NavButtons' >Home</button>
-              </a>
-              <a href='PointHistory'>
-                <button className='NavButtons'>Points</button>
-              </a>
-              <a href='CatalogPurchase'>
-                <button className='NavButtons'>Catalog</button>
-              </a>
-              <a href='UpdateAccount'>
-                <button className='NavButtons'>Settings</button>
-              </a>
-            </nav>
-            <ul className='PointHistoryLout-UpAcc'>
-              <img src='DefaultProfPic.png' alt='Default Profile Picure' width='40' height='40'/>
-              <li><a href='UpdateAccount'>Username</a></li>
-              <li><a href='Home'>Logout</a></li>
-            </ul>
-          </header>
-          
-          <body>
-            <select className='SortByDrop' id='SortByDrop'>
-              <option disabled selected hidden>Sort By</option>
+        <Layout userType={0}>
+            <select className='SortByDrop' id='SortByDrop' defaultValue={"sort"}>
+              <option disabled hidden value="sort">Sort By</option>
               <option>All Time</option>
               <option>Last 24 Hours</option>
               <option>Last 7 Days</option>
@@ -41,28 +49,30 @@ class PointHistory extends Component{
             {this.state.points.map((p) => {
               return(
                 <div className='PointDisplay'>
-                  
-                  <p>Total: {p.totalPoints},  For Sponsor (id): {p.sponsorID}</p>
+                  <h3> Lets go for a <AiOutlineArrowUp color='green'/>? </h3>
+                  <p>Total: {p.totalPoints},  For Sponsor (id): {p.sponsorID.na}</p>
                   <p>All adjustments</p>
                   {p.adjustments.map(a => 
+                  
                     <p>Reason: {a.pointReason}, <span className='Alignment'>Value: {a.pointValue},</span>
                     <br/> 
                         Date: {a.date}
                         <br/><hr/><br/>
-                    </p> 
+                    </p>
+                     
                     )}   
                        
                 </div>
               )}
             )}
-          </body>
-
-        <footer className='PointHistory-Footer'>
-          <img src="teamLogo.png" alt="The Mad Lads Team Logo" width="200" height="70"></img>
-        </footer>
-      </div>
-    );
+          </Layout>
+      );
+    }else{
+      return (
+        <h1>{this.state.loading ? "" : "401: Unauthorized"}</h1>
+      );
+    }
   }
-}}
+}
 
 export default PointHistory;

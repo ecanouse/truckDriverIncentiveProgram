@@ -1,0 +1,14 @@
+
+.Driver-Footer {
+    background-color: #e5e8f0;
+    position: absolute;
+    bottom: 0;
+    height: auto;
+    padding: 70px 5px 0px 5px;
+    width: 100%;
+}
+.Driver-Footer img {
+    float: left;
+    bottom: 0;
+    position: absolute;
+}

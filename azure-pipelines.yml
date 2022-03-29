@@ -1,16 +1,13 @@
-# Node.js with Reac
+# Node.js with React
 # Build a Node.js project that uses React.
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
-
 trigger:
-- main
-
+  - master
 
 pool:
-  vmImage: ubuntu-latest
-
+  vmImage: macOS-latest
 
 steps:
 - task: NodeTool@0
@@ -18,28 +15,59 @@ steps:
     versionSpec: '10.x'
   displayName: 'Install Node.js'
 
+- script: |
+    cd Javascript-Code/react-client
+    npm install
+  displayName: 'npm install frontend'
+
+- task: Npm@1
+  displayName: 'npm run test frontend'
+  inputs:
+    command: 'custom'
+    workingDir: 'Javascript-Code/react-client'
+    customCommand: 'run test:ci'
 
 - script: |
+    cd Javascript-Code/Node-Server
+    npm install -g jest
+  displayName: 'Globally Install Jest'
+
+- script: |
+    cd Javascript-Code/Node-Server
     npm install
-    npm run build
-  displayName: 'npm install and build'
+  displayName: 'Initialize Backend'
 
+- script: |
+    cd Javascript-Code/Node-Server
+    jest --watchAll=false --maxWorkers=2 --reporters=jest-junit
+  displayName: 'Run Backend Tests'
 
-- task: CopyFiles@2
+# - task: Npm@1
+#   displayName: 'npm run test backend'
+#   inputs:
+#     command: 'custom'
+#     workingDir: 'Javascript-Code/Node-Server'
+#     customCommand: 'run test:ci'
+
+- task: PublishTestResults@2
+  displayName: 'summply npm test results to pipelines'
+  condition: succeededOrFailed()
   inputs:
-    Contents: |
-      $(Build.SourcesDirectory)/src/**
-      $(Build.SourcesDirectory)/public/**
-      $(Build.SourcesDirectory)/package*.json
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-- task: ArchiveFiles@2
+    testResultsFiles: '**/junit.xml'
+    mergeTestResults: true
+
+- task: SSH@0
   inputs:
-    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)'
-    includeRootFolder: false
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/myapp_$(Build.BuildNumber).zip'
-    replaceExistingArchive: true
-- task: PublishBuildArtifacts@1
-  inputs: 
-    PathtoPublish: $(Build.ArtifactStagingDirectory) # dist or build files
-    ArtifactName: 'www' # output artifact named www
+    sshEndpoint: 'EC2 instance'
+    runOptions: 'inline'
+    inline: |
+      cd S22-Team04-goodwin.binz.canouse.lasher.narula.wise
+      git pull 2>&1
+      cd Javascript-Code/react-client
+      npm run build
+      cd ..
+      cd Node-Server
+      forever stopall
+      npm install 2>&1
+      forever start index.js
+    readyTimeout: '20000'

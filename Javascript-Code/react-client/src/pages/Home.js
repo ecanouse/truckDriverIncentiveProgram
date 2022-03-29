@@ -1,44 +1,18 @@
 import React, {Component} from 'react';
-import logo from '../logo.svg';
 import './Home.css';
 
 class Home extends Component{
-  state = {
-      test: ''
-    }
-
-  componentDidMount() {
-    this.getTest();
-  }
-
-  getTest = () => {
-    fetch('/test')
-    .then(response => response.json())
-    .then(response => this.setState({test: response.message}))
-    .catch(err => console.error(err))
-  }
-
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            New React App
-          </p>
-          <p>
-            {this.state.test}
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
+      <div className='HomePage'>
+        <header className='Home-Header'>
+          <img src="teamLogo.png" alt="The Mad Lads Team Logo" width="250" height="100"></img>
         </header>
-      </div>
+        <div className='home-buttons'>
+          <a href='login'><button className='home-button'>Login</button></a>
+          <a href='signup'><button className='home-button'>Signup</button></a>
+        </div>
+      </div>      
     );
   }
 }
