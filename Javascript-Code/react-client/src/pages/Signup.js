@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Navigate } from 'react-router-dom';
 
 class Signup extends Component{
 
@@ -12,7 +13,9 @@ class Signup extends Component{
     email: '',
     phone: '',
     msg: '',
-    passMsg: ''
+    passMsg: '',
+    code: '',
+    userType: ''
   };
 
   //handleChange takes the value from input boxes & updates the state
@@ -58,11 +61,11 @@ class Signup extends Component{
       firstname: this.state.firstname,
       lastname: this.state.lastname,
       email: this.state.email,
-      phone: this.state.phone
+      phone: this.state.phone,
+      code: this.state.code
     };
 
-        //sending data to node server
-    //we may want to switch to using axios, a bit easier to digest than fetch commands
+    //sending data to node server
     console.log("sending payload of :");
     console.log(payload)
     console.log("end of payload");
@@ -79,6 +82,7 @@ class Signup extends Component{
           this.setState({msg: data.msg})
           if( data.success ) {
             this.setState({redirect: true});
+            this.setState({userType: data.uType});
           }
         })
       }  
@@ -186,8 +190,23 @@ class Signup extends Component{
             value={this.state.confirmpassword}
             onChange={this.handleChange}
           />  
+
+          <p>For new drivers, use 0000.  To create a new organization, use 1111.  Otherwise, get your account code from your organization.</p>
+          <p>Account Code</p>
+          <input 
+            type="text" 
+            id="code" 
+            name="code" 
+            placeholder='account code' 
+            size="55"
+            value={this.state.code}
+            onChange={this.handleChange}
+          /> 
         
           <button type="submit" class='LoginButton' id="btn" disabled>Sign Up</button>
+          { this.state.redirect && (this.state.userType === 0) ? (<Navigate to="/driverhome"/>) : null }
+          { this.state.redirect && (this.state.userType === 1) ? (<Navigate to="/SponsorHome"/>) : null }
+          { this.state.redirect && (this.state.userType === 2) ? (<Navigate to="/AdminHome"/>) : null }
         </form>
         </div>
       </div>

@@ -99,14 +99,14 @@ class ResetPass extends Component{
         response.json().then( data => {
           if( data.success ) {
             document.getElementById('login_displaybox').style.color = "black";
-            this.setState({msg: "Email has been sent with reset instructions"});
+            this.setState({passMsg: data.msg});
             //this.setState({redirect: true});
 
           }
           else {
             //display fail message
             console.log("Code does not match.")
-            this.setState({msg: "Code does not match or is expired."})
+            this.setState({passMsg: "Code does not match or is expired."})
           }
         })
       }
