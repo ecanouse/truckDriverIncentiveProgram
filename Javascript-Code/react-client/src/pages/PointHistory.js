@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import Layout from '../components/Layout';
 import './PointHistory.css'
+import { AiOutlineArrowUp } from 'react-icons/ai';
+
 
 class PointHistory extends Component{
   state = {
@@ -47,15 +49,17 @@ class PointHistory extends Component{
             {this.state.points.map((p) => {
               return(
                 <div className='PointDisplay'>
-                  
-                  <p>Total: {p.totalPoints},  For Sponsor (id): {p.sponsorID}</p>
+                  <h3> Lets go for a <AiOutlineArrowUp color='green'/>? </h3>
+                  <p>Total: {p.totalPoints},  For Sponsor (id): {p.sponsorID.na}</p>
                   <p>All adjustments</p>
                   {p.adjustments.map(a => 
+                  
                     <p>Reason: {a.pointReason}, <span className='Alignment'>Value: {a.pointValue},</span>
                     <br/> 
                         Date: {a.date}
                         <br/><hr/><br/>
-                    </p> 
+                    </p>
+                     
                     )}   
                        
                 </div>
