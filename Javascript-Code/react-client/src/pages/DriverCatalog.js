@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import CatalogItem from '../components/CatalogItem';
 import Layout from '../components/Layout';
 import './DriverCatalog.css'
 
@@ -23,7 +24,7 @@ class DriverCatalog extends Component{
     if (this.state.isDriver){
       return (
         <Layout userType={0}>
-          
+          <CatalogItem listingId={1156488806}/>
         </Layout>
       );
     }else{
