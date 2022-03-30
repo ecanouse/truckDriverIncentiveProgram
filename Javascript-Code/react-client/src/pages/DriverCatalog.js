@@ -6,7 +6,8 @@ import './DriverCatalog.css'
 class DriverCatalog extends Component{
   state = {
     loading: true,
-    isDriver: false
+    isDriver: false,
+    items: [1156488806, 869547756, 1031470365, 234064691]
   }
   
   componentDidMount() {
@@ -24,7 +25,11 @@ class DriverCatalog extends Component{
     if (this.state.isDriver){
       return (
         <Layout userType={0}>
-          <CatalogItem listingId={1156488806}/>
+          <div className='DriverCatalog-Items'>
+            {this.state.items.map((item, i) => {return(
+              <CatalogItem key={i} listingId={item}/>
+            )})}
+          </div>
         </Layout>
       );
     }else{
