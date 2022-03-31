@@ -6,52 +6,50 @@ class CatalogItem extends Component{
     state = {
         loading: true,
         name: '',
-        quantity: 0,
-        price: 0,
+        // quantity: 0,
+        // price: 0,
         description: '',
-        url: '',
+        // url: '',
         images: [],
         currentimg: 0
     }
 
-    componentDidMount(){
-        this.getListing();
+    componentWillReceiveProps(nextProps) {
+        this.getListing(nextProps.item)
     }
 
-    getListing = () => {
-        fetch(`/getListing?` + new URLSearchParams({
-            listingId: this.props.listingId,
-          }))
-        .then(response => response.json())
-        .then(response => {
-          let name = response.name
-          let cutoff = 30;
-          if(name.length>cutoff){
+    componentDidMount(){
+        // console.log(this.props.item.images)
+        this.getListing(this.props.item);
+    }
+
+    // componentDidUpdate(){
+    //     this.getListing();
+    // }
+
+    getListing = (item) => {
+        let name = item.name
+        let cutoff = 30;
+        if(name.length>cutoff){
             for(cutoff; name.charAt(cutoff)!==' ' && name.charAt(cutoff)!=='\n' && cutoff!==name.length; cutoff++);
-            
             if(cutoff!==name.length){
                 name = name.substring(0,cutoff)+'...';
             }
-          }
-          let description = response.description
-          cutoff = 150;
-          if(description.length>cutoff){
+        }
+        let description = item.description
+        cutoff = 150;
+        if(description.length>cutoff){
             for(cutoff; description.charAt(cutoff)!==' ' && description.charAt(cutoff)!=='\n' && cutoff!==description.length; cutoff++);
             if(cutoff!==description.length){
                 description = description.substring(0,cutoff)+'...';
             }
-          }
-          this.setState({
+        }
+        this.setState({
             name: name,
-            quantity: response.quantity,
-            price: response.price,
             description: description,
-            url: response.url
-          })
         })
-        .catch(err => console.error(err))
         fetch(`/getListingImages?` + new URLSearchParams({
-            listingId: this.props.listingId,
+            listingId: item.listingId,
           }))
         .then(response => response.json())
         .then(response => {
@@ -75,20 +73,25 @@ class CatalogItem extends Component{
         })
     }
 
+    onClick = () => {
+        this.props.buttonClick(this.props.item.listingId);
+    }
+
     render() {
         return (
             <div className='CatalogItem-Body'>
                 <div className='CatalogItem-Text'>
-                  <a href={this.state.url} target='_blank'><h1 className='CatalogItem-Name'>{this.state.name}</h1></a>
+                  <a href={this.props.item.url} target='_blank'><h1 className='CatalogItem-Name'>{this.state.name}</h1></a>
                   <div className='CatalogItem-Info'>
-                    <p>Points: {this.state.price}</p>
-                    {this.state.quantity < 10 ? <p style={{color: 'red'}}>Only {this.state.quantity} in stock!</p> : <p>{this.state.quantity} in stock</p>}
+                    <p>Points: {parseInt(this.props.item.price*this.props.ppd)}</p>
+                    {this.props.item.quantity < 10 ? <p style={{color: 'red'}}>Only {this.props.item.quantity} in stock!</p> : <p>{this.props.item.quantity} in stock</p>}
                   </div>
                   <p>{this.state.description}</p>
+                  <button className='CatalogItem-Button' onClick={this.onClick}>Add to Cart</button>
                 </div> 
                 <div className='CatalogItem-ImgSide'>
                     <div className='CatalogItem-ImgContainer'>
-                        {!this.state.loading && <img className='CatalogItem-Img' src={this.state.images[this.state.currentimg].url_fullxfull} alt="Item Image"></img>}
+                        {!this.state.loading && <img className='CatalogItem-Img' src={this.state.images[this.state.currentimg]} alt="Item Image"></img>}
                     </div>
                     <div>
                         <BsArrowLeftSquare className='CatalogItem-Arrow' onClick={() => this.prevImage()}></BsArrowLeftSquare>
