@@ -7,7 +7,6 @@ import DriverHome from './pages/DriverHome';
 import Login from './pages/Login';
 import PointAssignment from './pages/PointAssignment';
 import PointHistory from './pages/PointHistory';
-import ShoppingCart from './pages/ShoppingCart';
 import Signup from './pages/Signup';
 import SponsorApplications from './pages/SponsorApplications';
 import SponsorCatalog from './pages/SponsorCatalog';
@@ -29,7 +28,6 @@ class App extends Component{
           <Route path="/login" element={<Login/>}/>
           <Route path="/pointassignment" element={<PointAssignment/>}/>
           <Route path="/pointhistory" element={<PointHistory/>}/>
-          <Route path="/shoppingcart" element={<ShoppingCart/>}/>
           <Route path="/signup" element={<Signup/>}/>
           <Route path="/sponsorapplications" element={<SponsorApplications/>}/>
           <Route path="/sponsorcatalog" element={<SponsorCatalog/>}/>

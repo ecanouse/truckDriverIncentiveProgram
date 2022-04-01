@@ -19,13 +19,8 @@ class CatalogItem extends Component{
     }
 
     componentDidMount(){
-        // console.log(this.props.item.images)
         this.getListing(this.props.item);
     }
-
-    // componentDidUpdate(){
-    //     this.getListing();
-    // }
 
     getListing = (item) => {
         let name = item.name
@@ -74,7 +69,7 @@ class CatalogItem extends Component{
     }
 
     onClick = () => {
-        this.props.buttonClick(this.props.item.listingId);
+        this.props.buttonClick(this.props.item.listingId, this.props.item.quantity, this.state.name, this.props.item.price*this.props.ppd);
     }
 
     render() {

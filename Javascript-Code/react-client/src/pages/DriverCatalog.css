@@ -5,6 +5,12 @@
     flex-wrap: wrap;
 }
 
+.DriverCatalog-Top{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
 .DriverCatalog-SelectLabel{
     display: flex;
     flex-direction: column;
@@ -22,7 +28,26 @@
 }
 
 .DriverCatalog-Title {
-    width: 100%;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
+}
+
+.DriverCatalog-Cart{
+    align-self: center;
+    font-size: 22px;
+    border-radius: 8px;
+    height: 60px;
+    width: 150px;
+    margin-bottom: 10px;
+    border: 2px solid lightgray;
+}
+
+.DriverCatalog-Cart:hover{
+    border: 2px solid gray;
+}
+
+.DriverCatalog-Cart:active{
+    border: 3px solid gray;
 }

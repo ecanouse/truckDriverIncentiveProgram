@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import CatalogItem from '../components/CatalogItem';
 import Layout from '../components/Layout';
 import './DriverCatalog.css'
+import ShoppingCart from '../components/ShoppingCart';
 
 class DriverCatalog extends Component{
   state = {
@@ -12,7 +13,9 @@ class DriverCatalog extends Component{
     org: -1,
     orgName: '',
     pointsPerDollar: 0,
-    cart: []
+    cart: [],
+    points: [],
+    viewCart: false
   }
   
   componentDidMount() {
@@ -25,6 +28,15 @@ class DriverCatalog extends Component{
     }))
     .then(response => response.json())
     .then(response => this.setState({items: response.items}))
+    .catch(err => console.error(err))
+  }
+
+  getPoints = () => {
+    fetch('/get-points')
+    .then(response => response.json())
+    .then(response => {
+      this.setState({points: response.Points})
+    })
     .catch(err => console.error(err))
   }
 
@@ -51,6 +63,7 @@ class DriverCatalog extends Component{
       this.setState({loading: false, isDriver: response.is_driver})
       if(response.is_driver){
         this.getOrgs();
+        this.getPoints();
       }
     })
     .catch(err => console.error(err))
@@ -62,47 +75,66 @@ class DriverCatalog extends Component{
       org: org.sponsorID,
       orgName: org.orgName,
       pointsPerDollar: org.pointsPerDollar,
+      viewCart: false,
+      cart: []
     }, this.getItems)
   }
 
-  addToCart = (listingId) => {
-    let newCart = this.state.cart;
-    const item = newCart.findIndex(item => parseInt(item.listingId) === parseInt(listingId))
-    if(item!==-1){
-      newCart[item].quantity = newCart[item].quantity + 1
-    }else{
-      newCart.push({
-        listingId: listingId,
-        quantity: 1
+  addToCart = (listingId, quantity, name, price) => {
+    if(!this.state.viewCart){
+      let newCart = this.state.cart;
+      const item = newCart.findIndex(item => parseInt(item.listingId) === parseInt(listingId))
+      if(item!==-1){
+        newCart[item].quantity = newCart[item].quantity + 1
+      }else{
+        newCart.push({
+          listingId: listingId,
+          maxquantity: quantity,
+          name: name,
+          price: price,
+          quantity: 1
+        })
+      }
+      this.setState({
+        cart: newCart
       })
     }
-    this.setState({
-      cart: newCart
-    })
-    console.log(this.state.cart)
+  }
+
+  exitCart = (action) => {
+    if(action === 0){
+      this.setState({viewCart: false})
+    }else{
+      this.setState({viewCart: false, cart: []})
+    }
   }
 
   render() {
     if (this.state.isDriver){
       return (
         <Layout userType={0}>
-          <div className='DriverCatalog-SelectLabel'>
-            <label htmlFor='SelectSponsor'>Select Sponsor:</label>
-            <select className='DriverCatalog-Select' id='SelectSponsor' onChange={this.changeOrg}>
-                {this.state.orgs.map((org, i) => {return(
-                  <option value={org.sponsorID} key={i}>{org.orgName}</option>
-                )})}
-            </select>
-          </div>
           <div className='DriverCatalog-Items'>
-            <div className='DriverCatalog-Title'>
-              <h1>{this.state.orgName} Catalog</h1>
+            <div className='DriverCatalog-Top'>
+              <div className='DriverCatalog-SelectLabel'>
+                <label htmlFor='SelectSponsor'>Select Sponsor:</label>
+                <select className='DriverCatalog-Select' id='SelectSponsor' onChange={this.changeOrg}>
+                    {this.state.orgs.map((org, i) => {return(
+                      <option value={org.sponsorID} key={i}>{org.orgName}</option>
+                    )})}
+                </select>
+                <p>Balance: {this.state.points.find(point => point.sponsorID === this.state.org) && this.state.points.find(point => point.sponsorID === this.state.org).totalPoints} points</p>
+              </div>
+              <div className='DriverCatalog-Title'>
+                {/* <h1>{this.state.orgName} Catalog</h1> */}
+                <button className='DriverCatalog-Cart' onClick={() => this.setState({viewCart: true})}>View Cart</button>
+              </div>
             </div>
             {this.state.items.map((item, i) => {
               return(
                 <CatalogItem key={i} item={item} ppd={this.state.pointsPerDollar} buttonClick={this.addToCart}/>
             )})}
           </div>
+          {this.state.viewCart && <ShoppingCart cart={this.state.cart} sponsor={this.state.org} points={this.state.points.find(point => point.sponsorID === this.state.org).totalPoints} exit={this.exitCart}/>}
         </Layout>
       );
     }else{
