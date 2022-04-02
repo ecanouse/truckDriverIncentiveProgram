@@ -16,6 +16,7 @@ class CatalogItem extends Component{
 
     componentWillReceiveProps(nextProps) {
         this.getListing(nextProps.item)
+        this.setState({currentimg: 0})
     }
 
     componentDidMount(){
