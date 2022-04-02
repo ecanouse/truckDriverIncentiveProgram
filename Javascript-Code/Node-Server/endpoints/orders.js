@@ -10,10 +10,12 @@ module.exports = function(app, connection){
             if(err) console.log(err);
             let orderId = result.insertId;
             req.body.cart.map((item, i) => {
-                const item_query = `INSERT INTO new_schema.ORDER_ITEMS (listingId, orderID, name, price, quantity) VALUES (${item.listingId}, ${orderId}, "${item.name}", ${item.price}, ${req.body.quantity[i]})`;
-                connection.query(item_query, function(err, result, fields) {
-                    if(err) console.log(err);
-                });
+                if(req.body.quantity[i]>0){
+                    const item_query = `INSERT INTO new_schema.ORDER_ITEMS (listingId, orderID, name, price, quantity) VALUES (${item.listingId}, ${orderId}, "${item.name}", ${item.price}, ${req.body.quantity[i]})`;
+                    connection.query(item_query, function(err, result, fields) {
+                        if(err) console.log(err);
+                    });
+                }
             })
             const email_query = `SELECT email from new_schema.USER where uid=${session.userid};`;
             connection.query(email_query, function(err, result) {
