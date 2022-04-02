@@ -1,3 +1,5 @@
+const nodemailer = require("nodemailer");
+
 module.exports = function(app, connection){
     app.post('/create-order', (req, res) => {
         session = req.session
@@ -13,6 +15,35 @@ module.exports = function(app, connection){
                     if(err) console.log(err);
                 });
             })
+            const email_query = `SELECT email from new_schema.USER where uid=${session.userid};`;
+            connection.query(email_query, function(err, result) {
+                if(err) console.log(err);
+                const email=result[0].email;
+                const transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        user: 'madlads4910@gmail.com',
+                        pass: '4910madlads!'
+                    }
+                })
+                msgText = `An order has been placed by your account.\n\nDetails:\n-Sponsor: ${req.body.sponsorName}\n-Date: ${date}\n-Price: ${req.body.total}\n-Balance: ${req.body.points-req.body.total}`;
+                const mailOptions = {
+                    from: 'madlads4910@gmail.com',
+                    to: email,
+                    subject: 'Order Confirmation',
+                    text: msgText
+                }
+    
+                transporter.sendMail(mailOptions, function(error, info){
+                    if(error){
+                        console.log(error);
+                    }else{
+                        console.log('Email sent: ' + info.response)
+                    }
+                    
+                });
+            })
+
         });
         res.send({success: true})
     });

@@ -134,7 +134,7 @@ class DriverCatalog extends Component{
                 <CatalogItem key={i} item={item} ppd={this.state.pointsPerDollar} buttonClick={this.addToCart}/>
             )})}
           </div>
-          {this.state.viewCart && <ShoppingCart cart={this.state.cart} sponsor={this.state.org} points={this.state.points.find(point => point.sponsorID === this.state.org).totalPoints} exit={this.exitCart}/>}
+          {this.state.viewCart && <ShoppingCart cart={this.state.cart} sponsor={this.state.org} sponsorName={this.state.orgName} points={this.state.points.find(point => point.sponsorID === this.state.org).totalPoints} exit={this.exitCart}/>}
         </Layout>
       );
     }else{
