@@ -51,6 +51,7 @@ class ShoppingCart extends Component{
                 total: this.state.total,
                 cart: this.props.cart,
                 quantity: this.state.quantity,
+                sponsor: this.props.sponsor,
                 sponsorName: this.props.sponsorName,
                 points: this.props.points,
             };
