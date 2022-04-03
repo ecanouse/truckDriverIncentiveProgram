@@ -113,7 +113,7 @@ class DriverCatalog extends Component{
     if (this.state.isDriver){
       return (
         <Layout userType={0}>
-          <div className='DriverCatalog-Items'>
+          <div className='DriverCatalog-Body'>
             <div className='DriverCatalog-Top'>
               <div className='DriverCatalog-SelectLabel'>
                 <label htmlFor='SelectSponsor'>Select Sponsor:</label>
@@ -129,10 +129,12 @@ class DriverCatalog extends Component{
                 <button className='DriverCatalog-Cart' onClick={() => this.setState({viewCart: true})}>View Cart</button>
               </div>
             </div>
-            {this.state.items.map((item, i) => {
-              return(
-                <CatalogItem key={i} item={item} ppd={this.state.pointsPerDollar} buttonClick={this.addToCart}/>
-            )})}
+            <div className='DriverCatalog-Items'>
+              {this.state.items.map((item, i) => {
+                return(
+                  <CatalogItem key={i} item={item} ppd={this.state.pointsPerDollar} buttonClick={this.addToCart}/>
+              )})}
+            </div>
           </div>
           {this.state.viewCart && <ShoppingCart cart={this.state.cart} sponsor={this.state.org} sponsorName={this.state.orgName} points={this.state.points.find(point => point.sponsorID === this.state.org).totalPoints} exit={this.exitCart}/>}
         </Layout>
