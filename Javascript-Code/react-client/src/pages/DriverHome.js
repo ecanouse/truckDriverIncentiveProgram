@@ -20,6 +20,7 @@ class DriverHome extends Component{
   }
 
   render() {
+    
     if (this.state.isDriver){
       return (
         <Layout userType={0} isUser={this.isDriver}>
@@ -31,6 +32,8 @@ class DriverHome extends Component{
               <option>Last 30 Days</option>
             </select>
         </Layout>
+        
+        
       );
     }else{
       return (

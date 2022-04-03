@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "nodemailer": "^6.7.2",
+    "react-icons": "^4.3.1"
+  }
+}
