@@ -77,7 +77,7 @@ class CatalogItem extends Component{
         return (
             <div className='CatalogItem-Body'>
                 <div className='CatalogItem-Text'>
-                  <a href={this.props.item.url} target='_blank'><h1 className='CatalogItem-Name'>{this.state.name}</h1></a>
+                  <a href={this.props.item.url} target='_blank' rel="noopener noreferrer"><h1 className='CatalogItem-Name'>{this.state.name}</h1></a>
                   <div className='CatalogItem-Info'>
                     <p>Points: {parseInt(this.props.item.price*this.props.ppd)}</p>
                     {this.props.item.quantity < 10 ? <p style={{color: 'red'}}>Only {this.props.item.quantity} in stock!</p> : <p>{this.props.item.quantity} in stock</p>}
@@ -87,7 +87,7 @@ class CatalogItem extends Component{
                 </div> 
                 <div className='CatalogItem-ImgSide'>
                     <div className='CatalogItem-ImgContainer'>
-                        {!this.state.loading && <img className='CatalogItem-Img' src={this.state.images[this.state.currentimg]} alt="Item Image"></img>}
+                        {!this.state.loading && <img className='CatalogItem-Img' src={this.state.images[this.state.currentimg]} alt="Catalog Item"></img>}
                     </div>
                     <div>
                         <BsArrowLeftSquare className='CatalogItem-Arrow' onClick={() => this.prevImage()}></BsArrowLeftSquare>

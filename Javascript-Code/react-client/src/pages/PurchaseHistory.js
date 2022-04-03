@@ -95,8 +95,6 @@ class PurchaseHistory extends Component{
     })
     .then(response => {
     if( response.status === 200 ) {
-        const today = new Date();
-        const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
         payload = {
             add: true,
             value: points,

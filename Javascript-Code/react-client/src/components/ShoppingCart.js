@@ -11,7 +11,7 @@ class ShoppingCart extends Component{
     componentDidMount(){
         let newQuantity = this.state.quantity;
         this.props.cart.map((item) => {
-            newQuantity.push(1)
+            return newQuantity.push(1);
         })
         this.setState({quantity: newQuantity})
         this.calculateTotal()
@@ -30,7 +30,7 @@ class ShoppingCart extends Component{
     calculateTotal = () => {
         let total = 0;
         this.props.cart.map((item, i) => {
-            total += item.price*this.state.quantity[i]
+            return total += item.price*this.state.quantity[i]
         })
         this.setState({total: total}, () =>{
             
