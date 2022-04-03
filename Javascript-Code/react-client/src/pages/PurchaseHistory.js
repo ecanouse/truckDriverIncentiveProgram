@@ -142,7 +142,7 @@ class PurchaseHistory extends Component{
                                 <p>Total: {order.total} points</p>
                                 <p>Status: {this.getStatus(order.date, order.status)}</p>
                             </div>
-                            {this.getStatus(order.date, order.status) === "Canceled" ? <p>Canceled</p> : <button className='PurchaseHistory-Button' onClick={() => this.cancelOrder(order.orderID, order.total)}>Cancel Order</button>}
+                            {this.getStatus(order.date, order.status) === "Canceled" ? <p>Canceled</p> : this.getStatus(order.date, order.status) === "Delivered" ? <p>Delivered</p> : <button className='PurchaseHistory-Button' onClick={() => this.cancelOrder(order.orderID, order.total)}>Cancel Order</button>}
                             <div>
                                 {order.items.map((item, i) => {return(
                                     <div key={i} className='PurchaseHistory-Item'>
