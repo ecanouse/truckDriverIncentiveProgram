@@ -1,6 +1,14 @@
 module.exports = function(app, connection){
     const axios = require('axios');
 
+    app.post('/remove-item', (req, res) => {
+        const delete_query = `DELETE from new_schema.SPONSOR_CATALOG where sponsorID=${req.body.sponsorID} and listingId=${req.body.listingId}`;
+            connection.query(delete_query, function(err, result, fields) {
+                if(err) console.log(err);
+                res.send({success: true});
+        });
+    });
+
     app.get('/getListing', (req, res) => {
         axios.get(`https://openapi.etsy.com/v3/application/listings/${req.query.listingId}`, {headers: {'x-api-key': 'h7ctibmsc63qthr5ozej14i4'}})
         .then(function (response) {

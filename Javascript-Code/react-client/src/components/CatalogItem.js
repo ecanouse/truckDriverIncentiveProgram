@@ -74,16 +74,22 @@ class CatalogItem extends Component{
     }
 
     render() {
+        let buttonText = ""
+        if(this.props.type === 0){
+            buttonText = "Add to Cart"
+        }else if(this.props.type === 1){
+            buttonText = "Remove Item"
+        }
         return (
             <div className='CatalogItem-Body'>
                 <div className='CatalogItem-Text'>
                   <a href={this.props.item.url} target='_blank' rel="noopener noreferrer"><h1 className='CatalogItem-Name'>{this.state.name}</h1></a>
                   <div className='CatalogItem-Info'>
                     <p>Points: {parseInt(this.props.item.price*this.props.ppd)}</p>
-                    {this.props.item.quantity < 10 ? <p style={{color: 'red'}}>Only {this.props.item.quantity} in stock!</p> : <p>{this.props.item.quantity} in stock</p>}
+                    {this.props.item.quantity < 10 ? this.props.item.quantity===0 ? <p style={{color: 'red'}}>Out of stock!</p>  : <p style={{color: 'red'}}>Only {this.props.item.quantity} in stock!</p> : <p>{this.props.item.quantity} in stock</p>}
                   </div>
                   <p>{this.state.description}</p>
-                  <button className='CatalogItem-Button' onClick={this.onClick}>Add to Cart</button>
+                  <button className='CatalogItem-Button' onClick={this.onClick}>{buttonText}</button>
                 </div> 
                 <div className='CatalogItem-ImgSide'>
                     <div className='CatalogItem-ImgContainer'>
