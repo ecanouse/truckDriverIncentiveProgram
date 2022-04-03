@@ -65,6 +65,7 @@ class PointAssignment extends Component{
       add: this.state.add,
       value: this.state.value,
       driver: this.state.driver,
+      sponsor: -1,
       comment: this.state.comment,
     };
     console.log(payload)
