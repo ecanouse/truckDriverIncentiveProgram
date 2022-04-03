@@ -5,12 +5,16 @@ import './ReportingWindow.css'
 
 const columns = [
     {
-        name: 'Title',
-        selector: row => row.title,
+        name: 'Date',
+        selector: row => row.date,
     },
     {
-        name: 'Year',
-        selector: row => row.year,
+        name: 'username',
+        selector: row => row.username,
+    },
+    {
+        name: 'success',
+        selector: row => row.success,
     },
 ];
 
@@ -27,19 +31,15 @@ const data = [
     },
 ]
 
-function MyComponent() {
-    return (
-        <DataTable
-            columns={columns}
-            data={data}
-        />
-    );
-};
-
 class ReportingWindow extends Component {
     
     render() {
-        return MyComponent();
+        return(
+            <DataTable
+            columns={columns}
+            data={this.props.data}
+        />
+        );
     }
 
 }
