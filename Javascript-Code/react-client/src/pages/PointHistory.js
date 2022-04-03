@@ -3,7 +3,6 @@ import Layout from '../components/Layout';
 import './PointHistory.css'
 import { AiOutlineArrowUp } from 'react-icons/ai';
 
-
 class PointHistory extends Component{
   state = {
     loading: true,
@@ -49,7 +48,6 @@ class PointHistory extends Component{
             {this.state.points.map((p) => {
               return(
                 <div className='PointDisplay'>
-                  <h3> Lets go for a <AiOutlineArrowUp color='green'/>? </h3>
                   <p>Total: {p.totalPoints},  For Sponsor (id): {p.sponsorID.na}</p>
                   <p>All adjustments</p>
                   {p.adjustments.map(a => 
