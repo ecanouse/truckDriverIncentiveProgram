@@ -12,8 +12,8 @@ module.exports = function(app, connection){
         })
     }
 
-    function addAdjustment(req, sponsorID) {
-        const driver_point_query = `SELECT DPointID from new_schema.DRIVER_POINTS where uID = ${req.body.driver} AND sponsorID=${sponsorID};`;
+    function addAdjustment(req, driverID, sponsorID) {
+        const driver_point_query = `SELECT DPointID from new_schema.DRIVER_POINTS where uID = ${driverID} AND sponsorID=${sponsorID};`;
         connection.query(driver_point_query, function(err, result) {
             if(err) {
                 console.log(err);
@@ -36,15 +36,15 @@ module.exports = function(app, connection){
         console.log('Recieved point assignment');
         console.log(req.body);
         session=req.session;
-
         const org_query = `SELECT sponsorID from new_schema.USER_SPONSOR_REL where uID = ${session.userid};`;
         connection.query(org_query, function(err, result) {
             if(err) {
                 console.log(err);
                 res.send({success: false})
             }else{
-                sponsorID = result[0].sponsorID;
-                const exists_query = `SELECT EXISTS (SELECT * from new_schema.DRIVER_POINTS where uID = ${req.body.driver} AND sponsorID=${sponsorID}) as 'is_exist';`;
+                const sponsorID = req.body.sponsor === -1 ?  result[0].sponsorID : req.body.sponsor;
+                const driverID = req.body.driver === -1 ?  session.userid : req.body.driver;
+                const exists_query = `SELECT EXISTS (SELECT * from new_schema.DRIVER_POINTS where uID = ${driverID} AND sponsorID=${sponsorID}) as 'is_exist';`;
                 connection.query(exists_query, function(err, result) {
                     if(err) {
                         console.log(err);
@@ -54,7 +54,7 @@ module.exports = function(app, connection){
         
                     if(result[0].is_exist===0){
                         const value = req.body.add ? req.body.value : req.body.value * -1;
-                        const points_query = `insert into new_schema.DRIVER_POINTS values (NULL, ${req.body.driver}, ${value}, ${sponsorID});`;
+                        const points_query = `insert into new_schema.DRIVER_POINTS values (NULL, ${driverID}, ${value}, ${sponsorID});`;
                         connection.query(points_query, function(err, result) {
                             if(err) {
                                 console.log(err);
@@ -65,16 +65,16 @@ module.exports = function(app, connection){
                             }
                         })
                     }else{
-                        const driver_point_query = `SELECT * from new_schema.DRIVER_POINTS where uID = ${req.body.driver} AND sponsorID=${sponsorID};`;
+                        const driver_point_query = `SELECT * from new_schema.DRIVER_POINTS where uID = ${driverID} AND sponsorID=${sponsorID};`;
                         connection.query(driver_point_query, function(err, result) {
                             const newPoints = req.body.add ? (parseInt(result[0].totalPoints) + parseInt(req.body.value)) : (parseInt(result[0].totalPoints) - parseInt(req.body.value));
-                            const points_query = `update new_schema.DRIVER_POINTS set totalPoints = ${newPoints} where uID = ${req.body.driver} AND sponsorID=${sponsorID};`;
+                            const points_query = `update new_schema.DRIVER_POINTS set totalPoints = ${newPoints} where uID = ${driverID} AND sponsorID=${sponsorID};`;
                             connection.query(points_query, function(err, result) {
                                 if(err) {
                                     console.log(err);
                                     res.send({success: false})
                                 }else{
-                                    addAdjustment(req, sponsorID)
+                                    addAdjustment(req, driverID, sponsorID)
                                 }
                             })
                         })
