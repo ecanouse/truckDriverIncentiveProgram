@@ -56,6 +56,7 @@ require('./endpoints/organizations')(app, connection);
 require('./endpoints/adduser')(app, connection);
 //require('./endpoints/resetpass-attempt')(app, connection);
 require('./endpoints/resetpass-attempt')(app, connection);
+require('./endpoints/reporting')(app, connection);
 require('./endpoints/catalog')(app, connection);
 require('./endpoints/orders')(app, connection);
 

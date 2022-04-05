@@ -132,7 +132,7 @@ class DriverCatalog extends Component{
             <div className='DriverCatalog-Items'>
               {this.state.items.map((item, i) => {
                 return(
-                  <CatalogItem key={i} item={item} ppd={this.state.pointsPerDollar} buttonClick={this.addToCart}/>
+                  <CatalogItem key={i} type={0} item={item} ppd={this.state.pointsPerDollar} buttonClick={this.addToCart}/>
               )})}
             </div>
           </div>
