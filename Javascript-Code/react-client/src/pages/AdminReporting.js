@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import './AdminReporting.css';
-import ReportingWindow from '../components/ReportingWindow.js';
+import AuditLogResults from '../components/AuditLogResults.js';
 import Layout from '../components/Layout';
-
-import DataTable from 'react-data-table-component';
+import ExportButton from '../components/ExportButton';
+import ReportsTitle from '../components/ReportsTitle';
 
 
 const columns = [
@@ -26,7 +26,8 @@ class AdminReporting extends Component{
     loading: true,
     isAdmin: true,
     columns: {},
-    data: {}
+    data: {},
+    data_fetched: false
   }
   
 //   componentDidMount() {
@@ -110,21 +111,21 @@ class AdminReporting extends Component{
     //     .catch(err => console.error(err))
     // }
 
+
+
   render() {
     // if (this.state.isSponsor){
 
-      this.getAuditLogReport();
+      if(!this.state.data_fetched) {
+        this.getAuditLogReport();
+        this.state.data_fetched = true;
+      }
 
       return (
         <Layout userType={2}>
-            {/* <ReportingWindow data={this.state.data}></ReportingWindow> */}
-            <DataTable
-            columns={columns}
-            data={this.state.data}
-            pagination
-            />
-
-            <button onClick={this.getAuditLogReport}>Audit Log Report</button>
+            <ReportsTitle content="Login Attempts"></ReportsTitle>
+            <AuditLogResults data={this.state.data}></AuditLogResults>
+            <ExportButton data={this.state.data}>Export</ExportButton>
         </Layout>
       );
     // }else{
