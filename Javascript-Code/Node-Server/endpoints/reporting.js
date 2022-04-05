@@ -1,11 +1,12 @@
 module.exports = function(app, connection){
     
-    app.post('/getAuditLogReport', (req, res) => {
+    app.post('/getLoginAttempts', (req, res) => {
 
         console.log('Recieved Request for Audit Log Report')
         console.log(req.body)
 
-        const query = "select la.date, la.username, la.success from LOGIN_ATTEMPTS as la"
+        //Get login attempts info
+        var query = "select la.date, la.username, la.success from LOGIN_ATTEMPTS as la"
         connection.query(query, function(err, result) {
             if(err) {
                 console.log(err);
@@ -16,10 +17,80 @@ module.exports = function(app, connection){
                 res.send(result);
 
             }
-        })
-
+        });
 
     });
+
+
+    app.post('/getPasswordChanges', (req, res) => {
+
+        console.log('Recieved Request for Audit Log Report')
+        console.log(req.body)
+
+        //Get password change info
+        query = "select pw.date, usr.username, pw.changeType from PASSWORD_CHANGES as pw, USER as usr where pw.uID = usr.uID;"
+        connection.query(query, function(err, result) {
+            if(err) {
+                console.log(err);
+                res.send({success:false})
+            }
+            else {
+
+                res.send(result);
+
+            }
+        });
+
+    });
+
+    app.post('/getPointAdjustments', (req, res) => {
+
+        console.log('Recieved Request for Audit Log Report')
+        console.log(req.body)
+
+        //get point adjustment info
+        query = "select pnt.date, sp.orgName, dr.lname, dr.fname, pnt.pointValue, pnt.pointReason from POINT_ADJUSTMENT as pnt, SPONSOR_ORG as sp, DRIVER_POINTS as dp, USER as dr where pnt.sponsorID = sp.sponsorID and pnt.DPointID = dp.DPointID and dp.uID = dr.uID;"
+        connection.query(query, function(err, result) {
+            if(err) {
+                console.log(err);
+                res.send({success:false})
+            }
+            else {
+
+                res.send(result)
+
+            }
+        });
+
+    });
+
+    app.post('/getApplications', (req, res) => {
+
+        console.log('Recieved Request for Audit Log Report')
+        console.log(req.body)
+
+        //get application info
+        query = "select app.date, sp.orgName, dr.lname, dr.fname, app.status from APPLICATION as app, SPONSOR_ORG as sp, USER as dr where dr.uID = app.uID and sp.sponsorID = app.sponsorID;"
+        connection.query(query, function(err, result) {
+            if(err) {
+                console.log(err);
+                res.send({success:false})
+            }
+            else {
+
+                res.send(result)
+
+            }
+        });
+
+    });
+
+
+
+
+
+    
+
 
     // app.post('/point-assignment', (req, res) => {
     //     console.log('Recieved point assignment');
