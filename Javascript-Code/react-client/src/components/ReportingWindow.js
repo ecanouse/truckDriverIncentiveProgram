@@ -38,9 +38,10 @@ class ReportingWindow extends Component {
             <DataTable
             columns={columns}
             data={this.props.data}
-        />
+            pagination
+            />
         );
-    }
+    };
 
 }
 

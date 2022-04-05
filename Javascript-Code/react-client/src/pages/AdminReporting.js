@@ -3,6 +3,24 @@ import './AdminReporting.css';
 import ReportingWindow from '../components/ReportingWindow.js';
 import Layout from '../components/Layout';
 
+import DataTable from 'react-data-table-component';
+
+
+const columns = [
+    {
+        name: 'Date',
+        selector: row => row.date,
+    },
+    {
+        name: 'username',
+        selector: row => row.username,
+    },
+    {
+        name: 'success',
+        selector: row => row.success,
+    },
+];
+
 class AdminReporting extends Component{
   state = {
     loading: true,
@@ -94,9 +112,18 @@ class AdminReporting extends Component{
 
   render() {
     // if (this.state.isSponsor){
+
+      this.getAuditLogReport();
+
       return (
         <Layout userType={2}>
-            <ReportingWindow data={this.state.data}></ReportingWindow>
+            {/* <ReportingWindow data={this.state.data}></ReportingWindow> */}
+            <DataTable
+            columns={columns}
+            data={this.state.data}
+            pagination
+            />
+
             <button onClick={this.getAuditLogReport}>Audit Log Report</button>
         </Layout>
       );
