@@ -48,6 +48,17 @@ class AdminHeader extends Component {
                 </a>
                     
                 </nav>
+
+                <div className='SmallNav'>
+              <button className='NavButtons'>Menu</button>
+              <div className='SmallNavContents'>
+                <a href='DriverHome'>Home</a>
+                <a href='PointHistory'>Points</a>
+                <a href='CatalogPurchase'>Catalog</a>
+                <a href='UpdateAccount'>Settings</a>
+              </div>                
+            </div>
+
                 <ul className='AdminLout-UpAcc'>
                 <img src='DefaultProfPic.png' alt='Default Profile Picure' width='40' height='40'/>
                 <li><a href='UpdateAccount'>{this.state.username}</a></li>

@@ -6,14 +6,6 @@
     margin: -70px;
 }
 
-.nav select {
-    display: none;
-}
-
-@media (max-width: 960px) {
-    Nav a     { display: none; }
-    Nav select { display: inline-block; }
-  }
 
 .NavButtons {
     font-size: 18px;
@@ -32,6 +24,31 @@
 .NavButtons:active {
     background-color: #bec6da;
     transform: translateY(4px);
+}
+
+.SmallNav {
+    display: none;
+    text-align: center;
+}
+
+.SmallNavContents {
+    display: none;
+    text-align: center;
+}
+
+.SmallNavContents a {
+    text-align: center;
+    color: black;
+    text-decoration: none;
+    display: block;
+    padding: 12px 16px;
+}
+
+.SmallNav:hover .SmallNavContents {display: block;}
+
+@media (max-width: 780px) {
+    .Nav a    { display: none; }
+    .SmallNav { display:block; }
 }
 
 .DriverLout-UpAcc {
