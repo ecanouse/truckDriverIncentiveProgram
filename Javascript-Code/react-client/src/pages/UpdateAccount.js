@@ -71,6 +71,22 @@ class UpdateAccount extends Component{
     });
   };
 
+  checkComplexity = (event) => {
+    const target = event.target;
+    const value = target.value;
+    let strongPassword = new RegExp('((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,20}))');
+    if(strongPassword.test(value)){
+      this.setState({passMsg: ""})
+      document.getElementById("btn").disabled = false;
+    }else{
+      if(value == ''){
+        this.setState({passMsg: ""})
+      }else{
+        this.setState({passMsg: "Password must be 8-20 characters long and contain a lowercase letter, a capital letter, a number, and a special character."})
+      }
+    }
+  }
+
   submit = (event) => {
     event.preventDefault();
     var payload = {
@@ -115,11 +131,12 @@ class UpdateAccount extends Component{
               <label className='inputs' htmlFor='email'><br/>Update your Email<br/></label>
                   <input required type='email' id='email' name='email' size='45' value={this.state.email} onChange={this.handleChange}></input>
               <label className='inputs' htmlFor='newPass'><br/>Update your Password<br/></label>
-                  <input type='password' id='newPass' name='newPass' placeholder='new password' size='45'></input> 
+              <p className='login_displaybox' id='login_displaybox' >{this.state.passMsg}</p>
+                  <input type='password' id='newPass' name='newPass' placeholder='new password' size='45' value={this.state.newPass} onChange={this.handleChange} onInput={this.checkComplexity}></input> 
               <label className='inputs' htmlFor='confPass'><br/>Confirm Password<br/></label>
-                  <input type='password' id='confPass' name='confPass' placeholder='confirm new password' size='45'></input>
-              <label className='inputs' htmlFor='pass'><br/>Update your Password<br/></label>
-                  <input type='password' id='pass' name='pass' placeholder='current password' size='45'></input>
+                  <input type='password' id='confPass' name='confPass' placeholder='confirm new password' size='45' value={this.state.confPass} onChange={this.handleChange}></input>
+              <label className='inputs' htmlFor='pass'><br/>Current Password<br/></label>
+                  <input type='password' id='pass' name='pass' placeholder='current password' size='45' value={this.state.pass} onChange={this.handleChange}></input>
               <label className='inputs' htmlFor='phone'><br/>Update for Phone Number<br/></label>
                 <input required type='tel' id='phone' name='phone' maxLength={10} minLength={10} size='45' value={this.state.phone} onChange={this.handleChange}></input>
               
