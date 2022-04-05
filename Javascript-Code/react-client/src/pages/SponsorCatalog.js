@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Layout from '../components/Layout';
 import CatalogItem from '../components/CatalogItem';
+import AddItem from '../components/AddItem';
 import './SponsorCatalog.css';
 
 class SponsorCatalog extends Component{
@@ -9,7 +10,8 @@ class SponsorCatalog extends Component{
     isSponsor: false,
     org: 0,
     pointsPerDollar: 0,
-    items: []
+    items: [],
+    addItem: false
   }
   
   componentDidMount() {
@@ -71,6 +73,11 @@ class SponsorCatalog extends Component{
     });
   }
 
+  exitAddItem = () => {
+    this.getItems();
+    this.setState({addItem: false})
+  }
+
   render() {
     if (this.state.isSponsor){
       return (
@@ -78,7 +85,7 @@ class SponsorCatalog extends Component{
             <div className='SponsorCatalog-Body'>
               <div className='SponsorCatalog-Top'>
                 <h1>Catalog Creation</h1>
-                <button className='SponsorCatalog-Add'>Add Product</button>
+                <button className='SponsorCatalog-Add' onClick={() => this.setState({addItem: true})}>Add Product</button>
               </div>
               <div className='SponsorCatalog-Items'>
                 {this.state.items.map((item, i) => {
@@ -86,6 +93,7 @@ class SponsorCatalog extends Component{
                     <CatalogItem key={i} type={1} item={item} ppd={this.state.pointsPerDollar} buttonClick={this.removeItem}/>
                 )})}
               </div>
+              {this.state.addItem && <AddItem ppd={this.state.pointsPerDollar} org={this.state.org} exitAddItem={this.exitAddItem}></AddItem>}
             </div>
         </Layout>
       );

@@ -1,11 +1,45 @@
+const { finished } = require('nodemailer/lib/xoauth2');
+
 module.exports = function(app, connection){
     const axios = require('axios');
 
     app.post('/remove-item', (req, res) => {
         const delete_query = `DELETE from new_schema.SPONSOR_CATALOG where sponsorID=${req.body.sponsorID} and listingId=${req.body.listingId}`;
-            connection.query(delete_query, function(err, result, fields) {
-                if(err) console.log(err);
-                res.send({success: true});
+        connection.query(delete_query, function(err, result, fields) {
+            if(err) console.log(err);
+            res.send({success: true});
+        });
+    });
+
+    app.post('/add-item', (req, res) => {
+        const items_query = `SELECT listingId from new_schema.SPONSOR_CATALOG where sponsorID=${req.body.sponsorID};`;
+        connection.query(items_query, function(err, result) {
+            if(err) console.log(err);
+            if(result.length >= 10){
+                res.send({success: false, msg: "Item Limit Reached"});
+            }else if(result.find(item => item.listingId === req.body.listingId)){
+                res.send({success: false, msg: "Item Already In Catalog"});
+            }else{
+            const insert_query = `INSERT INTO new_schema.SPONSOR_CATALOG (listingId, sponsorID) VALUES (${req.body.listingId}, ${req.body.sponsorID});`;
+                connection.query(insert_query, function(err, result, fields) {
+                    if(err) console.log(err);
+                    axios.get(`https://openapi.etsy.com/v3/application/listings/${req.body.listingId}/images`, {headers: {'x-api-key': 'h7ctibmsc63qthr5ozej14i4'}})
+                    .then(function (response) {
+                        response.data.results.map((image) =>{
+                            qstr = `INSERT INTO new_schema.CATALOG_IMAGES (link, listingId) VALUES ('${image.url_fullxfull}', ${req.body.listingId});`;
+                            connection.query(qstr, function(err, result, fields) {
+                                if(err){
+                                    console.log(err);
+                                }
+                            });
+                        })
+                        res.send({success: true});
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+                });
+            }
         });
     });
 
@@ -44,12 +78,12 @@ module.exports = function(app, connection){
                         let ret = [];
                         response.data.results.map((image) =>{
                             ret.push(image.url_fullxfull);
-                            qstr = `INSERT INTO new_schema.CATALOG_IMAGES (link, listingId) VALUES ('${image.url_fullxfull}', ${req.query.listingId});`;
-                            connection.query(qstr, function(err, result, fields) {
-                                if(err){
-                                    console.log(err);
-                                }
-                            });
+                            // qstr = `INSERT INTO new_schema.CATALOG_IMAGES (link, listingId) VALUES ('${image.url_fullxfull}', ${req.query.listingId});`;
+                            // connection.query(qstr, function(err, result, fields) {
+                            //     if(err){
+                            //         console.log(err);
+                            //     }
+                            // });
                         })
                         return res.json({
                             images: ret,
@@ -106,6 +140,36 @@ module.exports = function(app, connection){
             .catch(function (error) {
                 console.log(error);
             })
+        })
+    });
+
+    app.get('/searchItems', (req, res) => {
+        const limit = 6;
+        axios.get(`https://openapi.etsy.com/v3/application/listings/active?keywords="${req.query.keywords}"&limit=${limit}`, {headers: {'x-api-key': 'h7ctibmsc63qthr5ozej14i4'}})
+        .then(function (response) {
+            let ret = [];
+            response.data.results.map((item) => {
+                let price = getUSD(item.price.amount,item.price.divisor,item.price.currency_code);
+                const name = item.title
+                const description = item.description
+                const quantity = item.quantity
+                const url = item.url
+                const listingId = item.listing_id
+                ret.push({
+                    name: name,
+                    description: description,
+                    quantity: quantity,
+                    url: url,
+                    price: price,
+                    listingId: listingId
+                })
+            })
+            return res.json({
+                items: ret
+            })
+        })
+        .catch(function (error) {
+            console.log(error);
         })
     });
 

@@ -11,11 +11,14 @@ class CatalogItem extends Component{
         description: '',
         // url: '',
         images: [],
-        currentimg: 0
+        currentimg: 0,
+        listingId: 0
     }
 
     componentWillReceiveProps(nextProps) {
-        this.getListing(nextProps.item)
+        if(nextProps.item.listingId !== this.state.listingId){
+            this.getListing(nextProps.item)
+        }
         this.setState({currentimg: 0})
     }
 
@@ -24,6 +27,8 @@ class CatalogItem extends Component{
     }
 
     getListing = (item) => {
+        console.log(item.listingId)
+        this.setState({listingId: item.listingId})
         let name = item.name
         let cutoff = 30;
         if(name.length>cutoff){
@@ -79,9 +84,11 @@ class CatalogItem extends Component{
             buttonText = "Add to Cart"
         }else if(this.props.type === 1){
             buttonText = "Remove Item"
+        }else if(this.props.type === 2){
+            buttonText = "Add Item"
         }
         return (
-            <div className='CatalogItem-Body'>
+            <div style={this.props.type === 2 ? {"width": '80%'} : {"width": '35%'}} className='CatalogItem-Body'>
                 <div className='CatalogItem-Text'>
                   <a href={this.props.item.url} target='_blank' rel="noopener noreferrer"><h1 className='CatalogItem-Name'>{this.state.name}</h1></a>
                   <div className='CatalogItem-Info'>
