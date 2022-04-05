@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import './Signup.css';
 import { Navigate } from 'react-router-dom';
 
 class Signup extends Component{
