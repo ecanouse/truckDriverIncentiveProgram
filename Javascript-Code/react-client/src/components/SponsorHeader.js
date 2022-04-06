@@ -43,6 +43,9 @@ class SponsorHeader extends Component {
                     <a href='SponsorCatalog'>
                         <button className='NavButtons'>Catalog</button>
                     </a>
+                    <a href='SponsorPurchasing'>
+                        <button className='NavButtons'>Purchasing</button>
+                    </a>
                     <a href='UpdateAccount'>
                         <button className='NavButtons'>Settings</button>
                     </a>
@@ -54,6 +57,7 @@ class SponsorHeader extends Component {
                         <a href='DriverHome'>Home</a>
                         <a href='PointAssignment'>Points</a>
                         <a href='CatalogPurchase'>Catalog</a>
+                        <a href='SponsorPurchasing'>Purchasing</a>
                         <a href='UpdateAccount'>Settings</a>
                     </div>                
                 </div>

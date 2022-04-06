@@ -1,25 +1,26 @@
 import React, {Component} from 'react';
 import CatalogItem from '../components/CatalogItem';
 import Layout from '../components/Layout';
-import './DriverCatalog.css'
+// import './SponsorPurchasing.css'
 import ShoppingCart from '../components/ShoppingCart';
 
-class DriverCatalog extends Component{
+class SponsorPurchasing extends Component{
   state = {
     loading: true,
-    isDriver: false,
+    isSponsor: false,
     items: [],
-    orgs: [],
+    drivers: [],
+    driver: -1,
     org: -1,
     orgName: '',
     pointsPerDollar: 0,
     cart: [],
-    points: [],
+    points: 0,
     viewCart: false
   }
   
   componentDidMount() {
-    this.isDriver();
+    this.isSponsor();
   }
 
   getItems = () => {
@@ -33,13 +34,15 @@ class DriverCatalog extends Component{
 
   getPoints = () => {
     fetch('/get-points?' + new URLSearchParams({
-      driver: '-1',
-    }))
+        driver: this.state.driver,
+      }))
     .then(response => response.json())
     .then(response => {
-      this.setState({
-        points: response.Points,
-      })
+        let points = 0
+        if(response.Points.find(point => point.sponsorID === this.state.org)){
+            points = response.Points.find(point => point.sponsorID === this.state.org).totalPoints
+        }
+      this.setState({points: points})
     })
     .catch(err => console.error(err))
   }
@@ -51,7 +54,6 @@ class DriverCatalog extends Component{
     .then(response => response.json())
     .then(response => {
       this.setState({
-        orgs: response.orgs,
         org: response.orgs[0].sponsorID,
         orgName: response.orgs[0].orgName,
         pointsPerDollar: response.orgs[0].pointsPerDollar,
@@ -60,28 +62,35 @@ class DriverCatalog extends Component{
     .catch(err => console.error(err))
   }
 
-  isDriver = () => {
-    fetch('/isDriver')
+  getDrivers = () => {
+    fetch('/getSponsorDrivers')
+    .then(response => response.json())
+    .then(response => this.setState({
+        drivers: response.drivers,
+        driver: response.drivers[0].uID
+    }, this.getPoints))
+    .catch(err => console.error(err))
+  }
+
+  isSponsor = () => {
+    fetch('/isSponsor')
     .then(response => response.json())
     .then(response => {
-      this.setState({loading: false, isDriver: response.is_driver})
-      if(response.is_driver){
+      this.setState({loading: false, isSponsor: response.is_sponsor})
+      if(response.is_sponsor){
+        this.getDrivers();
         this.getOrgs();
-        this.getPoints();
+        // this.getPoints();
       }
     })
     .catch(err => console.error(err))
   }
 
-  changeOrg = (e) => {
-    const org = this.state.orgs.find(org => parseInt(org.sponsorID) === parseInt(e.target.value))
+  changeDriver = (e) => {
     this.setState({
-      org: org.sponsorID,
-      orgName: org.orgName,
-      pointsPerDollar: org.pointsPerDollar,
+      driver: e.target.value,
       viewCart: false,
-      cart: []
-    }, this.getItems)
+    }, this.getPoints)
   }
 
   addToCart = (listingId, quantity, name, price) => {
@@ -111,23 +120,25 @@ class DriverCatalog extends Component{
       this.setState({viewCart: false})
     }else{
       this.setState({viewCart: false, cart: []})
+      this.getPoints();
     }
   }
 
   render() {
-    if (this.state.isDriver){
+    if (this.state.isSponsor){
       return (
-        <Layout userType={0}>
+        <Layout userType={1}>
           <div className='DriverCatalog-Body'>
+              <h1>Purchase For a Driver</h1>
             <div className='DriverCatalog-Top'>
               <div className='DriverCatalog-SelectLabel'>
-                <label htmlFor='SelectSponsor'>Select Sponsor:</label>
-                <select className='DriverCatalog-Select' id='SelectSponsor' onChange={this.changeOrg}>
-                    {this.state.orgs.map((org, i) => {return(
-                      <option value={org.sponsorID} key={i}>{org.orgName}</option>
+                <label htmlFor='SelectSponsor'>Select Driver:</label>
+                <select className='DriverCatalog-Select' id='SelectSponsor' onChange={this.changeDriver}>
+                    {this.state.drivers.map((driver, i) => {return(
+                      <option value={driver.uID} key={i}>{driver.fname} {driver.lname}</option>
                     )})}
                 </select>
-                <p>Balance: {this.state.points.find(point => point.sponsorID === this.state.org) && this.state.points.find(point => point.sponsorID === this.state.org).totalPoints} points</p>
+                <p>Balance: {this.state.points} points</p>
               </div>
               <div className='DriverCatalog-Title'>
                 {/* <h1>{this.state.orgName} Catalog</h1> */}
@@ -141,7 +152,7 @@ class DriverCatalog extends Component{
               )})}
             </div>
           </div>
-          {this.state.viewCart && <ShoppingCart cart={this.state.cart} sponsor={this.state.org} sponsorName={this.state.orgName} points={this.state.points.find(point => point.sponsorID === this.state.org).totalPoints} exit={this.exitCart}/>}
+          {this.state.viewCart && <ShoppingCart driver={this.state.driver} cart={this.state.cart} sponsor={this.state.org} sponsorName={this.state.orgName} points={this.state.points} exit={this.exitCart}/>}
         </Layout>
       );
     }else{
@@ -152,4 +163,4 @@ class DriverCatalog extends Component{
   }
 }
 
-export default DriverCatalog;
+export default SponsorPurchasing;

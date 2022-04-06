@@ -18,6 +18,7 @@ import DiscoverUN from './pages/DiscoverUN';
 import DriverCatalog from './pages/DriverCatalog';
 import AdminReporting from './pages/AdminReporting';
 import PurchaseHistory from './pages/PurchaseHistory';
+import SponsorPurchasing from './pages/SponsorPurchasing';
 
 class App extends Component{
   render() {
@@ -42,6 +43,7 @@ class App extends Component{
           <Route path='DriverCatalog' element={<DriverCatalog/>}/>
           <Route path='/AdminReporting' element={<AdminReporting/>}/>
           <Route path='PurchaseHistory' element={<PurchaseHistory/>}/>
+          <Route path='SponsorPurchasing' element={<SponsorPurchasing/>}/>
         </Routes>
       </BrowserRouter>
     )

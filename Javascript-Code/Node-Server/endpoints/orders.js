@@ -3,9 +3,10 @@ const nodemailer = require("nodemailer");
 module.exports = function(app, connection){
     app.post('/create-order', (req, res) => {
         session = req.session
+        const userid = req.body.driver === '-1' ? session.userid : req.body.driver
         const today = new Date();
         const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-        const order_query = `INSERT INTO new_schema.ORDER (uID, status, total, date, sponsorID) VALUES (${session.userid}, 1, ${req.body.total}, "${date}", ${req.body.sponsor})`;
+        const order_query = `INSERT INTO new_schema.ORDER (uID, status, total, date, sponsorID) VALUES (${userid}, 1, ${req.body.total}, "${date}", ${req.body.sponsor})`;
         connection.query(order_query, function(err, result, fields) {
             if(err) console.log(err);
             let orderId = result.insertId;
@@ -17,7 +18,7 @@ module.exports = function(app, connection){
                     });
                 }
             })
-            const email_query = `SELECT email from new_schema.USER where uid=${session.userid};`;
+            const email_query = `SELECT email from new_schema.USER where uid=${userid};`;
             connection.query(email_query, function(err, result) {
                 if(err) console.log(err);
                 const email=result[0].email;

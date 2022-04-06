@@ -27,9 +27,13 @@ class PointHistory extends Component{
   }
 
   getPoints = () => {
-    fetch('/get-points')
+    fetch('/get-points?' + new URLSearchParams({
+      driver: '-1',
+    }))
     .then(response => response.json())
-    .then(response => this.setState({points: response.Points}))
+    .then(response => this.setState({
+      points: response.Points,
+    }))
     .catch(err => console.error(err))
   }
 
