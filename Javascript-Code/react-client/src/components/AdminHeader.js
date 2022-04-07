@@ -46,6 +46,10 @@ class AdminHeader extends Component {
                 <a href='UpdateAccount'>
                 <button className='NavButtons'>Settings</button>
                 </a>
+
+                <a href='AdminReporting'>
+                    <button  className='NavButtons'>Reports</button>
+                </a>
                     
                 </nav>
 
