@@ -5,6 +5,10 @@ import Layout from '../components/Layout';
 import ExportButton from '../components/ExportButton';
 import ReportsTitle from '../components/ReportsTitle';
 
+// Columns for the reporting tables.
+// this could probably be dynamically found but
+// are hard coded atm since they (ideally)
+// should never change
 
 const login_columns = [
     {
@@ -91,6 +95,8 @@ const app_columns = [
 ];
 
 class AdminReporting extends Component{
+
+  // state containing column & data info
   state = {
     loading: true,
     isAdmin: true,
@@ -112,8 +118,10 @@ class AdminReporting extends Component{
 // make new component with param to see wich kind of report
 // contain inner fxn falls and queries
 
+  // fxn to fetch the required reports
   getAuditLogReport = () => {
 
+    //place filters in here
     var payload = {
         filter: "none"
     };
