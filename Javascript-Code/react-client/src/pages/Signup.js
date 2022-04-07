@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import './Signup.css';
 import { Navigate } from 'react-router-dom';
 
 class Signup extends Component{
@@ -39,7 +40,13 @@ class Signup extends Component{
       this.setState({passMsg: ""})
       document.getElementById("btn").disabled = false;
     }else{
-      this.setState({passMsg: "Password must be 8-20 characters long and contain a lowercase letter, a capital letter, a number, and a special character."})
+      if(value == ''){
+        this.setState({passMsg: ""})
+        document.getElementById("btn").disabled = true;
+      }else{
+        this.setState({passMsg: "Password must be 8-20 characters long and contain a lowercase letter, a capital letter, a number, and a special character."})
+        document.getElementById("btn").disabled = true;
+      }
     }
   }
 

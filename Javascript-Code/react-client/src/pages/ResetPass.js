@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import { Navigate } from 'react-router-dom';
+
 
 
 class ResetPass extends Component{
@@ -34,7 +36,13 @@ class ResetPass extends Component{
       this.setState({passMsg: ""})
       document.getElementById("btn").disabled = false;
     }else{
-      this.setState({passMsg: "Password must be 8-20 characters long and contain a lowercase letter, a capital letter, a number, and a special character."})
+      if(value == ''){
+        this.setState({passMsg: ""})
+        document.getElementById("btn").disabled = true;
+      }else{
+        this.setState({passMsg: "Password must be 8-20 characters long and contain a lowercase letter, a capital letter, a number, and a special character."})
+        document.getElementById("btn").disabled = true;
+      }
     }
   }
 
@@ -100,7 +108,7 @@ class ResetPass extends Component{
           if( data.success ) {
             document.getElementById('login_displaybox').style.color = "black";
             this.setState({passMsg: data.msg});
-            //this.setState({redirect: true});
+            this.setState({redirect: true});
 
           }
           else {
@@ -186,6 +194,7 @@ class ResetPass extends Component{
           />  
         
           <button type="submit" className='LoginButton' id='btn' disabled>Reset Password</button>
+          { this.state.redirect ? (<Navigate to="/login"/>) : null }
 
         </form>
       </div>
