@@ -2,14 +2,9 @@ import React, {Component} from 'react';
 import './AdminReporting.css';
 import Layout from '../components/Layout';
 
-// Columns for the reporting tables.
-// this could probably be dynamically found but
-// are hard coded atm since they (ideally)
-// should never change
 
 class AdminReporting extends Component{
 
-  // state containing column & data info
   state = {
     loading: true,
     isAdmin: true,

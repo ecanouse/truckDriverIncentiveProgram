@@ -184,40 +184,53 @@ class AuditLogReports extends Component{
     //     .catch(err => console.error(err))
     // }
 
+  submit = (event) => {
 
+  };
 
   render() {
     // if (this.state.isSponsor){
 
       if(!this.state.data_fetched) {
+
         this.getAuditLogReport();
         this.state.data_fetched = true;
+
+        // return (
+        //   <Layout userType={2}>
+        //     <form>
+        //       <p></p>
+        //     </form>
+        //   </Layout>
+        // );
+
       }
+      else {
+        return (
+          <Layout userType={2}>
 
-      return (
-        <Layout userType={2}>
-
-            {/* Point Change Table */}
-            <ReportsTitle content="Password Changes"></ReportsTitle>
-            <AuditLogResults data={this.state.password_data} columns={this.state.password_columns}></AuditLogResults>
-            <ExportButton data={this.state.password_data}>Export</ExportButton>
-
-            {/* Application Table */}
-            <ReportsTitle content="Applications"></ReportsTitle>
-            <AuditLogResults data={this.state.app_data} columns={this.state.app_columns}></AuditLogResults>
-            <ExportButton data={this.state.app_data}>Export</ExportButton> 
-
-            {/* Point Adjustment Table */}
-            <ReportsTitle content="Point Adjustments"></ReportsTitle>
-            <AuditLogResults data={this.state.point_data} columns={this.state.point_columns}></AuditLogResults>
-            <ExportButton data={this.state.point_data}>Export</ExportButton>            
-
-            {/* Login Attempts Table */}
-            <ReportsTitle content="Login Attempts"></ReportsTitle>
-            <AuditLogResults data={this.state.login_data} columns={this.state.login_columns}></AuditLogResults>
-            <ExportButton data={this.state.login_data}>Export</ExportButton>
-        </Layout>
-      );
+              {/* Point Change Table */}
+              <ReportsTitle content="Password Changes"></ReportsTitle>
+              <AuditLogResults data={this.state.password_data} columns={this.state.password_columns}></AuditLogResults>
+              <ExportButton data={this.state.password_data}>Export</ExportButton>
+  
+              {/* Application Table */}
+              <ReportsTitle content="Applications"></ReportsTitle>
+              <AuditLogResults data={this.state.app_data} columns={this.state.app_columns}></AuditLogResults>
+              <ExportButton data={this.state.app_data}>Export</ExportButton> 
+  
+              {/* Point Adjustment Table */}
+              <ReportsTitle content="Point Adjustments"></ReportsTitle>
+              <AuditLogResults data={this.state.point_data} columns={this.state.point_columns}></AuditLogResults>
+              <ExportButton data={this.state.point_data}>Export</ExportButton>            
+  
+              {/* Login Attempts Table */}
+              <ReportsTitle content="Login Attempts"></ReportsTitle>
+              <AuditLogResults data={this.state.login_data} columns={this.state.login_columns}></AuditLogResults>
+              <ExportButton data={this.state.login_data}>Export</ExportButton>
+          </Layout>
+        );
+      }
     // }else{
     //   return (
     //     <h1>{this.state.loading ? "" : "401: Unauthorized"}</h1>
