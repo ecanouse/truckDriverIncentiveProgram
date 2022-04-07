@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './AdminReporting.css';
 import Layout from '../components/Layout';
+import ReportsFilter from '../components/ReportsFilter';
 
 
 class AdminReporting extends Component{
@@ -27,7 +28,11 @@ class AdminReporting extends Component{
     //     .catch(err => console.error(err))
     // }
 
+  callback = (data) => {
 
+    console.log(data);
+
+  }
 
   render() {
     // if (this.state.isSponsor){
@@ -47,6 +52,9 @@ class AdminReporting extends Component{
             </a>
           </div>
 
+          <div>
+            <ReportsFilter parentCallback={this.callback}></ReportsFilter>
+          </div>
 
         </Layout>
       );

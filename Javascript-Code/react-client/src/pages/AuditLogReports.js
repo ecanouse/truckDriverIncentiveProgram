@@ -6,6 +6,7 @@ import ExportButton from '../components/ExportButton';
 import ReportsTitle from '../components/ReportsTitle';
 
 
+
 const login_columns = [
     {
         name: 'Date',
@@ -193,16 +194,16 @@ class AuditLogReports extends Component{
 
       if(!this.state.data_fetched) {
 
-        this.getAuditLogReport();
-        this.state.data_fetched = true;
+        // this.getAuditLogReport();
+        // this.state.data_fetched = true;
 
-        // return (
-        //   <Layout userType={2}>
-        //     <form>
-        //       <p></p>
-        //     </form>
-        //   </Layout>
-        // );
+        return (
+          <Layout userType={2}>
+            <form>
+              <p></p>
+            </form>
+          </Layout>
+        );
 
       }
       else {

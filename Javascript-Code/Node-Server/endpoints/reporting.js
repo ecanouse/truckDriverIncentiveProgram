@@ -85,6 +85,24 @@ module.exports = function(app, connection){
 
     });
 
+    app.get('/getSponsors', (req, res) => {
+
+        console.log('Recieved Request for Sponsor List')
+
+        let query = 'select sp.orgName from SPONSOR_ORG as sp'
+
+        connection.query(query, function(err, result) {
+            if( err ) {
+                console.log(err)
+                res.send({success:false})
+            }
+            else {
+                res.send(result)
+            }
+        });
+
+    });
+
 
 
 
