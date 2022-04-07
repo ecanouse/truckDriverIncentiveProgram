@@ -27,6 +27,58 @@ module.exports = function(app, connection){
     app.post('/update-account', (req, res) => {
         session = req.session;
         userid = req.body.uID === '-1' ? session.userid : req.body.uID;
+        if(req.body.newPass == ''){
+            const update_query = `UPDATE new_schema.USER SET fname = '${req.body.fname}', lname = '${req.body.lname}', username = '${req.body.username}', email = '${req.body.email}', phone = '${req.body.phone}' WHERE uID = ${userid}`;
+            connection.query(update_query, function(err, result) {
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    res.send({success: true})
+                }
+            })
+        }else{
+            //encrypt current password
+            encryptPass = crypt.getHash(req.body.pass);
+            const pass_query = `SELECT * FROM new_schema.USER WHERE uID = '${userid}' AND password = '${encryptPass}'`;
+            connection.query(pass_query, function(err, result) {
+                if(err){
+                    console.log(err);
+                }
+                else{
+                
+                    if(result){
+                        if(req.body.newPass == req.body.confPass){
+                            //encrypt new password
+                            encryptNewPass = crypt.getHash(req.body.newPass);
+                            const update_query = `UPDATE new_schema.USER SET password = '${encryptNewPass}', fname = '${req.body.fname}', lname = '${req.body.lname}', username = '${req.body.username}', email = '${req.body.email}', phone = '${req.body.phone}' WHERE uID = ${userid};`;
+                            connection.query(update_query, function(err, result) {
+                                if(err){
+                                    console.log(err);
+                                }
+                                else{
+                                    qstr = `INSERT INTO new_schema.PASSWORD_CHANGES (uId, changeType) VALUES ('${userid}', 'UPDATE')`;
+                                    connection.query(qstr, function(err, result, fields) {
+                                        if(err) console.log(err);
+                                        console.log(result);
+                                        //res.redirect('/DriverHome');
+                                        res.send({success: true, msg: "Password Updated"});
+                                    });
+                                }
+                            })
+                        }else{
+                            //new password and confirm password do not match
+                            res.send({success: false})
+                        }
+                    }else{
+                        //Password Incorrect
+                        res.send({success: false})
+                    }
+                }
+            })   
+        }    
+
+        /*
         const update_query = `UPDATE new_schema.USER SET fname = '${req.body.fname}', lname = '${req.body.lname}', username = '${req.body.username}', email = '${req.body.email}', phone = '${req.body.phone}' WHERE uID = ${userid};`;
         connection.query(update_query, function(err, result) {
             if(err){
@@ -36,5 +88,6 @@ module.exports = function(app, connection){
                 res.send({success: true})
             }
         })
+        */
     });
 }

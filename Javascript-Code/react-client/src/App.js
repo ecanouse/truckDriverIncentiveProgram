@@ -16,6 +16,7 @@ import NotFound from './pages/NotFound';
 import ResetPass from './pages/ResetPass';
 import DiscoverUN from './pages/DiscoverUN';
 import DriverCatalog from './pages/DriverCatalog';
+import AdminReporting from './pages/AdminReporting';
 import PurchaseHistory from './pages/PurchaseHistory';
 
 class App extends Component{
@@ -39,6 +40,7 @@ class App extends Component{
           <Route path="ResetPass" element={<ResetPass/>}/>
           <Route path="DiscoverUN" element={<DiscoverUN/>}/>
           <Route path='DriverCatalog' element={<DriverCatalog/>}/>
+          <Route path='/AdminReporting' element={<AdminReporting/>}/>
           <Route path='PurchaseHistory' element={<PurchaseHistory/>}/>
         </Routes>
       </BrowserRouter>
