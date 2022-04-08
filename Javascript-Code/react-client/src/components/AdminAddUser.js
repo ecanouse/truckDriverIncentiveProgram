@@ -65,7 +65,7 @@ class AdminAddUser extends Component{
         username: this.state.username,
         email: this.state.email,
         phone: this.state.phone,
-        org: this.state.org
+        org: this.props.org ? this.props.org : this.state.org
       };
       fetch('/add-user', {
         method: 'POST',
@@ -97,8 +97,8 @@ class AdminAddUser extends Component{
                         <input required type='email' id='email' name='email' size='45' value={this.state.email} onChange={this.handleChange}></input>
                     <label className='AddUser-inputs' htmlFor='phone'><br/>Phone Number<br/></label>
                     <input required type='tel' id='phone' name='phone' maxLength={10} minLength={10} size='45' value={this.state.phone} onChange={this.handleChange}></input>
-                    {this.props.userType === 1 && <label className='AddUser-inputs' htmlFor='orgs-list'><br/>Organization<br/></label>}
-                    {this.props.userType === 1 && <select id="orgs-list" value={this.state.org === "" ? null : this.state.org} onChange={e => this.setState({org: e.target.value})} required>
+                    {(this.props.userType === 1 && !this.props.isSponsor) && <label className='AddUser-inputs' htmlFor='orgs-list'><br/>Organization<br/></label>}
+                    {(this.props.userType === 1 && !this.props.isSponsor) && <select id="orgs-list" value={this.state.org === "" ? null : this.state.org} onChange={e => this.setState({org: e.target.value})} required>
                         <option disabled selected value=""> -- select an organization -- </option>
                         {this.state.allOrgs.map((o,i) =>
                          <option value={o.sponsorID} key={i}>{o.orgName}</option>

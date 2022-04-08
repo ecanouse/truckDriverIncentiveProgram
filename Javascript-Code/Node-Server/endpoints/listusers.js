@@ -78,4 +78,17 @@ module.exports = function(app, connection){
         }
       })
     });
+
+    app.get('/getOrgSponsors', (req, res) => {
+      const sponsor_query = `SELECT u.uID, fname, lname, status from new_schema.USER u INNER JOIN new_schema.USER_SPONSOR_REL r where userType = 1 AND r.uID=u.UID AND r.sponsorID=${req.query.org};`;
+      connection.query(sponsor_query, function(err, result) {
+        if(err){
+          console.log(err);
+        }else{
+          return res.json({
+            sponsors: result
+          })
+        }
+      })
+    });
 }

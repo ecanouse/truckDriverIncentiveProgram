@@ -79,7 +79,7 @@ class UpdateAccount extends Component{
       this.setState({passMsg: ""})
       document.getElementById("btn").disabled = false;
     }else{
-      if(value == ''){
+      if(value === ''){
         this.setState({passMsg: ""})
       }else{
         this.setState({passMsg: "Password must be 8-20 characters long and contain a lowercase letter, a capital letter, a number, and a special character."})
@@ -119,7 +119,8 @@ class UpdateAccount extends Component{
     if (this.state.isLoggedIn){
       return (
           <Layout userType={this.state.userType}>
-            <div className='UpdateAcc-Body'>
+            <div className='UpdateAccount-Page'>
+            <div className='UpdateAccount-Body'>
             <form id='info-form' onSubmit={this.submit}>
               <label className='inputs' htmlFor='fname'><br/>Update your First Name<br/></label>
                 <input required type='text' id='fname' name='fname'  size='45' value={this.state.fname} onChange={this.handleChange}></input>
@@ -145,6 +146,7 @@ class UpdateAccount extends Component{
                 <input type="file" id='userProfilePicture' name='userProfilePicture' accept="image/*"></input> 
               <button type="submit" className='saveChanges' id='btn'>Save Changes</button>
               </form>
+            </div>
             </div>
           </Layout>
       );

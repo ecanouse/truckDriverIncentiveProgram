@@ -78,6 +78,31 @@ class SponsorCatalog extends Component{
     this.setState({addItem: false})
   }
 
+  changePoints = () => {
+    var payload = {
+      uID: '-1',
+      ppd: this.state.pointsPerDollar
+    };
+    fetch('/update-ppd', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(response => {
+      if( response.status === 200 ) {
+      }
+    })
+    .catch((error) => {
+      console.error('Error', error);
+    });
+  }
+
+
+  handlPointChange = (event) => {
+    const points = event.target.value >= 0 ? event.target.value : 0
+    this.setState({pointsPerDollar: points}, this.changePoints)
+  }
+
   render() {
     if (this.state.isSponsor){
       return (
@@ -86,6 +111,8 @@ class SponsorCatalog extends Component{
               <div className='SponsorCatalog-Top'>
                 <h1>Catalog Creation</h1>
                 <button className='SponsorCatalog-Add' onClick={() => this.setState({addItem: true})}>Add Product</button>
+                <label htmlFor='ppd'>Points Per Dollar:</label>
+                <input type='number' id='ppd' name='ppd' min={0} value={this.state.pointsPerDollar} onChange={this.handlPointChange}></input>
               </div>
               <div className='SponsorCatalog-Items'>
                 {this.state.items.map((item, i) => {
