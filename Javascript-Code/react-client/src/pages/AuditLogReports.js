@@ -4,7 +4,7 @@ import AuditLogResults from '../components/AuditLogResults.js';
 import Layout from '../components/Layout';
 import ExportButton from '../components/ExportButton';
 import ReportsTitle from '../components/ReportsTitle';
-
+import ReportsFilter from '../components/ReportsFilter';
 
 
 const login_columns = [
@@ -103,8 +103,10 @@ class AuditLogReports extends Component{
     point_data: {},
     app_columns: app_columns,
     app_data: {},
-    data_fetched: false
+    data_fetched: false,
   }
+
+
   
 //   componentDidMount() {
 //     this.isAdmin();
@@ -113,12 +115,15 @@ class AuditLogReports extends Component{
 // make new component with param to see wich kind of report
 // contain inner fxn falls and queries
 
-  getAuditLogReport = () => {
+  getAuditLogReport = (data) => {
 
     var payload = {
-        filter: "none"
+        startDate: data.startDate,
+        endDate: data.endDate,
+        orgName: data.org
     };
 
+    console.log(payload)
     fetch('/getLoginAttempts', {
         method: 'POST', //post request
         headers: { 'Content-Type': 'application/json' },
@@ -185,23 +190,30 @@ class AuditLogReports extends Component{
     //     .catch(err => console.error(err))
     // }
 
-  submit = (event) => {
-
-  };
-
+    callback = (data) => {
+      console.log("printing data");
+      console.log(data);
+      // this.setState({
+      //   startDate: data.startDate,
+      //   endDate: data.endDate
+      // }, () => {
+      //   this.getAuditLogReport();
+      // });
+      this.getAuditLogReport(data);
+    }
+  
   render() {
     // if (this.state.isSponsor){
 
       if(!this.state.data_fetched) {
+
 
         // this.getAuditLogReport();
         // this.state.data_fetched = true;
 
         return (
           <Layout userType={2}>
-            <form>
-              <p></p>
-            </form>
+              <ReportsFilter callBack={this.callback}/>
           </Layout>
         );
 

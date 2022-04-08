@@ -1,14 +1,20 @@
 import React, {Component} from 'react';
 import './AdminReporting.css';
 import Layout from '../components/Layout';
-import ReportsFilter from '../components/ReportsFilter';
 
+import { Navigate } from 'react-router-dom';
+
+
+// date range picker module from https://www.npmjs.com/package/react-date-range
 
 class AdminReporting extends Component{
 
   state = {
     loading: true,
     isAdmin: true,
+    auditLog: false,
+    invoice: false,
+    sales: false
   }
   
 //   componentDidMount() {
@@ -28,32 +34,34 @@ class AdminReporting extends Component{
     //     .catch(err => console.error(err))
     // }
 
-  callback = (data) => {
 
-    console.log(data);
-
+  handleAuditLog = () => {
+    this.setState({auditLog: true})
   }
 
   render() {
     // if (this.state.isSponsor){
-
+      if( this.state.auditLog ) {
+        //render audit log filter
+        return(<Navigate to='/AuditLogReports'/>)
+      }
+      else if( this.state.invoice ) {
+        //render invoice filter
+      }
+      else if( this.state.sales ) {
+        //render sales filter
+      }
       return (
         <Layout userType={2}>
           
           <div>
-            <a href='AuditLogReports'>
-              <button  className='ReportButton'>Audit Log Report</button>
-            </a>
-            <a href=''>
+              <button  className='ReportButton' onClick={this.handleAuditLog}>Audit Log Report</button>
               <button  className='ReportButton'>Invoice Report</button>
-            </a>
-            <a href=''>
               <button  className='ReportButton'>Sales Report</button>
-            </a>
           </div>
 
           <div>
-            <ReportsFilter parentCallback={this.callback}></ReportsFilter>
+            
           </div>
 
         </Layout>
