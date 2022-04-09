@@ -51,8 +51,37 @@ module.exports = function(app, connection){
         console.log('Recieved Request for Audit Log Report')
         console.log(req.body)
 
+        const sdate = new Date(req.body.startDate);
+        const formattedStartDate = sdate.getFullYear()+'-'+(sdate.getMonth()+1)+'-'+sdate.getDate();
+        const edate = new Date(req.body.endDate);
+        const formattedEndDate = edate.getFullYear()+'-'+(edate.getMonth()+1)+'-'+edate.getDate();
+
         //Get password change info
         query = "select pw.date, usr.username, pw.changeType from PASSWORD_CHANGES as pw, USER as usr where pw.uID = usr.uID;"
+        if( req.body.startDate != '' & req.body.orgName === '') {
+            query = `select pwl.date, pwl.username, pwl.changeType from (
+                select pw.date, usr.username, pw.changeType, sp.orgName
+                    from PASSWORD_CHANGES as pw, USER as usr, USER_SPONSOR_REL as u2s, SPONSOR_ORG as sp
+                    where pw.uID = usr.uID and u2s.uID = usr.uID and u2s.sponsorID = sp.sponsorID
+            ) as pwl
+                where pwl.date between '`+formattedStartDate+`' and '`+formattedEndDate+`';`;
+        }
+        else if( req.body.startDate === '' & req.body.orgName != '' ) {
+            query = `select pwl.date, pwl.username, pwl.changeType from (
+                select pw.date, usr.username, pw.changeType, sp.orgName
+                    from PASSWORD_CHANGES as pw, USER as usr, USER_SPONSOR_REL as u2s, SPONSOR_ORG as sp
+                    where pw.uID = usr.uID and u2s.uID = usr.uID and u2s.sponsorID = sp.sponsorID
+            ) as pwl
+                where pwl.orgName = '`+req.body.orgName+`';`;
+        }
+        else if(req.body.startDate != '' & req.body.orgName != '') {
+            query =  `select pwl.date, pwl.username, pwl.changeType from (
+                select pw.date, usr.username, pw.changeType, sp.orgName
+                    from PASSWORD_CHANGES as pw, USER as usr, USER_SPONSOR_REL as u2s, SPONSOR_ORG as sp
+                    where pw.uID = usr.uID and u2s.uID = usr.uID and u2s.sponsorID = sp.sponsorID
+            ) as pwl
+                where pwl.date between '`+formattedStartDate+`' and '`+formattedEndDate+`' and pwl.orgName = '`+req.body.orgName+`';`;
+        }
         connection.query(query, function(err, result) {
             if(err) {
                 console.log(err);
@@ -79,16 +108,33 @@ module.exports = function(app, connection){
         // then add statements for other audit logs
         // then add invoice & sales reporting
 
+        const sdate = new Date(req.body.startDate);
+        const formattedStartDate = sdate.getFullYear()+'-'+(sdate.getMonth()+1)+'-'+sdate.getDate();
+        const edate = new Date(req.body.endDate);
+        const formattedEndDate = edate.getFullYear()+'-'+(edate.getMonth()+1)+'-'+edate.getDate();
+
         //get point adjustment info
         query = "select pnt.date, sp.orgName, dr.lname, dr.fname, pnt.pointValue, pnt.pointReason from POINT_ADJUSTMENT as pnt, SPONSOR_ORG as sp, DRIVER_POINTS as dp, USER as dr where pnt.sponsorID = sp.sponsorID and pnt.DPointID = dp.DPointID and dp.uID = dr.uID;"
         if( req.body.startDate != '' & req.body.orgName === '') {
-            query = "select * from (select pnt.date, sp.orgName, dr.lname, dr.fname, pnt.pointValue, pnt.pointReason from POINT_ADJUSTMENT as pnt, SPONSOR_ORG as sp, DRIVER_POINTS as dp, USER as dr where pnt.sponsorID = sp.sponsorID and pnt.DPointID = dp.DPointID and dp.uID = dr.uID) as log where log.date between '" + req.body.startDate + "' and '"+ req.body.endDate + "';";
+            query = `select * from (
+                select pnt.date, sp.orgName, dr.lname, dr.fname, pnt.pointValue, pnt.pointReason
+                    from POINT_ADJUSTMENT as pnt, SPONSOR_ORG as sp, DRIVER_POINTS as dp, USER as dr where pnt.sponsorID = sp.sponsorID and pnt.DPointID = dp.DPointID and dp.uID = dr.uID
+                    ) as log 
+                        where DATE(log.date) between '`+ formattedStartDate +`' and '`+ formattedEndDate +`';`;
         }
         else if( req.body.startDate === '' & req.body.orgName != '' ) {
-            query = "select * from (select pnt.date, sp.orgName, dr.lname, dr.fname, pnt.pointValue, pnt.pointReason from POINT_ADJUSTMENT as pnt, SPONSOR_ORG as sp, DRIVER_POINTS as dp, USER as dr where pnt.sponsorID = sp.sponsorID and pnt.DPointID = dp.DPointID and dp.uID = dr.uID ) as log where log.orgName = '"+ req.body.orgName +"';";
+            query = `select * from (
+                select pnt.date, sp.orgName, dr.lname, dr.fname, pnt.pointValue, pnt.pointReason
+                    from POINT_ADJUSTMENT as pnt, SPONSOR_ORG as sp, DRIVER_POINTS as dp, USER as dr where pnt.sponsorID = sp.sponsorID and pnt.DPointID = dp.DPointID and dp.uID = dr.uID
+                    ) as log 
+                        where log.orgName = '`+ req.body.orgName +`';`;
         }
         else if(req.body.startDate != '' & req.body.orgName != '') {
-            query =  "select * from (select pnt.date, sp.orgName, dr.lname, dr.fname, pnt.pointValue, pnt.pointReason from POINT_ADJUSTMENT as pnt, SPONSOR_ORG as sp, DRIVER_POINTS as dp, USER as dr where pnt.sponsorID = sp.sponsorID and pnt.DPointID = dp.DPointID and dp.uID = dr.uID) as log where log.date between '" + req.body.startDate + "' and '"+ req.body.endDate + "';";
+            query =  `select * from (
+                select pnt.date, sp.orgName, dr.lname, dr.fname, pnt.pointValue, pnt.pointReason
+                    from POINT_ADJUSTMENT as pnt, SPONSOR_ORG as sp, DRIVER_POINTS as dp, USER as dr where pnt.sponsorID = sp.sponsorID and pnt.DPointID = dp.DPointID and dp.uID = dr.uID
+                    ) as log 
+                        where DATE(log.date) between '`+ formattedStartDate +`' and '`+ formattedEndDate +`' and log.orgName = '`+ req.body.orgName +`';`;
         }
 
         console.log("QUERY: " + query);
