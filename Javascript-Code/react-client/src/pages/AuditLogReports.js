@@ -115,7 +115,7 @@ class AuditLogReports extends Component{
 // make new component with param to see wich kind of report
 // contain inner fxn falls and queries
 
-  getAuditLogReport = (data) => {
+  getAuditLogReport = async(data) => {
 
     var payload = {
         startDate: data.startDate,
@@ -124,7 +124,7 @@ class AuditLogReports extends Component{
     };
 
     console.log(payload)
-    fetch('/getLoginAttempts', {
+    await fetch('/getLoginAttempts', {
         method: 'POST', //post request
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload) //put into json form
@@ -136,7 +136,7 @@ class AuditLogReports extends Component{
     })
     .catch(err => console.error(err));
 
-    fetch('/getPasswordChanges', {
+    await fetch('/getPasswordChanges', {
       method: 'POST', //post request
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload) //put into json form
@@ -148,7 +148,7 @@ class AuditLogReports extends Component{
     })
     .catch(err => console.error(err));
 
-    fetch('/getPointAdjustments', {
+    await fetch('/getPointAdjustments', {
       method: 'POST', //post request
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload) //put into json form
@@ -160,7 +160,7 @@ class AuditLogReports extends Component{
     })
     .catch(err => console.error(err));
 
-    fetch('/getApplications', {
+    await fetch('/getApplications', {
       method: 'POST', //post request
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload) //put into json form
@@ -172,6 +172,7 @@ class AuditLogReports extends Component{
     })
     .catch(err => console.error(err));
 
+    this.setState({data_fetched: true});
   };
 
   
@@ -190,7 +191,7 @@ class AuditLogReports extends Component{
     //     .catch(err => console.error(err))
     // }
 
-    callback = (data) => {
+    callback = async(data) => {
       console.log("printing data");
       console.log(data);
       // this.setState({
@@ -199,7 +200,7 @@ class AuditLogReports extends Component{
       // }, () => {
       //   this.getAuditLogReport();
       // });
-      this.getAuditLogReport(data);
+      await this.getAuditLogReport(data);
     }
   
   render() {

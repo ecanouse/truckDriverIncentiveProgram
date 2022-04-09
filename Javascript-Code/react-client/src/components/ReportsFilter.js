@@ -12,15 +12,16 @@ class ReportsFilter extends React.Component {
         loaded: false,
         startDate: '',
         endDate: '',
-        org: ''
+        org: '',
+        targetName: ""
     };
 
     submit = (event) => {
-
+        console.log(this.state.org);
         this.props.callBack({
             startDate: this.state.startDate,
             endDate: this.state.endDate,
-            org: this.state.org
+            org: this.state.targetName
         })
 
     }
@@ -56,8 +57,17 @@ class ReportsFilter extends React.Component {
     };
 
     changeOrg = (e) => {
-        const org = this.state.orgs.find(org => parseInt(org.sponsorID) === parseInt(e.target.value))
-        this.setState({org: org.orgName})
+        console.log("changeorg: " + e.target.value);
+        if(e.target.value === "") {
+            this.setState({targetName: ""});
+        } 
+        else {
+            const org = this.state.orgs.find(org => parseInt(org.sponsorID) === parseInt(e.target.value))
+            this.setState({
+                orgName: org.orgName,
+                targetName: org.orgName
+            })
+        }
     }
     
 
@@ -77,6 +87,7 @@ class ReportsFilter extends React.Component {
                 </div>
                 <label htmlFor='SelectSponsor'>Select Sponsor:</label>
                 <select className='DriverCatalog-Select' id='SelectSponsor' onChange={this.changeOrg}>
+                    <option value="" key={0}>No Selection</option>
                     {this.state.orgs.map((org, i) => {return(
                       <option value={org.sponsorID} key={i}>{org.orgName}</option>
                     )})}

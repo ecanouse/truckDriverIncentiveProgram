@@ -7,15 +7,30 @@ module.exports = function(app, connection){
 
         //Get login attempts info
         var query = "select la.date, la.username, la.success from LOGIN_ATTEMPTS as la"
-        // if( req.body.startDate != '' & req.body.orgName === '') {
-        //     query = "select * from (select pnt.date, sp.orgName, dr.lname, dr.fname, pnt.pointValue, pnt.pointReason from POINT_ADJUSTMENT as pnt, SPONSOR_ORG as sp, DRIVER_POINTS as dp, USER as dr where pnt.sponsorID = sp.sponsorID and pnt.DPointID = dp.DPointID and dp.uID = dr.uID) as log where log.date between '" + req.body.startDate + "' and '"+ req.body.endDate + "';";
-        // }
-        // else if( req.body.startDate === '' & req.body.orgName != '' ) {
-        //     query = "select * from (select pnt.date, sp.orgName, dr.lname, dr.fname, pnt.pointValue, pnt.pointReason from POINT_ADJUSTMENT as pnt, SPONSOR_ORG as sp, DRIVER_POINTS as dp, USER as dr where pnt.sponsorID = sp.sponsorID and pnt.DPointID = dp.DPointID and dp.uID = dr.uID) as log where log.orgName = '"+ req.body.orgName +"';";
-        // }
-        // else if(req.body.startDate != '' & req.body.orgName != '') {
-        //     query =  "select * from (select pnt.date, sp.orgName, dr.lname, dr.fname, pnt.pointValue, pnt.pointReason from POINT_ADJUSTMENT as pnt, SPONSOR_ORG as sp, DRIVER_POINTS as dp, USER as dr where pnt.sponsorID = sp.sponsorID and pnt.DPointID = dp.DPointID and dp.uID = dr.uID) as log where log.date between '" + req.body.startDate + "' and '"+ req.body.endDate + "and + log.orgName = '"+ req.body.orgName +"';";
-        // }
+        if( req.body.startDate != '' & req.body.orgName === '') {
+            query = `select log.date, log.username, log.success from (
+                select la.date, la.username, la.success, la.uID, u2s.sponsorID, sp.orgName
+                    from LOGIN_ATTEMPTS as la, USER_SPONSOR_REL as u2s, SPONSOR_ORG as sp
+                    where la.uID = u2s.uID and u2s.sponsorID = sp.sponsorID
+                ) as log
+                    where log.date between '`+ req.body.startDate +`' and '`+ req.body.endDate +`';`
+        }
+        else if( req.body.startDate === '' & req.body.orgName != '' ) {
+            query = `select log.date, log.username, log.success from (
+                select la.date, la.username, la.success, la.uID, u2s.sponsorID, sp.orgName
+                    from LOGIN_ATTEMPTS as la, USER_SPONSOR_REL as u2s, SPONSOR_ORG as sp
+                    where la.uID = u2s.uID and u2s.sponsorID = sp.sponsorID
+                ) as log
+                    where log.orgName = '`+ req.body.orgName +`';`
+        }
+        else if(req.body.startDate != '' & req.body.orgName != '') {
+            query = `select log.date, log.username, log.success from (
+                select la.date, la.username, la.success, la.uID, u2s.sponsorID, sp.orgName
+                    from LOGIN_ATTEMPTS as la, USER_SPONSOR_REL as u2s, SPONSOR_ORG as sp
+                    where la.uID = u2s.uID and u2s.sponsorID = sp.sponsorID
+                ) as log
+                    where log.date between '`+ req.body.startDate +`' and '`+ req.body.endDate +`' and log.orgName = '`+ req.body.orgName +`';`
+        }
         connection.query(query, function(err, result) {
             if(err) {
                 console.log(err);
@@ -70,11 +85,13 @@ module.exports = function(app, connection){
             query = "select * from (select pnt.date, sp.orgName, dr.lname, dr.fname, pnt.pointValue, pnt.pointReason from POINT_ADJUSTMENT as pnt, SPONSOR_ORG as sp, DRIVER_POINTS as dp, USER as dr where pnt.sponsorID = sp.sponsorID and pnt.DPointID = dp.DPointID and dp.uID = dr.uID) as log where log.date between '" + req.body.startDate + "' and '"+ req.body.endDate + "';";
         }
         else if( req.body.startDate === '' & req.body.orgName != '' ) {
-            query = "select * from (select pnt.date, sp.orgName, dr.lname, dr.fname, pnt.pointValue, pnt.pointReason from POINT_ADJUSTMENT as pnt, SPONSOR_ORG as sp, DRIVER_POINTS as dp, USER as dr where pnt.sponsorID = sp.sponsorID and pnt.DPointID = dp.DPointID and dp.uID = dr.uID) as log where log.orgName = '"+ req.body.orgName +"';";
+            query = "select * from (select pnt.date, sp.orgName, dr.lname, dr.fname, pnt.pointValue, pnt.pointReason from POINT_ADJUSTMENT as pnt, SPONSOR_ORG as sp, DRIVER_POINTS as dp, USER as dr where pnt.sponsorID = sp.sponsorID and pnt.DPointID = dp.DPointID and dp.uID = dr.uID ) as log where log.orgName = '"+ req.body.orgName +"';";
         }
         else if(req.body.startDate != '' & req.body.orgName != '') {
-            query =  "select * from (select pnt.date, sp.orgName, dr.lname, dr.fname, pnt.pointValue, pnt.pointReason from POINT_ADJUSTMENT as pnt, SPONSOR_ORG as sp, DRIVER_POINTS as dp, USER as dr where pnt.sponsorID = sp.sponsorID and pnt.DPointID = dp.DPointID and dp.uID = dr.uID) as log where log.date between '" + req.body.startDate.substring(0,8) + "' and '"+ req.body.endDate.substring(0,8) + "' and + log.orgName = '"+ req.body.orgName +"';";
+            query =  "select * from (select pnt.date, sp.orgName, dr.lname, dr.fname, pnt.pointValue, pnt.pointReason from POINT_ADJUSTMENT as pnt, SPONSOR_ORG as sp, DRIVER_POINTS as dp, USER as dr where pnt.sponsorID = sp.sponsorID and pnt.DPointID = dp.DPointID and dp.uID = dr.uID) as log where log.date between '" + req.body.startDate + "' and '"+ req.body.endDate + "';";
         }
+
+        console.log("QUERY: " + query);
         connection.query(query, function(err, result) {
             if(err) {
                 console.log(err);
@@ -82,6 +99,10 @@ module.exports = function(app, connection){
             }
             else {
                 console.log(result)
+
+                //trying to map out specific sponsors
+                
+
                 res.send(result)
 
             }
