@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Layout from '../components/Layout';
 import './PointHistory.css'
-import { AiOutlineArrowUp } from 'react-icons/ai';
+import { AiOutlineArrowUp,  AiOutlineArrowDown} from 'react-icons/ai';
 
 class PointHistory extends Component{
   state = {
@@ -24,6 +24,17 @@ class PointHistory extends Component{
       }
     })
     .catch(err => console.error(err))
+  }
+
+  isPosOrNeg = (pointValue) => {
+  const pvalue = pointValue;
+    if (pvalue > 0) {
+      return "pos";
+    }
+    else if (pvalue < 0) {
+      return "neg";
+
+    }
   }
 
   getPoints = () => {
@@ -52,18 +63,19 @@ class PointHistory extends Component{
             {this.state.points.map((p) => {
               return(
                 <div className='PointDisplay'>
-                  <p>Total: {p.totalPoints},  For Sponsor (id): {p.sponsorID.na}</p>
-                  <p>All adjustments</p>
-                  {p.adjustments.map(a => 
+                  <p>Total: {p.totalPoints},  For Sponsor (id): {p.sponsorID}</p>
                   
-                    <p>Reason: {a.pointReason}, <span className='Alignment'>Value: {a.pointValue},</span>
-                    <br/> 
-                        Date: {a.date}
-                        <br/><hr/><br/>
+                  <p>All adjustments <br/><hr/></p>
+
+                  <div className='ValueDisplay'>
+                  {p.adjustments.map(a => 
+                    <p>
+                      {this.isPosOrNeg(a.pointValue) === "pos" ? <span className='ArrowUp'><AiOutlineArrowUp/> {a.pointValue}</span> : <span className='ArrowDown'><AiOutlineArrowDown/> {a.pointValue}</span>}
+                       <span className='Reason'>Reason: {a.pointReason}</span> <span className='Date'>Date: {a.date} </span>       
+                      <hr/>            
                     </p>
-                     
                     )}   
-                       
+                    </div>   
                 </div>
               )}
             )}
