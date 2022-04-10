@@ -71,6 +71,26 @@ class SponsorHome extends Component{
     })
   }
 
+  removeDriver = (user) => {
+    var payload = {
+      uID: user.uID,
+      sponsorID: this.state.org,
+    };
+    fetch('/removeOrgRelation', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(response => {
+      if( response.status === 200 ) {
+        this.getDrivers()
+      }
+    })
+    .catch((error) => {
+      console.error('Error', error);
+    });
+  }
+
   exitUpdateInfo = () => {
     this.setState({
       updating: -1
@@ -129,8 +149,8 @@ class SponsorHome extends Component{
                       <img className='profile-pic' src='DefaultProfPic.png' alt='Default Profile Picure'/>
                       <p className='user-info'>{user.fname} {user.lname}</p>
                       <p className='user-info'>{user.status ? 'Active' : 'Suspended'}</p>
-                      {this.state.userType === 1 && <p className='user-info'>{user.orgName}</p>}
                       <button  className='user-info' onClick={() => this.updateAccount(user)}>Update Account</button>
+                      {this.state.userType === 0 && <button  className='user-info' onClick={() => this.removeDriver(user)}>Remove Driver</button>}
                   </div>
                 )})}
             </div>

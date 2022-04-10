@@ -97,6 +97,31 @@ module.exports = function(app, connection){
       })
     });
 
+    app.get('/getDriverApplications', (req, res) => {
+      session = req.session
+      const apps_query = `SELECT s.sponsorID, s.orgName, a.applicationsID, a.date from new_schema.APPLICATION a INNER JOIN new_schema.SPONSOR_ORG s where a.sponsorID=s.sponsorID AND a.uID = ${session.userid} AND a.status = 0;`;
+      connection.query(apps_query, function(err, result) {
+        if(err){
+          console.log(err);
+        }else{
+          return res.json({
+            applications: result
+          })
+        }
+      })
+    });
+
+    app.post('/removeApplication', (req, res) => {
+      const delete_query = `DELETE from new_schema.APPLICATION where applicationsID=${req.body.appID};`;
+      connection.query(delete_query, function(err, result) {
+        if(err){
+          console.log(err);
+        }else{
+          res.send({success: true})
+        }
+      })
+    });
+
     app.post('/updateApplicationStatus', (req, res) => {
           const update_query = `UPDATE new_schema.APPLICATION SET status = ${req.body.status} where applicationsID=${req.body.appID};`;
           connection.query(update_query, function(err, result) {
