@@ -77,7 +77,7 @@ class UpdateAccount extends Component{
       this.setState({passMsg: ""})
       document.getElementById("btn").disabled = false;
     }else{
-      if(value == ''){
+      if(value === ''){
         this.setState({passMsg: ""})
       }else{
         this.setState({passMsg: "Password must be 8-20 characters long and contain a lowercase letter, a capital letter, a number, and a special character."})

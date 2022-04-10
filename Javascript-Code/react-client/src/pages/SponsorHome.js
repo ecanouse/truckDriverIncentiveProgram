@@ -3,6 +3,7 @@ import Layout from '../components/Layout';
 import AdminUpdateAccount from '../components/AdminUpdateAccount';
 import AdminAddUser from '../components/AdminAddUser';
 import './SponsorHome.css'
+import SponsorApplications from '../components/SponsorApplications';
 
 class SponsorHome extends Component{
   state = {
@@ -12,7 +13,8 @@ class SponsorHome extends Component{
     sponsors: [],
     updating: -1,
     userType: 0,
-    org: []
+    org: [],
+    viewApps: false
   }
   
   componentDidMount() {
@@ -69,6 +71,26 @@ class SponsorHome extends Component{
     })
   }
 
+  removeDriver = (user) => {
+    var payload = {
+      uID: user.uID,
+      sponsorID: this.state.org,
+    };
+    fetch('/removeOrgRelation', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(response => {
+      if( response.status === 200 ) {
+        this.getDrivers()
+      }
+    })
+    .catch((error) => {
+      console.error('Error', error);
+    });
+  }
+
   exitUpdateInfo = () => {
     this.setState({
       updating: -1
@@ -80,6 +102,14 @@ class SponsorHome extends Component{
   exitAddUser = () => {
     this.setState({
       adding: false
+    })
+    this.getDrivers()
+    this.getSponsors();
+  }
+
+  exitApplications = () => {
+    this.setState({
+      viewApps: false
     })
     this.getDrivers()
     this.getSponsors();
@@ -112,20 +142,22 @@ class SponsorHome extends Component{
                 </div>
               </div>
               <div className='Sponsor-show-users'>
+              {this.state.userType === 0 && <button onClick={() => this.setState({viewApps: true})}>View Applications</button>}
               {this.state.userType === 1 && <button onClick={() => this.setState({adding: true})}>Add New Sponsor</button>}
                 {users.map((user, i) => {return(
                   <div className='Sponsor-individual-user' key={i}>
                       <img className='profile-pic' src='DefaultProfPic.png' alt='Default Profile Picure'/>
                       <p className='user-info'>{user.fname} {user.lname}</p>
                       <p className='user-info'>{user.status ? 'Active' : 'Suspended'}</p>
-                      {this.state.userType === 1 && <p className='user-info'>{user.orgName}</p>}
                       <button  className='user-info' onClick={() => this.updateAccount(user)}>Update Account</button>
+                      {this.state.userType === 0 && <button  className='user-info' onClick={() => this.removeDriver(user)}>Remove Driver</button>}
                   </div>
                 )})}
             </div>
             
             {this.state.updating !== -1 && <AdminUpdateAccount uID={this.state.updating} exitUpdateInfo={this.exitUpdateInfo} />}
             {this.state.adding && <AdminAddUser isSponsor={true} userType={this.state.userType} exitAddUser={this.exitAddUser} org={this.state.org}/>}
+            {this.state.viewApps && <SponsorApplications org={this.state.org} exitApplications={this.exitApplications}></SponsorApplications>}
         </Layout>
       );
     }else{
