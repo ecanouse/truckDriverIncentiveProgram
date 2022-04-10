@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import DriverOrganizations from '../components/DriverOrganizations';
 import Layout from '../components/Layout';
 import './DriverHome.css'
 
@@ -24,13 +25,16 @@ class DriverHome extends Component{
     if (this.state.isDriver){
       return (
         <Layout userType={0} isUser={this.isDriver}>
-            <select className='SortByDrop' id='SortByDrop' defaultValue={"sort"}>
+            {/* <select className='SortByDrop' id='SortByDrop' defaultValue={"sort"}>
               <option disabled hidden value={"sort"}>Sort By</option>
               <option>All Time</option>
               <option>Last 24 Hours</option>
               <option>Last 7 Days</option>
               <option>Last 30 Days</option>
-            </select>
+            </select> */}
+            <div className='DriverHome-Body'>
+              <DriverOrganizations></DriverOrganizations>
+            </div>
         </Layout>
         
         

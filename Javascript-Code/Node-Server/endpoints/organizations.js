@@ -25,7 +25,7 @@ module.exports = function(app, connection){
                 res.send({success: true})
             }
         })
-});
+  });
 
     app.get('/getOrganizations', (req, res) => {
       session=req.session;
@@ -67,6 +67,55 @@ module.exports = function(app, connection){
             res.send({success: true})
           }
         })
+    });
+
+    app.post('/addOrgApplication', (req, res) => {
+      session=req.session;
+      const userid = session.userid
+      const today = new Date();
+      const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+      const application_query = `insert into new_schema.APPLICATION values (NULL, ${userid}, ${req.body.sponsorID}, 0, '${date}');`;
+      connection.query(application_query, function(err, result) {
+        if(err){
+          console.log(err);
+        }else{
+          res.send({success: true})
+        }
+      })
+    });
+
+    app.get('/getApplications', (req, res) => {
+      const apps_query = `SELECT u.fname, u.lname, u.uID, a.applicationsID, a.status, a.date from new_schema.APPLICATION a INNER JOIN new_schema.USER u where a.uID=u.uID AND a.sponsorID = ${req.query.sponsorID};`;
+      connection.query(apps_query, function(err, result) {
+        if(err){
+          console.log(err);
+        }else{
+          return res.json({
+            applications: result
+          })
+        }
+      })
+    });
+
+    app.post('/updateApplicationStatus', (req, res) => {
+          const update_query = `UPDATE new_schema.APPLICATION SET status = ${req.body.status} where applicationsID=${req.body.appID};`;
+          connection.query(update_query, function(err, result) {
+              if(err){
+                  console.log(err);
+              }
+              else{
+                if(req.body.status === 1){
+                  const rel_query = `insert into new_schema.USER_SPONSOR_REL values (NULL, ${req.body.uID}, ${req.body.sponsorID});`;
+                  connection.query(rel_query, function(err, result) {
+                    if(err){
+                      console.log(err);
+                    }else{
+                      res.send({success: true})
+                    }
+                  })
+                }
+              }
+          })
     });
 
       app.post('/removeOrgRelation', (req, res) => {

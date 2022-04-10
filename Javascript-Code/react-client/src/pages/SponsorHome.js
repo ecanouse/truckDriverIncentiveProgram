@@ -3,6 +3,7 @@ import Layout from '../components/Layout';
 import AdminUpdateAccount from '../components/AdminUpdateAccount';
 import AdminAddUser from '../components/AdminAddUser';
 import './SponsorHome.css'
+import SponsorApplications from '../components/SponsorApplications';
 
 class SponsorHome extends Component{
   state = {
@@ -12,7 +13,8 @@ class SponsorHome extends Component{
     sponsors: [],
     updating: -1,
     userType: 0,
-    org: []
+    org: [],
+    viewApps: false
   }
   
   componentDidMount() {
@@ -85,6 +87,14 @@ class SponsorHome extends Component{
     this.getSponsors();
   }
 
+  exitApplications = () => {
+    this.setState({
+      viewApps: false
+    })
+    this.getDrivers()
+    this.getSponsors();
+  }
+
   render() {
     if (this.state.isSponsor){
       const users = this.state.userType === 1 ? this.state.sponsors : this.state.drivers
@@ -112,6 +122,7 @@ class SponsorHome extends Component{
                 </div>
               </div>
               <div className='Sponsor-show-users'>
+              {this.state.userType === 0 && <button onClick={() => this.setState({viewApps: true})}>View Applications</button>}
               {this.state.userType === 1 && <button onClick={() => this.setState({adding: true})}>Add New Sponsor</button>}
                 {users.map((user, i) => {return(
                   <div className='Sponsor-individual-user' key={i}>
@@ -126,6 +137,7 @@ class SponsorHome extends Component{
             
             {this.state.updating !== -1 && <AdminUpdateAccount uID={this.state.updating} exitUpdateInfo={this.exitUpdateInfo} />}
             {this.state.adding && <AdminAddUser isSponsor={true} userType={this.state.userType} exitAddUser={this.exitAddUser} org={this.state.org}/>}
+            {this.state.viewApps && <SponsorApplications org={this.state.org} exitApplications={this.exitApplications}></SponsorApplications>}
         </Layout>
       );
     }else{
