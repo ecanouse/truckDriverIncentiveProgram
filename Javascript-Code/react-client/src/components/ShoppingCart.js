@@ -54,6 +54,7 @@ class ShoppingCart extends Component{
                 sponsor: this.props.sponsor,
                 sponsorName: this.props.sponsorName,
                 points: this.props.points,
+                driver: this.props.driver ? this.props.driver : '-1'
             };
             console.log(payload)
             fetch('/create-order', {
@@ -68,7 +69,7 @@ class ShoppingCart extends Component{
                 payload = {
                     add: false,
                     value: this.state.total,
-                    driver: -1,
+                    driver: this.props.driver ? this.props.driver : -1,
                     sponsor: this.props.sponsor,
                     comment: `Purchase Made on ${date}`,
                 };

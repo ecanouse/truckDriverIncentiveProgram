@@ -43,8 +43,14 @@ class SponsorHeader extends Component {
                     <a href='SponsorCatalog'>
                         <button className='NavButtons'>Catalog</button>
                     </a>
+                    <a href='SponsorPurchasing'>
+                        <button className='NavButtons'>Purchasing</button>
+                    </a>
+                    <a href='UpdateOrg'>
+                        <button className='NavButtons'>Organization</button>
+                    </a>
                     <a href='UpdateAccount'>
-                        <button className='NavButtons'>Settings</button>
+                        <button className='NavButtons'>Account</button>
                     </a>
                 </nav>
 
@@ -53,8 +59,10 @@ class SponsorHeader extends Component {
                     <div className='SmallNavContents'>
                         <a href='DriverHome'>Home</a>
                         <a href='PointAssignment'>Points</a>
-                        <a href='CatalogPurchase'>Catalog</a>
-                        <a href='UpdateAccount'>Settings</a>
+                        <a href='SponsorCatalog'>Catalog</a>
+                        <a href='SponsorPurchasing'>Purchasing</a>
+                        <a href='UpdateOrg'>Organization</a>
+                        <a href='UpdateAccount'>Account</a>
                     </div>                
                 </div>
 
