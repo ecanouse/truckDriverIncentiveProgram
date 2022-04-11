@@ -55,7 +55,7 @@ module.exports = function(app, connection){
     app.get('/getOrganizations', (req, res) => {
       session=req.session;
       const userid = req.query.uID === '-1' ? session.userid : req.query.uID
-      const orgs_query = `SELECT o.sponsorID, orgName, o.pointsPerDollar, o.street, o.city, o.state, o.zip from new_schema.SPONSOR_ORG o INNER JOIN new_schema.USER_SPONSOR_REL r where r.uID=${userid} AND o.sponsorID = r.sponsorID;`;
+      const orgs_query = `SELECT o.sponsorID, orgName, o.pointsPerDollar, o.street, o.city, o.state, o.zip, a.code from ((new_schema.SPONSOR_ORG o INNER JOIN new_schema.USER_SPONSOR_REL r ON o.sponsorID = r.sponsorID) INNER JOIN new_schema.ACCOUNT_CODE a ON o.sponsorID = a.sponsorID) where r.uID=${userid};`;
       connection.query(orgs_query, function(err, result) {
         if(err){
           console.log(err);
