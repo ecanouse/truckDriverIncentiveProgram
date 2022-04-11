@@ -36,19 +36,31 @@ module.exports = function( app, connection ) {
                 res.end()
               }else{
                 uType = -1;
+                type = -1;
                 if(code == 0000){
                   uType = 0;
+                  type = 0
                 }else if(code == 1111){
+                  //new sponsor org
                   uType = 1;
+                  type = 3;
                 }else if(code == 1730){
                   uType = 2;
+                  type = 2;
                 }else{
                   //TODO check database for code to see if it matches.
                   uType = 1;
+                  type = 1;
                 }
                 encryptPass = crypt.getHash(password);
-                //console.log('Got sign up information.');
-                qstr = "INSERT INTO new_schema.USER (lname, fname, username, password, email, phone, usertype, status) VALUES ('"+lastname+"', '"+firstname+"', '"+username+"', '"+encryptPass+"', '"+email+"', '"+phone+"', 0, 1)";
+
+                //TODO: IF VALID, THEN INSERT TO USER_SPONSOR_REL TABLE UID PLUS SPONSORID
+
+
+
+
+                encryptPass = crypt.getHash(password);
+                qstr = "INSERT INTO new_schema.USER (lname, fname, username, password, email, phone, usertype, status) VALUES ('"+lastname+"', '"+firstname+"', '"+username+"', '"+encryptPass+"', '"+email+"', '"+phone+"', '"+uType+"', 1)";
                 connection.query(qstr, function(err, result, fields) {
                   if(err) console.log(err);
                   console.log(result);
@@ -56,7 +68,38 @@ module.exports = function( app, connection ) {
                   session=req.session;
                   session.userid=result.insertId;
 
-                  res.send({success: true, msg: "Creating Account...", uType: uType});
+                  if(type == 1){
+                    qstr = `SELECT * FROM new_schema.ACCOUNT_CODE WHERE code = ${code}`;
+                    connection.query(qstr, function(err, result, fields) {
+                      if(err) console.log(err);
+                      console.log(result);
+    
+                      const isEmpty = Object.keys(result).length === 0;
+                      if(isEmpty){
+                        res.send({success: false, msg: "Account code not recognized"});
+                        res.end()
+                      }else{
+                        qstr = `SELECT * FROM ACCOUNT_CODE WHERE code = ${code}`;
+                        connection.query(qstr, function(err, result, fields) {
+                          if(err) console.log(err);
+                          console.log(result);
+                          orgID = result[0].sponsorID;
+
+                          qstr = `INSERT INTO new_schema.USER_SPONSOR_REL (uID, sponsorID) VALUES (${session.userid}, ${orgID})`;
+                          connection.query(qstr, function(err, result, fields) {
+                            if(err) console.log(err);
+                            console.log(result);
+                          });
+                          
+                        });
+                      }
+
+                    });
+
+                  }
+
+
+                  res.send({success: true, msg: "Creating Account...", uType: type});
                 });
               }
 
