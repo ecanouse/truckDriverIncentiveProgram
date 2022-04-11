@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import './ResetPass.css';
 import { Navigate } from 'react-router-dom';
 
 

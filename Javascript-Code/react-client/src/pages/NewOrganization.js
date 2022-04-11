@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import './NewOrganization.css';
 import { Navigate } from 'react-router-dom';
 
 
