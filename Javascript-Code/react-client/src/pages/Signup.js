@@ -39,7 +39,7 @@ class Signup extends Component{
       this.setState({passMsg: ""})
       document.getElementById("btn").disabled = false;
     }else{
-      if(value == ''){
+      if(value === ''){
         this.setState({passMsg: ""})
         document.getElementById("btn").disabled = true;
       }else{
