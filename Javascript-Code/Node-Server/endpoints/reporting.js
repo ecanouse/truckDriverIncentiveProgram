@@ -166,8 +166,40 @@ module.exports = function(app, connection){
         console.log('Recieved Request for Audit Log Report')
         console.log(req.body)
 
+        const sdate = new Date(req.body.startDate);
+        const formattedStartDate = sdate.getFullYear()+'-'+(sdate.getMonth()+1)+'-'+sdate.getDate();
+        const edate = new Date(req.body.endDate);
+        const formattedEndDate = edate.getFullYear()+'-'+(edate.getMonth()+1)+'-'+edate.getDate();
+
         //get application info
-        query = "select app.date, sp.orgName, dr.lname, dr.fname, app.status from APPLICATION as app, SPONSOR_ORG as sp, USER as dr where dr.uID = app.uID and sp.sponsorID = app.sponsorID;"
+        query = `select app.date, sp.orgName, usr.lname, usr.fname, app.status 
+        from APPLICATION as app, SPONSOR_ORG as sp, USER as usr
+        where app.uID = usr.uID and app.sponsorID = sp.sponsorID;`;
+
+        if( req.body.startDate != '' & req.body.orgName === '') {
+            query = `select log.date, log.orgName, log.lname, log.fname, log.status from (
+                select app.date, sp.orgName, usr.lname, usr.fname, app.status 
+                    from APPLICATION as app, SPONSOR_ORG as sp, USER as usr
+                    where app.uID = usr.uID and app.sponsorID = sp.sponsorID
+            ) as log
+                where log.date between '${formattedStartDate}' and '${formattedEndDate}';`;
+        }
+        else if( req.body.startDate === '' & req.body.orgName != '' ) {
+            query = `select log.date, log.orgName, log.lname, log.fname, log.status from (
+                select app.date, sp.orgName, usr.lname, usr.fname, app.status 
+                    from APPLICATION as app, SPONSOR_ORG as sp, USER as usr
+                    where app.uID = usr.uID and app.sponsorID = sp.sponsorID
+            ) as log
+                where log.orgName = '${req.body.orgName}';`;
+        }
+        else if(req.body.startDate != '' & req.body.orgName != '') {
+            query = `select log.date, log.orgName, log.lname, log.fname, log.status from (
+                select app.date, sp.orgName, usr.lname, usr.fname, app.status 
+                    from APPLICATION as app, SPONSOR_ORG as sp, USER as usr
+                    where app.uID = usr.uID and app.sponsorID = sp.sponsorID
+            ) as log
+                where log.orgName = '${req.body.orgName}' and log.date between '${formattedStartDate}' and '${formattedEndDate}';`;
+        }
         connection.query(query, function(err, result) {
             if(err) {
                 console.log(err);
