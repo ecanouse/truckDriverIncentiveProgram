@@ -19,7 +19,7 @@ class AdminHome extends Component{
     updatingOrgs: -1,
     adding: false,
     addingOrg: false,
-    updatingOrg: -1
+    updatingOrg: -1,
   }
   
   componentDidMount() {
@@ -150,6 +150,10 @@ class AdminHome extends Component{
     this.getOrgs();
   }
 
+  changeUserType = (e) => {
+    this.setState({userType: parseInt(e.target.value)})
+  }
+
   render() {
     const users = this.state.userType === 2 ? this.state.admin : this.state.userType === 1 ? this.state.sponsors : this.state.drivers
     if (this.state.isAdmin){
@@ -166,14 +170,20 @@ class AdminHome extends Component{
               <p>View Users:</p>
 
               <div>
-                <input type="radio" id="drivers" name="usertype" value="drivers" checked={this.state.userType===0} onChange={() => this.setState({userType: 0})}/>
+                <select className='AdminHome-Select' id='SortByDrop' onChange={this.changeUserType}>
+                  <option id="drivers" name="usertype" value={0}>Drivers</option>
+                  <option id="sponsors" name="usertype" value={1}>Sponsors</option>
+                  <option id="admin" name="usertype" value={2}>Admin</option>
+                  <option id="orgs" name="usertype" value={3}>Organizations</option>
+                </select>
+                {/* <input type="radio" id="drivers" name="usertype" value="drivers" checked={this.state.userType===0} onChange={() => this.setState({userType: 0})}/>
                 <label htmlFor="drivers">Drivers</label>
                 <input type="radio" id="sponsors" name="usertype" value="sponsors" checked={this.state.userType===1} onChange={() => this.setState({userType: 1})}/>
                 <label htmlFor="sponsors">Sponsors</label>
                 <input type="radio" id="admin" name="usertype" value="admin" checked={this.state.userType===2} onChange={() => this.setState({userType: 2})}/>
                 <label htmlFor="admin">Admin</label>
                 <input type="radio" id="orgs" name="usertype" value="orgs" checked={this.state.userType===3} onChange={() => this.setState({userType: 3})}/>
-                <label htmlFor="orgs">Organizations</label>
+                <label htmlFor="orgs">Organizations</label> */}
               </div>
             </div>
             <div className='show-users'>

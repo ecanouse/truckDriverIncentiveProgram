@@ -11,7 +11,8 @@ class UpdateAccount extends Component{
     city: '',
     state: '',
     zip: 0,
-    ppd: 0
+    ppd: 0,
+    code: -1
   }
   
   componentDidMount() {
@@ -33,6 +34,8 @@ class UpdateAccount extends Component{
         zip: response.orgs[0].zip,
         ppd: response.orgs[0].pointsPerDollar
       })
+      document.getElementById("code").innerHTML = response.orgs[0].code;
+
     })
     .catch(err => console.error(err))
   }
@@ -45,7 +48,6 @@ class UpdateAccount extends Component{
       if(response.is_sponsor){
         this.getInfo()
         this.getUserType()
-        //this.getAccountCode()
       }
     })
     .catch(err => console.error(err))
@@ -119,6 +121,7 @@ class UpdateAccount extends Component{
             <div className='UpdateAccount-Page'>
             <div className='UpdateAccount-Body'>
             <form id='info-form' onSubmit={this.submit}>
+            <h4>Account Code: <span id="code"></span></h4>
               <label className='inputs' htmlFor='name'><br/>Update Organization Name<br/></label>
                 <input required type='text' id='name' name='name'  size='45' value={this.state.name} onChange={this.handleChange}></input>
               <label className='inputs' htmlFor='street'><br/>Update Street Address<br/></label>
