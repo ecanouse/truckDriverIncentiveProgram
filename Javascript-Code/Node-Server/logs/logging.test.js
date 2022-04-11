@@ -6,10 +6,10 @@ describe("Login Audit Logging Tests", () => {
 
 
 
-    test('Testing login audit system', async () => {
+    test('Testing login audit system', () => {
 
             //get connection to be used in testing
-        var connection = await mysql.createConnection({
+        var connection = mysql.createConnection({
             host: "groupfour-database.crvi1tvxyfsa.us-east-1.rds.amazonaws.com",
             user: "admin",
             password: "cpsc4910group4",
@@ -19,16 +19,16 @@ describe("Login Audit Logging Tests", () => {
 
         var test_username = "testusername";
 
-        var date = await loginlogs.recordLogin(test_username, false, -1, connection);
+        var date = loginlogs.recordLogin(test_username, false, -1, connection);
 
         //check if recorded
 
         var sel_query = "SELECT date, username, success from new_schema.LOGIN_ATTEMPTS where date = \'" + date + "\';"
 
-        await connection.query(sel_query, function(err, result, fields) {
+        connection.query(sel_query, function(err, result, fields) {
             if(err) console.log(err)
 
-            const isEmpty = Object.keys(result).length === 0;
+            const isEmpty = Object.keys( result ).length === 0;
             expect(isEmpty).toEqual(false);
 
             if( !isEmpty ) {
@@ -38,9 +38,9 @@ describe("Login Audit Logging Tests", () => {
             }
         })
 
-        await connection.query("DELETE from new_schema.LOGIN_ATTEMPTS WHERE date = \'" + date + "\';");
+        connection.query("DELETE from new_schema.LOGIN_ATTEMPTS WHERE date = \'" + date + "\';");
 
-        await connection.end()
+        connection.end()
     });
 
 
