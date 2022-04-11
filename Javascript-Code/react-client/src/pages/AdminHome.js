@@ -5,6 +5,7 @@ import AdminAddUser from '../components/AdminAddUser';
 import './AdminHome.css'
 import Layout from '../components/Layout';
 import AdminUpdateOrg from '../components/AdminUpdateOrg';
+import AdminAddOrg from '../components/AdminAddOrg';
 class AdminHome extends Component{
   state = {
     loading: true,
@@ -17,6 +18,7 @@ class AdminHome extends Component{
     updating: -1,
     updatingOrgs: -1,
     adding: false,
+    addingOrg: false,
     updatingOrg: -1
   }
   
@@ -141,6 +143,13 @@ class AdminHome extends Component{
     this.getOrgs();
   }
 
+  exitAddOrg = () => {
+    this.setState({
+      addingOrg: false
+    })
+    this.getOrgs();
+  }
+
   render() {
     const users = this.state.userType === 2 ? this.state.admin : this.state.userType === 1 ? this.state.sponsors : this.state.drivers
     if (this.state.isAdmin){
@@ -171,7 +180,7 @@ class AdminHome extends Component{
               {this.state.userType === 0 && <button onClick={() => this.setState({adding: true})}>Add New Driver</button>}
               {this.state.userType === 1 && <button onClick={() => this.setState({adding: true})}>Add New Sponsor</button>}
               {this.state.userType === 2 && <button onClick={() => this.setState({adding: true})}>Add New Admin</button>}
-              {this.state.userType === 3 && <button onClick={() => this.setState({adding: true})}>Add New Organization</button>}
+              {this.state.userType === 3 && <button onClick={() => this.setState({addingOrg: true})}>Add New Organization</button>}
               {/* <div className='users-heading'>
                   <div className='blank'></div>
                   <p className='user-info'>Name</p>
@@ -200,6 +209,7 @@ class AdminHome extends Component{
             {this.state.updatingOrgs !== -1 && <AdminUpdateOrgs uID={this.state.updatingOrgs} exitUpdateOrgs={this.exitUpdateOrgs} />}
             {this.state.adding && <AdminAddUser userType={this.state.userType} exitAddUser={this.exitAddUser} />}
             {this.state.updatingOrg !== -1 && <AdminUpdateOrg org={this.state.updatingOrg} exitUpdateOrg={this.exitUpdateOrg}/>}
+            {this.state.addingOrg && <AdminAddOrg exitAddOrg={this.exitAddOrg}/>}
         </Layout>
       );
     }else{

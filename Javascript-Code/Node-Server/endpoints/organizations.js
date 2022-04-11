@@ -13,6 +13,19 @@ module.exports = function(app, connection){
           })
   });
 
+  app.post('/add-org', (req, res) => {
+    session=req.session;
+    const userid = req.body.uID == '-1' ? session.userid : req.body.uID
+    const orgs_query = `insert into new_schema.SPONSOR_ORG values (NULL, '${req.body.name}', '${req.body.email}', '${req.body.street}', '${req.body.city}', '${req.body.state}', ${req.body.zip}, ${req.body.ppd});`;
+    connection.query(orgs_query, function(err, result) {
+      if(err){
+        console.log(err);
+      }else{
+        res.send({success: true})
+      }
+    })
+});
+
   app.post('/update-sponsororg', (req, res) => {
         const update_query = `UPDATE new_schema.SPONSOR_ORG SET orgName = '${req.body.name}', pointsPerDollar = '${req.body.ppd}', street = '${req.body.street}', city = '${req.body.city}', zip = '${req.body.zip}', state = '${req.body.state}' where sponsorID=${req.body.sponsorID};`;
         connection.query(update_query, function(err, result) {
