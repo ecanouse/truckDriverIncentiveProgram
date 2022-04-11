@@ -36,19 +36,25 @@ module.exports = function( app, connection ) {
                 res.end()
               }else{
                 uType = -1;
+                type = -1;
                 if(code == 0000){
                   uType = 0;
+                  type = 0
                 }else if(code == 1111){
+                  //new sponsor org
                   uType = 1;
+                  type = 3;
                 }else if(code == 1730){
                   uType = 2;
+                  type = 2;
                 }else{
                   //TODO check database for code to see if it matches.
                   uType = 1;
+                  type = 1;
                 }
                 encryptPass = crypt.getHash(password);
                 //console.log('Got sign up information.');
-                qstr = "INSERT INTO new_schema.USER (lname, fname, username, password, email, phone, usertype, status) VALUES ('"+lastname+"', '"+firstname+"', '"+username+"', '"+encryptPass+"', '"+email+"', '"+phone+"', 0, 1)";
+                qstr = "INSERT INTO new_schema.USER (lname, fname, username, password, email, phone, usertype, status) VALUES ('"+lastname+"', '"+firstname+"', '"+username+"', '"+encryptPass+"', '"+email+"', '"+phone+"', '"+uType+"', 1)";
                 connection.query(qstr, function(err, result, fields) {
                   if(err) console.log(err);
                   console.log(result);
@@ -56,7 +62,7 @@ module.exports = function( app, connection ) {
                   session=req.session;
                   session.userid=result.insertId;
 
-                  res.send({success: true, msg: "Creating Account...", uType: uType});
+                  res.send({success: true, msg: "Creating Account...", uType: type});
                 });
               }
 

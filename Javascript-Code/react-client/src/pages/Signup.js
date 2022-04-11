@@ -82,7 +82,6 @@ class Signup extends Component{
     })
     .then ( response => {
       if( response.status === 200 ) {
-        //this.setState({redirect: true});
         response.json().then( data => {
           document.getElementById('login_displaybox').style.color = "red";
           this.setState({msg: data.msg})
@@ -153,7 +152,7 @@ class Signup extends Component{
 
           <p>Email</p>
           <input 
-            type="email" 
+            type required="email" 
             id="email" 
             name="email" 
             placeholder='email' 
@@ -213,6 +212,7 @@ class Signup extends Component{
           { this.state.redirect && (this.state.userType === 0) ? (<Navigate to="/driverhome"/>) : null }
           { this.state.redirect && (this.state.userType === 1) ? (<Navigate to="/SponsorHome"/>) : null }
           { this.state.redirect && (this.state.userType === 2) ? (<Navigate to="/AdminHome"/>) : null }
+          { this.state.redirect && (this.state.userType === 3) ? (<Navigate to="/NewOrganization"/>) : null }
         </form>
         </div>
       </div>

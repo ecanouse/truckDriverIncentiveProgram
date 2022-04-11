@@ -58,6 +58,7 @@ require('./endpoints/adduser')(app, connection);
 require('./endpoints/resetpass-attempt')(app, connection);
 require('./endpoints/catalog')(app, connection);
 require('./endpoints/orders')(app, connection);
+require('./endpoints/neworganization-attempt')(app, connection);
 
 app.get('/test', (req, res) => {
     connection.query('SELECT * FROM test.test_table', (err, results) => {
