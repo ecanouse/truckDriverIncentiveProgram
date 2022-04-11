@@ -36,7 +36,7 @@ class ResetPass extends Component{
       this.setState({passMsg: ""})
       document.getElementById("btn").disabled = false;
     }else{
-      if(value == ''){
+      if(value === ''){
         this.setState({passMsg: ""})
         document.getElementById("btn").disabled = true;
       }else{
@@ -155,7 +155,6 @@ class ResetPass extends Component{
           />
         
           <button type="submit" class='LoginButton'>Send Reset Email</button>
-
         </form>
         </div>
 
