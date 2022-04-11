@@ -1,175 +1,25 @@
 import React, {Component} from 'react';
 import './AdminReporting.css';
-import AuditLogResults from '../components/AuditLogResults.js';
 import Layout from '../components/Layout';
-import ExportButton from '../components/ExportButton';
-import ReportsTitle from '../components/ReportsTitle';
+
+import { Navigate } from 'react-router-dom';
 
 
-const login_columns = [
-    {
-        name: 'Date',
-        selector: row => row.date,
-    },
-    {
-        name: 'Username',
-        selector: row => row.username,
-    },
-    {
-        name: 'Success/Fail',
-        selector: row => row.success,
-    },
-];
-
-const password_columns = [
-    {
-        name: 'Date',
-        selector: row => row.date,
-    },
-    {
-        name: 'Username',
-        selector: row => row.username,
-    },
-    {
-        name: 'Type of Change',
-        selector: row => row.changeType,
-    },
-];
-
-const point_columns = [
-  {
-      name: 'Date',
-      selector: row => row.date,
-  },
-  {
-      name: 'Sponsor',
-      selector: row => row.orgName,
-  },
-  {
-      name: 'Last Name',
-      selector: row => row.lname,
-  },
-  {
-    name: 'First Name',
-    selector: row => row.fname,
-  },
-  {
-    name: 'Point Value',
-    selector: row => row.pointValue,
-  },
-  {
-    name: 'Reason',
-    selector: row => row.pointReason,
-  },
-];
-
-const app_columns = [
-  {
-      name: 'Date',
-      selector: row => row.date,
-  },
-  {
-      name: 'Sponsor',
-      selector: row => row.orgName,
-  },
-  {
-      name: 'Last Name',
-      selector: row => row.lname,
-  },
-  {
-    name: 'First Name',
-    selector: row => row.fname,
-  },
-  {
-    name: 'Status',
-    selector: row => row.status,
-  },
-  // {
-  //   name: 'Reason',
-  //   selector: row => row.pointReason,
-  // },
-];
+// date range picker module from https://www.npmjs.com/package/react-date-range
 
 class AdminReporting extends Component{
+
   state = {
     loading: true,
     isAdmin: true,
-    login_columns: login_columns,
-    login_data: {},
-    password_columns: password_columns,
-    password_data: {},
-    point_columns: point_columns,
-    point_data: {},
-    app_columns: app_columns,
-    app_data: {},
-    data_fetched: false
+    auditLog: false,
+    invoice: false,
+    sales: false
   }
   
 //   componentDidMount() {
 //     this.isAdmin();
 //   }
-
-// make new component with param to see wich kind of report
-// contain inner fxn falls and queries
-
-  getAuditLogReport = () => {
-
-    var payload = {
-        filter: "none"
-    };
-
-    fetch('/getLoginAttempts', {
-        method: 'POST', //post request
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload) //put into json form
-    })
-    .then(response => response.json())
-    .then(response => {
-        this.setState({login_data: response});
-        console.log(response);
-    })
-    .catch(err => console.error(err));
-
-    fetch('/getPasswordChanges', {
-      method: 'POST', //post request
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload) //put into json form
-    })
-    .then(response => response.json())
-    .then(response => {
-        this.setState({password_data: response});
-        console.log(response);
-    })
-    .catch(err => console.error(err));
-
-    fetch('/getPointAdjustments', {
-      method: 'POST', //post request
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload) //put into json form
-    })
-    .then(response => response.json())
-    .then(response => {
-        this.setState({point_data: response});
-        console.log(response);
-    })
-    .catch(err => console.error(err));
-
-    fetch('/getApplications', {
-      method: 'POST', //post request
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload) //put into json form
-    })
-    .then(response => response.json())
-    .then(response => {
-        this.setState({app_data: response});
-        console.log(response);
-    })
-    .catch(err => console.error(err));
-
-  };
-
-  
-
     // isAdmin = () => {
     //     fetch('/isAdmin')
     //     .then(response => response.json())
@@ -185,37 +35,35 @@ class AdminReporting extends Component{
     // }
 
 
+  handleAuditLog = () => {
+    this.setState({auditLog: true})
+  }
 
   render() {
     // if (this.state.isSponsor){
-
-      if(!this.state.data_fetched) {
-        this.getAuditLogReport();
-        this.state.data_fetched = true;
+      if( this.state.auditLog ) {
+        //render audit log filter
+        return(<Navigate to='/AuditLogReports'/>)
       }
-
+      else if( this.state.invoice ) {
+        //render invoice filter
+      }
+      else if( this.state.sales ) {
+        //render sales filter
+      }
       return (
         <Layout userType={2}>
+          
+          <div>
+              <button  className='ReportButton' onClick={this.handleAuditLog}>Audit Log Report</button>
+              <button  className='ReportButton'>Invoice Report</button>
+              <button  className='ReportButton'>Sales Report</button>
+          </div>
 
-            {/* Point Change Table */}
-            <ReportsTitle content="Password Changes"></ReportsTitle>
-            <AuditLogResults data={this.state.password_data} columns={this.state.password_columns}></AuditLogResults>
-            <ExportButton data={this.state.password_data}>Export</ExportButton>
+          <div>
+            
+          </div>
 
-            {/* Application Table */}
-            <ReportsTitle content="Applications"></ReportsTitle>
-            <AuditLogResults data={this.state.app_data} columns={this.state.app_columns}></AuditLogResults>
-            <ExportButton data={this.state.app_data}>Export</ExportButton> 
-
-            {/* Point Adjustment Table */}
-            <ReportsTitle content="Point Adjustments"></ReportsTitle>
-            <AuditLogResults data={this.state.point_data} columns={this.state.point_columns}></AuditLogResults>
-            <ExportButton data={this.state.point_data}>Export</ExportButton>            
-
-            {/* Login Attempts Table */}
-            <ReportsTitle content="Login Attempts"></ReportsTitle>
-            <AuditLogResults data={this.state.login_data} columns={this.state.login_columns}></AuditLogResults>
-            <ExportButton data={this.state.login_data}>Export</ExportButton>
         </Layout>
       );
     // }else{
