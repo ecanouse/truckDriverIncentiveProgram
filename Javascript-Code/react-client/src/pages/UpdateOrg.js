@@ -45,6 +45,7 @@ class UpdateAccount extends Component{
       if(response.is_sponsor){
         this.getInfo()
         this.getUserType()
+        //this.getAccountCode()
       }
     })
     .catch(err => console.error(err))
