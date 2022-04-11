@@ -53,7 +53,13 @@ module.exports = function( app, connection ) {
                   type = 1;
                 }
                 encryptPass = crypt.getHash(password);
-                //console.log('Got sign up information.');
+
+                //TODO: IF VALID, THEN INSERT TO USER_SPONSOR_REL TABLE UID PLUS SPONSORID
+
+
+
+
+                encryptPass = crypt.getHash(password);
                 qstr = "INSERT INTO new_schema.USER (lname, fname, username, password, email, phone, usertype, status) VALUES ('"+lastname+"', '"+firstname+"', '"+username+"', '"+encryptPass+"', '"+email+"', '"+phone+"', '"+uType+"', 1)";
                 connection.query(qstr, function(err, result, fields) {
                   if(err) console.log(err);
@@ -61,6 +67,37 @@ module.exports = function( app, connection ) {
 
                   session=req.session;
                   session.userid=result.insertId;
+
+                  if(type == 1){
+                    qstr = `SELECT * FROM new_schema.ACCOUNT_CODE WHERE code = ${code}`;
+                    connection.query(qstr, function(err, result, fields) {
+                      if(err) console.log(err);
+                      console.log(result);
+    
+                      const isEmpty = Object.keys(result).length === 0;
+                      if(isEmpty){
+                        res.send({success: false, msg: "Account code not recognized"});
+                        res.end()
+                      }else{
+                        qstr = `SELECT * FROM ACCOUNT_CODE WHERE code = ${code}`;
+                        connection.query(qstr, function(err, result, fields) {
+                          if(err) console.log(err);
+                          console.log(result);
+                          orgID = result[0].sponsorID;
+
+                          qstr = `INSERT INTO new_schema.USER_SPONSOR_REL (uID, sponsorID) VALUES (${session.userid}, ${orgID})`;
+                          connection.query(qstr, function(err, result, fields) {
+                            if(err) console.log(err);
+                            console.log(result);
+                          });
+                          
+                        });
+                      }
+
+                    });
+
+                  }
+
 
                   res.send({success: true, msg: "Creating Account...", uType: type});
                 });
