@@ -216,6 +216,14 @@ class Signup extends Component{
           { this.state.redirect && (this.state.userType === 3) ? (<Navigate to="/NewOrganization"/>) : null }
         </form>
         </div>
+
+
+        <p>Already have an account?</p>
+        <form action="/login" class="inline">
+          <button type="submit" className='LoginButton'>Go To Log-in</button>
+        </form>
+
+
       </div>
       </body>
       
