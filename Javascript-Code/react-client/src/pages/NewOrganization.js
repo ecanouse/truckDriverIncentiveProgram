@@ -78,7 +78,7 @@ class NewOrganization extends Component{
     render() {
 
         return (
-          <div className='NeweOrganization'>
+          <div className='NewOrganization'>
             <header className='Login-Header'>
               <img src="teamLogo.png" alt="The Mad Lads Team Logo" width="250" height="100"></img>
             </header>
