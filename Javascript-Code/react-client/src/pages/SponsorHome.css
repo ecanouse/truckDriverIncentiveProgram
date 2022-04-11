@@ -41,6 +41,14 @@
     display: flex;   
 }
 
+@media (max-width: 780px) {
+    .Sponsor-individual-user {
+        width: 80%;
+        flex-wrap: wrap;
+        padding: 10px;
+    }
+}
+
 .profile-pic {
     float: right;
     border: 1px solid black;
