@@ -35,8 +35,8 @@ select log.date, log.username, log.success from (
 	select la.date, la.username, la.success, la.uID, u2s.sponsorID
 		from LOGIN_ATTEMPTS as la, USER_SPONSOR_REL as u2s
         where la.uID = u2s.uID
-	) as log;
-   -- where log.sponsorID-- log.date between '2022-3-09' and '2022-3-11' and ;
+	) as log
+		where log.sponsorID log.date between '2022-3-09' and '2022-3-11' and ;
     
 
 -- statement with no filters

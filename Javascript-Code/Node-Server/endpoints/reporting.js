@@ -114,6 +114,7 @@ module.exports = function(app, connection){
 
         // add all that but for sponsors
         // add session compatability to all this
+        // get rid of console.log()s
 
 
         const sdate = new Date(req.body.startDate);
@@ -153,10 +154,6 @@ module.exports = function(app, connection){
             }
             else {
                 console.log(result)
-
-                //trying to map out specific sponsors
-                
-
                 res.send(result)
 
             }
