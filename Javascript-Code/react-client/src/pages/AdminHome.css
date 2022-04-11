@@ -1,12 +1,10 @@
-.SortByDrop {
+.AdminHome-Select {
     font-size: 18px;
     background-color: #ffffff;
     border: 1px solid;
     width:150px;
     height:30px;
     z-index: 2;
-    margin-top: 100px;
-    margin-left: 20px;   
 }
 
 .userbuttons {
@@ -44,6 +42,14 @@
     justify-content: flex-end;
 }
 
+@media (max-width: 780px) {
+    .individual-user {
+        width: 80%;
+        flex-wrap: wrap;
+        padding: 10px;
+    }
+}
+
 .individual-org {
     font-size: 16px;
     border: 1px solid;
@@ -56,6 +62,14 @@
     display: flex;  
     align-items: center;
     justify-content: flex-end;
+}
+
+@media (max-width: 780px) {
+    .individual-org {
+        width: 80%;
+        flex-wrap: wrap;
+        padding: 10px;
+    }
 }
 
 

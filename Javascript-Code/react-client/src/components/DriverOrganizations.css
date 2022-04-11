@@ -11,6 +11,15 @@
     justify-content: center;
 }
 
+@media (max-width: 780px) {
+    .DriverOrgs-Body {
+        width: 80%;
+        flex-wrap: wrap;
+        padding: 10px;
+        height: fit-content;
+    }
+}
+
 .DriverOrgs-heading {
     font-size: 20px;
 }
@@ -26,6 +35,17 @@
     height: 25px;
     align-items: center;
 }
+
+@media (max-width: 780px) {
+    .DriverOrgs-Org {
+        width: 80%;
+        flex-wrap: wrap;
+        padding: 10px;
+        height: fit-content;
+    }
+}
+
+
 
 .DriverOrgs-Form {
     display: flex;
