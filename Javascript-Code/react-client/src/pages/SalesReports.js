@@ -25,12 +25,8 @@ const driver_columns = [
 
 const sponsor_columns = [
     {
-        name: 'First Name',
-        selector: row => row.fname,
-    },
-    {
-        name: 'Last Name',
-        selector: row => row.lname,
+        name: 'Sponsor',
+        selector: row => row.orgName,
     },
     {
         name: 'Total',
@@ -51,75 +47,11 @@ class SalesReports extends Component{
       endDate: ''
     }
   
-  
     
   //   componentDidMount() {
   //     this.isAdmin();
   //   }
   
-  // make new component with param to see wich kind of report
-  // contain inner fxn falls and queries
-  
-    // getAuditLogReport = async(data) => {
-  
-    //   var payload = {
-    //       startDate: data.startDate,
-    //       endDate: data.endDate,
-    //       orgName: data.org
-    //   };
-  
-    //   console.log(payload)
-    //   await fetch('/getLoginAttempts', {
-    //       method: 'POST', //post request
-    //       headers: { 'Content-Type': 'application/json' },
-    //       body: JSON.stringify(payload) //put into json form
-    //   })
-    //   .then(response => response.json())
-    //   .then(response => {
-    //       this.setState({login_data: response});
-    //       console.log(response);
-    //   })
-    //   .catch(err => console.error(err));
-  
-    //   await fetch('/getPasswordChanges', {
-    //     method: 'POST', //post request
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify(payload) //put into json form
-    //   })
-    //   .then(response => response.json())
-    //   .then(response => {
-    //       this.setState({password_data: response});
-    //       console.log(response);
-    //   })
-    //   .catch(err => console.error(err));
-  
-    //   await fetch('/getPointAdjustments', {
-    //     method: 'POST', //post request
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify(payload) //put into json form
-    //   })
-    //   .then(response => response.json())
-    //   .then(response => {
-    //       this.setState({point_data: response});
-    //       console.log(response);
-    //   })
-    //   .catch(err => console.error(err));
-  
-    //   await fetch('/getApplications', {
-    //     method: 'POST', //post request
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify(payload) //put into json form
-    //   })
-    //   .then(response => response.json())
-    //   .then(response => {
-    //       this.setState({app_data: response});
-    //       console.log(response);
-    //   })
-    //   .catch(err => console.error(err));
-  
-    //   this.setState({data_fetched: true});
-    // };
-
     getSalesReportByDriver = async(data) => {
 
         console.log("fetching report!");
@@ -152,7 +84,7 @@ class SalesReports extends Component{
         })
         .catch(err => console.error(err));
 
-        this.setState({data_fetched: true});
+        this.setState({data_fetched: true,});
 
     }
 
@@ -167,9 +99,26 @@ class SalesReports extends Component{
         // outputs --> results
             // results = results.<row data> results.<expanded component data>
 
-        
+        var payload = {
+            startDate: data.startDate,
+            endDate: data.endDate,
+            orgName: data.org,
+        };
+    
+        console.log(payload)
+        await fetch('/getSalesBySponsor', {
+            method: 'POST', //post request
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload) //put into json form
+        })
+        .then(response => response.json())
+        .then(response => {
+            this.setState({row_data: response});
+            console.log(response);
+        })
+        .catch(err => console.error(err));
 
-        this.setState({data_fetched: true});
+        this.setState({data_fetched: true,});
 
     }
   
@@ -190,17 +139,13 @@ class SalesReports extends Component{
       // }
   
       drivercallback = (data) => {
-        console.log("printing data");
-        console.log(data);
-        const sdate = data.startDate;
-        const edate = data.endDate
+
         this.setState({ //giving up on trying to figure out why the state is not setting /getting deleted for some reason
-          startDate: sdate,
-          endDate: edate,
+          startDate:  JSON.parse(JSON.stringify(data.startDate)),
+          endDate: JSON.parse(JSON.stringify(data.endDate)),
           driverID: data.driverID
-        }, () => {
-          this.getSalesReportByDriver(data);
-        });
+        })
+        this.getSalesReportByDriver(data);
       }
 
       sponsorcallback = (data) => {
@@ -263,13 +208,22 @@ class SalesReports extends Component{
             );
     
           }
-        else {
-            console.log("CURRENT START DATE: "+this.startDate)
+        else if (this.state.data_fetched & this.state.driver_reports) {
             return (
                 <Layout userType={2}>
                     <ReportsTitle content="Driver Sales Report"/>
                     {/* <DetailedTable data={this.state.row_data} columns={this.state.columns} expandableRowsComponent={ExpandedComponent}/> */}
-                    <DetailedTable data={this.state.row_data} columns={this.state.columns} startDate={this.startDate}/>
+                    <DetailedTable data={this.state.row_data} columns={this.state.columns} startDate={this.state.startDate} endDate={this.state.endDate}/>
+                    <ExportButton data={this.state.row_data}>Export</ExportButton>
+                </Layout>
+            );
+        }
+        else if (this.state.data_fetched & this.state.sponsor_reports) {
+            return (
+                <Layout userType={2}>
+                    <ReportsTitle content="Sponsor Sales Report"/>
+                    {/* <DetailedTable data={this.state.row_data} columns={this.state.columns} expandableRowsComponent={ExpandedComponent}/> */}
+                    <DetailedTable data={this.state.row_data} columns={this.state.columns} startDate={this.state.startDate} endDate={this.state.endDate}/>
                     <ExportButton data={this.state.row_data}>Export</ExportButton>
                 </Layout>
             );
