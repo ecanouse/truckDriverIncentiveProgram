@@ -1,6 +1,6 @@
 module.exports = function(app, connection){
     
-    // AUDIT LOG REPORTS
+    // AUDIT LOG REPORTS --------------------------------------------
 
     app.post('/getLoginAttempts', (req, res) => {
 
@@ -232,5 +232,84 @@ module.exports = function(app, connection){
 
     });
 
+
+    // END OF AUDIT LOG REPORTS
+
+    // SALES REPORTS -------------------------------------------
+
+    app.post('/getDriversFromOrg', (req, res) => {
+
+        console.log('Recieved Request for Sponsor List')
+
+        const orgID = req.body.orgID;
+        let query = `select usr.uID, usr.fname, usr.lname
+                        from USER as usr, USER_SPONSOR_REL as u2s
+                        where u2s.sponsorID = ${orgID} and u2s.uID = usr.uID`
+        
+        connection.query(query, function(err, result) {
+            if( err ) {
+                console.log(err)
+                res.send({success:false})
+            }
+            else {
+                res.send(result)
+            }
+        });
+
+    });
+
+    app.post('/getSalesByDriver', (req, res) => {
+
+        console.log('Recieved Request for Sales By Driver')
+        console.log(req.body)
+
+        // const sdate = new Date(req.body.startDate);
+        // const formattedStartDate = sdate.getFullYear()+'-'+(sdate.getMonth()+1)+'-'+sdate.getDate();
+        // const edate = new Date(req.body.endDate);
+        // const formattedEndDate = edate.getFullYear()+'-'+(edate.getMonth()+1)+'-'+edate.getDate();
+
+        //get application info
+        query = `select usr.fname, usr.lname, SUM(ord.total) as total, usr.uID
+                    from new_schema.ORDER as ord, USER as usr
+                        where usr.uID = ord.uID
+                            group by ord.uID;`;
+
+        if( req.body.startDate != '' & req.body.orgName === '') {
+            query = `select log.date, log.orgName, log.lname, log.fname, log.status from (
+                select app.date, sp.orgName, usr.lname, usr.fname, app.status 
+                    from APPLICATION as app, SPONSOR_ORG as sp, USER as usr
+                    where app.uID = usr.uID and app.sponsorID = sp.sponsorID
+            ) as log
+                where log.date between '${formattedStartDate}' and '${formattedEndDate}';`;
+        }
+        else if( req.body.startDate === '' & req.body.orgName != '' ) {
+            query = `select log.date, log.orgName, log.lname, log.fname, log.status from (
+                select app.date, sp.orgName, usr.lname, usr.fname, app.status 
+                    from APPLICATION as app, SPONSOR_ORG as sp, USER as usr
+                    where app.uID = usr.uID and app.sponsorID = sp.sponsorID
+            ) as log
+                where log.orgName = '${req.body.orgName}';`;
+        }
+        else if(req.body.startDate != '' & req.body.orgName != '') {
+            query = `select log.date, log.orgName, log.lname, log.fname, log.status from (
+                select app.date, sp.orgName, usr.lname, usr.fname, app.status 
+                    from APPLICATION as app, SPONSOR_ORG as sp, USER as usr
+                    where app.uID = usr.uID and app.sponsorID = sp.sponsorID
+            ) as log
+                where log.orgName = '${req.body.orgName}' and log.date between '${formattedStartDate}' and '${formattedEndDate}';`;
+        }
+        connection.query(query, function(err, result) {
+            if(err) {
+                console.log(err);
+                res.send({success:false})
+            }
+            else {
+
+                res.send(result)
+
+            }
+        });
+
+    });
 
 }

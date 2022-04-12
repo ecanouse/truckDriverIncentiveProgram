@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import './AdminReporting.css';
+import './AuditLogReports.css';
 import AuditLogResults from '../components/AuditLogResults.js';
 import Layout from '../components/Layout';
 import ExportButton from '../components/ExportButton';
