@@ -6,6 +6,7 @@ import ReportsTitle from '../components/ReportsTitle';
 import ReportsDriverFilter from '../components/ReportsDriverFilter';
 import DetailedTable from '../components/DetailedTable';
 import ReportsFilter from '../components/ReportsFilter';
+import { isThisSecond } from 'date-fns';
 
 const driver_columns = [
     {
@@ -191,9 +192,11 @@ class SalesReports extends Component{
       drivercallback = (data) => {
         console.log("printing data");
         console.log(data);
-        this.setState({
-          startDate: data.startDate,
-          endDate: data.endDate,
+        const sdate = data.startDate;
+        const edate = data.endDate
+        this.setState({ //giving up on trying to figure out why the state is not setting /getting deleted for some reason
+          startDate: sdate,
+          endDate: edate,
           driverID: data.driverID
         }, () => {
           this.getSalesReportByDriver(data);
@@ -261,12 +264,12 @@ class SalesReports extends Component{
     
           }
         else {
-            
+            console.log("CURRENT START DATE: "+this.startDate)
             return (
                 <Layout userType={2}>
                     <ReportsTitle content="Driver Sales Report"/>
                     {/* <DetailedTable data={this.state.row_data} columns={this.state.columns} expandableRowsComponent={ExpandedComponent}/> */}
-                    <DetailedTable data={this.state.row_data} columns={this.state.columns}/>
+                    <DetailedTable data={this.state.row_data} columns={this.state.columns} startDate={this.startDate}/>
                     <ExportButton data={this.state.row_data}>Export</ExportButton>
                 </Layout>
             );
