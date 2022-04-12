@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import './ResetPass.css';
 import { Navigate } from 'react-router-dom';
 
 
@@ -36,7 +37,7 @@ class ResetPass extends Component{
       this.setState({passMsg: ""})
       document.getElementById("btn").disabled = false;
     }else{
-      if(value == ''){
+      if(value === ''){
         this.setState({passMsg: ""})
         document.getElementById("btn").disabled = true;
       }else{
@@ -134,6 +135,10 @@ class ResetPass extends Component{
     return (
       <body>
         <div className='ResetPassPage'>
+        <header className='Login-Header'>
+              <img src="teamLogo.png" alt="The Mad Lads Team Logo" width="250" height="100"></img>
+        </header>
+        <div className='Signin-Box'>
         <form onSubmit={this.submit}>
           <h2><br/>Input Email</h2>
           <p className='login_displaybox' id='login_displaybox' >{this.state.msg}</p>
@@ -151,10 +156,10 @@ class ResetPass extends Component{
           />
         
           <button type="submit" class='LoginButton'>Send Reset Email</button>
-
         </form>
+        </div>
 
-
+        <div className='Signin-Box'>
         <form onSubmit={this.submitPass}>
           <h2><br/>Input Code</h2>
           <p>
@@ -197,6 +202,7 @@ class ResetPass extends Component{
           { this.state.redirect ? (<Navigate to="/login"/>) : null }
 
         </form>
+        </div>
       </div>
       </body>
       
