@@ -14,15 +14,22 @@ class DriverView extends Component{
     }
   
     getDrivers = () => {
-      fetch('/getAllDrivers')
-      .then(response => response.json())
-      .then(response => {
-        this.setState({
-          drivers: response.drivers
-        })
-        console.log(response.drivers)
-      })
-      .catch(err => console.error(err))
+        if(this.props.userType === 1){
+            fetch('/getSponsorDrivers')
+            .then(response => response.json())
+            .then(response => this.setState({drivers: response.drivers}))
+            .catch(err => console.error(err))
+        }else{
+            fetch('/getAllDrivers')
+            .then(response => response.json())
+            .then(response => {
+              this.setState({
+                drivers: response.drivers
+              })
+              console.log(response.drivers)
+            })
+            .catch(err => console.error(err))
+        }
     }
   
     handleChange = (event) => {

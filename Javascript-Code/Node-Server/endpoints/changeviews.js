@@ -56,4 +56,26 @@ module.exports = function( app, connection ) {
             })
         }
       });
+
+      app.get('/driverviewuser', (req, res) => {
+        session = req.session
+        const user_query = `SELECT userType from new_schema.USER where uID = ${session.driverview};`;
+            connection.query(user_query, function(err, result) {
+                if(err) console.log(err);
+                    return res.json({
+                        userType: result[0].userType
+                    })
+            })
+      });
+
+      app.get('/sponsorviewuser', (req, res) => {
+        session = req.session
+        const user_query = `SELECT userType from new_schema.USER where uID = ${session.sponsorview};`;
+            connection.query(user_query, function(err, result) {
+                if(err) console.log(err);
+                    return res.json({
+                        userType: result[0].userType
+                    })
+            })
+      });
 }

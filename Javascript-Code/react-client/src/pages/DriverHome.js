@@ -10,7 +10,8 @@ class DriverHome extends Component{
     loading: true,
     isDriver: false,
     isDriverView: false,
-    adminView: false
+    normalView: false,
+    driverViewUser: 0
   }
   
   componentDidMount() {
@@ -36,17 +37,26 @@ class DriverHome extends Component{
       this.setState({
         isDriverView: response.is_driverview
       })
-      console.log("VIEW " + response.is_driverview)
+      if(response.is_driverview){
+        fetch('/driverviewuser')
+        .then(response => response.json())
+        .then(response => {
+          this.setState({
+            driverViewUser: response.userType
+          })
+        })
+        .catch(err => console.error(err))
+      }
     })
     .catch(err => console.error(err))
   }
   
-  adminView = () => {
+  normalView = () => {
     fetch('/leavedriverview')
     .catch(err => console.error(err))
     .then(response => {
       if( response.status === 200 ) {
-          this.setState({adminView: true})
+          this.setState({normalView: true})
       }
     })
   }
@@ -56,8 +66,10 @@ class DriverHome extends Component{
         return (
           <Layout userType={0}>
               <div className='DriverHome-Body'>
-                {this.state.isDriverView && <button className='AdminHome-Button' onClick={() => this.adminView()}>Back to Admin View</button>}
-                {this.state.adminView && <Navigate to="/adminhome"/>}
+                {this.state.driverViewUser === 2 && <button className='AdminHome-Button' onClick={() => this.normalView()}>Back to Admin View</button>}
+                {(this.state.normalView && this.state.driverViewUser === 2) && <Navigate to="/adminhome"/>}
+                {this.state.driverViewUser === 1 && <button className='AdminHome-Button' onClick={() => this.normalView()}>Back to Sponsor View</button>}
+                {(this.state.normalView && this.state.driverViewUser === 1) && <Navigate to="/sponsorhome"/>}
                 <DriverOrganizations></DriverOrganizations>
               </div>
           </Layout>
