@@ -458,18 +458,22 @@ module.exports = function(app, connection){
         const edate = new Date(req.body.endDate);
         const formattedEndDate = edate.getFullYear()+'-'+(edate.getMonth()+1)+'-'+edate.getDate();
 
-        query = `select itm.itemID, itm.name, itm.price, itm.quantity
-                    from new_schema.ORDER_ITEMS as itm, new_schema.ORDER as ord
-                        where itm.orderID = ord.orderID and ord.uID = ${req.body.data.uID};`;
+        query = `select rep.itemID, rep.name, rep.price, rep.quantity, rep.date
+        from (
+            select itm.itemID, itm.name, itm.price, itm.quantity, ord.date, sp.orgName
+                from new_schema.ORDER_ITEMS as itm, new_schema.ORDER as ord, new_schema.SPONSOR_ORG as sp
+                    where itm.orderID = ord.orderID and sp.sponsorID = ord.sponsorID
+        ) as rep
+        where rep.orgName = '${req.body.data.orgName}';`;
 
         if( req.body.startDate != '' ) {
             query = `select rep.itemID, rep.name, rep.price, rep.quantity, rep.date
             from (
-                select itm.itemID, itm.name, itm.price, itm.quantity, ord.date
-                    from new_schema.ORDER_ITEMS as itm, new_schema.ORDER as ord
-                        where itm.orderID = ord.orderID and ord.uID = ${req.body.data.uID}
+                select itm.itemID, itm.name, itm.price, itm.quantity, ord.date, sp.orgName
+                    from new_schema.ORDER_ITEMS as itm, new_schema.ORDER as ord, new_schema.SPONSOR_ORG as sp
+                        where itm.orderID = ord.orderID and sp.sponsorID = ord.sponsorID
             ) as rep
-            where rep.date between '${formattedStartDate}' and '${formattedEndDate}';`;
+            where rep.date between '${formattedStartDate}' and '${formattedEndDate}' and rep.orgName = '${req.body.data.orgName}';`;
         }
 
         connection.query(query, function(err, result) {

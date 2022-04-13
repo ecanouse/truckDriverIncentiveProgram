@@ -6,7 +6,6 @@ import ReportsTitle from '../components/ReportsTitle';
 import ReportsDriverFilter from '../components/ReportsDriverFilter';
 import DetailedTable from '../components/DetailedTable';
 import ReportsFilter from '../components/ReportsFilter';
-import { isThisSecond } from 'date-fns';
 
 const driver_columns = [
     {

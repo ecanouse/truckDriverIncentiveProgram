@@ -16,49 +16,59 @@ class DetailedTable extends Component {
         initialzed: false
     }
 
-    convertData = async(data) => {
-        console.log(this.props.startDate);
-        if(data.uID != this.state.uID) {
-            await fetch('/getDetailedDriverInfo', {
-                method: 'POST', //post request
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({data: data, startDate: this.props.startDate, endDate: this.props.endDate}) //put into json form
-            })
-            .then(response => response.json())
-            .then(response => {
-                console.log(response);
-                this.setState({
-                    info: response,
-                    uID: data.uID
-                });
-            })
-            .catch(err => console.error(err));
-        }
-    }
-
-    //approach 2
     // append info to the end of the data array upon loading, then display normally
 
     initializeData = async() => {
+        if( this.props.columns.length === 2 ) {
 
-        for( let i = 0, len =this.state.data.length; i < len; i++ ) {
-
-            await fetch('/getDetailedDriverInfo', {
-                method: 'POST', //post request
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({data: this.state.data[i], startDate: this.props.startDate, endDate: this.props.endDate}) //put into json form
-            })
-            .then(response => response.json())
-            .then(response => {
-                console.log(response);
-                // this.setState({
-                //     info: response,
-                //     uID: data.uID
-                // });
-            })
-            .catch(err => console.error(err));
+            console.log("sponsor")
+            console.log("initializing data with items")
+            for( let i = 0, len =this.state.data.length; i < len; i++ ) {
+    
+                await fetch('/getDetailedSponsorInfo', {
+                    method: 'POST', //post request
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({data: this.state.data[i], startDate: this.props.startDate, endDate: this.props.endDate}) //put into json form
+                })
+                .then(response => response.json())
+                .then(response => {
+                    //console.log(response);
+                    let row = this.state.data[i];
+                    row.items = response;
+                    this.state.data[i] = row;
+                })
+                .catch(err => console.error(err));
+    
+            }
 
         }
+        else {
+
+            console.log("initializing data with items")
+            for( let i = 0, len =this.state.data.length; i < len; i++ ) {
+    
+                await fetch('/getDetailedDriverInfo', {
+                    method: 'POST', //post request
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({data: this.state.data[i], startDate: this.props.startDate, endDate: this.props.endDate}) //put into json form
+                })
+                .then(response => response.json())
+                .then(response => {
+                    //console.log(response);
+                    let row = this.state.data[i];
+                    row.items = response;
+                    this.state.data[i] = row;
+                })
+                .catch(err => console.error(err));
+    
+            }
+
+        }
+
+
+        this.setState({
+            initialzed: true
+        });
 
     }
 
@@ -69,7 +79,7 @@ class DetailedTable extends Component {
             this.initializeData();
         }
 
-        const ExpandedComponent = ({ data }) => <pre>{JSON.stringify(data, this.convertData(data), 2)}</pre>;
+        const ExpandedComponent = ({ data }) => <pre>{JSON.stringify(data, null, 2)}</pre>;
 
         return(
             
