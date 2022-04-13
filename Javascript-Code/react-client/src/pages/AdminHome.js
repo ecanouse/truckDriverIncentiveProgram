@@ -6,6 +6,8 @@ import './AdminHome.css'
 import Layout from '../components/Layout';
 import AdminUpdateOrg from '../components/AdminUpdateOrg';
 import AdminAddOrg from '../components/AdminAddOrg';
+import DriverView from '../components/DriverView';
+import SponsorView from '../components/SponsorView';
 class AdminHome extends Component{
   state = {
     loading: true,
@@ -20,6 +22,8 @@ class AdminHome extends Component{
     adding: false,
     addingOrg: false,
     updatingOrg: -1,
+    driverView: false,
+    sponsorView: false,
   }
   
   componentDidMount() {
@@ -154,6 +158,14 @@ class AdminHome extends Component{
     this.setState({userType: parseInt(e.target.value)})
   }
 
+  exitDriverView = () => {
+    this.setState({driverView: false})
+  }
+
+  exitSponsorView = () => {
+    this.setState({sponsorView: false})
+  }
+
   render() {
     const users = this.state.userType === 2 ? this.state.admin : this.state.userType === 1 ? this.state.sponsors : this.state.drivers
     if (this.state.isAdmin){
@@ -166,24 +178,34 @@ class AdminHome extends Component{
               <option>Last 7 Days</option>
               <option>Last 30 Days</option>
             </select> */}
-            <div className='userbuttons'>
-              <p>View Users:</p>
-
+            <div className='AdminHome-Top'>
               <div>
-                <select className='AdminHome-Select' id='SortByDrop' onChange={this.changeUserType}>
-                  <option id="drivers" name="usertype" value={0}>Drivers</option>
-                  <option id="sponsors" name="usertype" value={1}>Sponsors</option>
-                  <option id="admin" name="usertype" value={2}>Admin</option>
-                  <option id="orgs" name="usertype" value={3}>Organizations</option>
-                </select>
-                {/* <input type="radio" id="drivers" name="usertype" value="drivers" checked={this.state.userType===0} onChange={() => this.setState({userType: 0})}/>
-                <label htmlFor="drivers">Drivers</label>
-                <input type="radio" id="sponsors" name="usertype" value="sponsors" checked={this.state.userType===1} onChange={() => this.setState({userType: 1})}/>
-                <label htmlFor="sponsors">Sponsors</label>
-                <input type="radio" id="admin" name="usertype" value="admin" checked={this.state.userType===2} onChange={() => this.setState({userType: 2})}/>
-                <label htmlFor="admin">Admin</label>
-                <input type="radio" id="orgs" name="usertype" value="orgs" checked={this.state.userType===3} onChange={() => this.setState({userType: 3})}/>
-                <label htmlFor="orgs">Organizations</label> */}
+                <button className='AdminHome-Button' onClick={() => this.setState({driverView: true})}>Driver View</button>
+                <button className='AdminHome-Button' onClick={() => this.setState({sponsorView: true})}>Sponsor View</button>
+              </div>
+              <div className='userbuttons'>
+                <p>View Users:</p>
+
+                <div>
+                  <select className='AdminHome-Select' id='SortByDrop' onChange={this.changeUserType}>
+                    <option id="drivers" name="usertype" value={0}>Drivers</option>
+                    <option id="sponsors" name="usertype" value={1}>Sponsors</option>
+                    <option id="admin" name="usertype" value={2}>Admin</option>
+                    <option id="orgs" name="usertype" value={3}>Organizations</option>
+                  </select>
+                  {/* <input type="radio" id="drivers" name="usertype" value="drivers" checked={this.state.userType===0} onChange={() => this.setState({userType: 0})}/>
+                  <label htmlFor="drivers">Drivers</label>
+                  <input type="radio" id="sponsors" name="usertype" value="sponsors" checked={this.state.userType===1} onChange={() => this.setState({userType: 1})}/>
+                  <label htmlFor="sponsors">Sponsors</label>
+                  <input type="radio" id="admin" name="usertype" value="admin" checked={this.state.userType===2} onChange={() => this.setState({userType: 2})}/>
+                  <label htmlFor="admin">Admin</label>
+                  <input type="radio" id="orgs" name="usertype" value="orgs" checked={this.state.userType===3} onChange={() => this.setState({userType: 3})}/>
+                  <label htmlFor="orgs">Organizations</label> */}
+                </div>
+            </div>
+            <div className='Hidden-Buttons'>
+                <button className='AdminHome-Button'>Driver View</button>
+                <button className='AdminHome-Button'>Sponsor View</button>
               </div>
             </div>
             <div className='show-users'>
@@ -220,6 +242,8 @@ class AdminHome extends Component{
             {this.state.adding && <AdminAddUser userType={this.state.userType} exitAddUser={this.exitAddUser} />}
             {this.state.updatingOrg !== -1 && <AdminUpdateOrg org={this.state.updatingOrg} exitUpdateOrg={this.exitUpdateOrg}/>}
             {this.state.addingOrg && <AdminAddOrg exitAddOrg={this.exitAddOrg}/>}
+            {this.state.driverView && <DriverView exitDriverView={this.exitDriverView}/>}
+            {this.state.sponsorView && <SponsorView exitSponsorView={this.exitSponsorView}/>}
         </Layout>
       );
     }else{
