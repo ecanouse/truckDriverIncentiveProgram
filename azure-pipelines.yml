@@ -61,13 +61,13 @@ steps:
     sshEndpoint: 'EC2 instance'
     runOptions: 'inline'
     inline: |
+      forever stopall
       cd S22-Team04-goodwin.binz.canouse.lasher.narula.wise
       git pull 2>&1
       cd Javascript-Code/react-client
       npm run build
       cd ..
       cd Node-Server
-      forever stopall
       npm install 2>&1
       forever start index.js
     readyTimeout: '20000'

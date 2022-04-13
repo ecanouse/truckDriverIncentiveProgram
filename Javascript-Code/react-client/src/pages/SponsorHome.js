@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
+import { Navigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import AdminUpdateAccount from '../components/AdminUpdateAccount';
 import AdminAddUser from '../components/AdminAddUser';
 import './SponsorHome.css'
 import SponsorApplications from '../components/SponsorApplications';
+import DriverView from '../components/DriverView';
 
 class SponsorHome extends Component{
   state = {
@@ -14,7 +16,10 @@ class SponsorHome extends Component{
     updating: -1,
     userType: 0,
     org: [],
-    viewApps: false
+    viewApps: false,
+    isSponsorView: false,
+    adminView: false,
+    driverView: false
   }
   
   componentDidMount() {
@@ -51,6 +56,16 @@ class SponsorHome extends Component{
     .catch(err => console.error(err))
   }
 
+  getIsSponsorView = () => {
+    fetch('/issponsorview')
+    .then(response => response.json())
+    .then(response => {
+      this.setState({
+        isSponsorView: response.is_sponsorview
+      })
+    })
+    .catch(err => console.error(err))
+  }
 
   isSponsor = () => {
     fetch('/isSponsor')
@@ -60,6 +75,7 @@ class SponsorHome extends Component{
       if(response.is_sponsor){
         this.getDrivers();
         this.getSponsors();
+        this.getIsSponsorView();
       }
     })
     .catch(err => console.error(err))
@@ -115,6 +131,20 @@ class SponsorHome extends Component{
     this.getSponsors();
   }
 
+  exitDriverView = () => {
+    this.setState({driverView: false})
+  }
+
+  adminView = () => {
+    fetch('/leavesponsorview')
+    .catch(err => console.error(err))
+    .then(response => {
+      if( response.status === 200 ) {
+          this.setState({adminView: true})
+      }
+    })
+  }
+
   render() {
     if (this.state.isSponsor){
       const users = this.state.userType === 1 ? this.state.sponsors : this.state.drivers
@@ -130,15 +160,27 @@ class SponsorHome extends Component{
                 <option>Last 7 Days</option>
                 <option>Last 30 Days</option>
               </select> */}
+              <div className='AdminHome-Top'>
+                {this.state.isSponsorView && <div style={{visibility: 'hidden'}}>
+                  <button className='AdminHome-Button' onClick={() => this.setState({driverView: true})}>Driver View</button>
+                </div>}
+                {!this.state.isSponsorView && <div>
+                  <button className='AdminHome-Button' onClick={() => this.setState({driverView: true})}>Driver View</button>
+                </div>}
+                <div className='userbuttons'>
+                {this.state.isSponsorView && <button className='AdminHome-Button' onClick={() => this.adminView()}>Back to Admin View</button>}
+                {this.state.adminView && <Navigate to="/adminhome"/>}
+                  <p>View Users:</p>
 
-              <div className='userbuttons'>
-                <p>View Users:</p>
-
-                <div>
-                  <input type="radio" id="drivers" name="usertype" value="drivers" checked={this.state.userType===0} onChange={() => this.setState({userType: 0})}/>
-                  <label htmlFor="drivers">Drivers</label>
-                  <input type="radio" id="sponsors" name="usertype" value="sponsors" checked={this.state.userType===1} onChange={() => this.setState({userType: 1})}/>
-                  <label htmlFor="sponsors">Sponsors</label>
+                  <div>
+                    <input type="radio" id="drivers" name="usertype" value="drivers" checked={this.state.userType===0} onChange={() => this.setState({userType: 0})}/>
+                    <label htmlFor="drivers">Drivers</label>
+                    <input type="radio" id="sponsors" name="usertype" value="sponsors" checked={this.state.userType===1} onChange={() => this.setState({userType: 1})}/>
+                    <label htmlFor="sponsors">Sponsors</label>
+                  </div>
+                </div>
+                <div className='Hidden-Buttons'>
+                  <button className='AdminHome-Button'>Driver View</button>
                 </div>
               </div>
               <div className='Sponsor-show-users'>
@@ -158,6 +200,7 @@ class SponsorHome extends Component{
             {this.state.updating !== -1 && <AdminUpdateAccount uID={this.state.updating} exitUpdateInfo={this.exitUpdateInfo} />}
             {this.state.adding && <AdminAddUser isSponsor={true} userType={this.state.userType} exitAddUser={this.exitAddUser} org={this.state.org}/>}
             {this.state.viewApps && <SponsorApplications org={this.state.org} exitApplications={this.exitApplications}></SponsorApplications>}
+            {this.state.driverView && <DriverView userType={1} exitDriverView={this.exitDriverView}/>}
         </Layout>
       );
     }else{
