@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Navigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import AdminUpdateAccount from '../components/AdminUpdateAccount';
 import AdminAddUser from '../components/AdminAddUser';
@@ -14,7 +15,9 @@ class SponsorHome extends Component{
     updating: -1,
     userType: 0,
     org: [],
-    viewApps: false
+    viewApps: false,
+    isSponsorView: false,
+    adminView: false
   }
   
   componentDidMount() {
@@ -51,6 +54,16 @@ class SponsorHome extends Component{
     .catch(err => console.error(err))
   }
 
+  getIsSponsorView = () => {
+    fetch('/issponsorview')
+    .then(response => response.json())
+    .then(response => {
+      this.setState({
+        isSponsorView: response.is_sponsorview
+      })
+    })
+    .catch(err => console.error(err))
+  }
 
   isSponsor = () => {
     fetch('/isSponsor')
@@ -60,6 +73,7 @@ class SponsorHome extends Component{
       if(response.is_sponsor){
         this.getDrivers();
         this.getSponsors();
+        this.getIsSponsorView();
       }
     })
     .catch(err => console.error(err))
@@ -115,6 +129,16 @@ class SponsorHome extends Component{
     this.getSponsors();
   }
 
+  adminView = () => {
+    fetch('/leavesponsorview')
+    .catch(err => console.error(err))
+    .then(response => {
+      if( response.status === 200 ) {
+          this.setState({adminView: true})
+      }
+    })
+  }
+
   render() {
     if (this.state.isSponsor){
       const users = this.state.userType === 1 ? this.state.sponsors : this.state.drivers
@@ -130,8 +154,9 @@ class SponsorHome extends Component{
                 <option>Last 7 Days</option>
                 <option>Last 30 Days</option>
               </select> */}
-
               <div className='userbuttons'>
+              {this.state.isSponsorView && <button className='AdminHome-Button' onClick={() => this.adminView()}>Back to Admin View</button>}
+              {this.state.adminView && <Navigate to="/adminhome"/>}
                 <p>View Users:</p>
 
                 <div>
