@@ -52,6 +52,9 @@ class SponsorHeader extends Component {
                     <a href='UpdateAccount'>
                         <button className='NavButtons'>Account</button>
                     </a>
+                    <a href='SponsorReporting'>
+                        <button className='NavButtons'>Reporting</button>
+                    </a>
                 </nav>
 
                 <div className='SmallNav'>
@@ -63,6 +66,7 @@ class SponsorHeader extends Component {
                         <a href='SponsorPurchasing'>Purchasing</a>
                         <a href='UpdateOrg'>Organization</a>
                         <a href='UpdateAccount'>Account</a>
+                        <a href='SponsorReporting'>Reporting</a>
                     </div>                
                 </div>
 

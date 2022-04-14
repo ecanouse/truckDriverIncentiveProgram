@@ -1,5 +1,7 @@
 module.exports = function(app, connection){
     
+    // ADMIN REPORTS
+
     // AUDIT LOG REPORTS --------------------------------------------
 
     app.post('/getLoginAttempts', (req, res) => {
@@ -539,5 +541,11 @@ module.exports = function(app, connection){
         });
 
     });
+
+    // SPONSOR REPORTS
+
+    // POINT REPORTS -----------------------------------------------------------
+
+    
 
 }
