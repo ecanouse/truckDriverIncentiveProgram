@@ -162,7 +162,7 @@ class PurchaseHistory extends Component{
                     </div>
                 )})}
             </div>
-        a</Layout>
+        </Layout>
           
       );
     }else{

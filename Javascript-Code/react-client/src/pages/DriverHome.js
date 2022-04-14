@@ -1,14 +1,17 @@
 import React, {Component} from 'react';
+import { Navigate } from 'react-router-dom';
+import DriverOrganizations from '../components/DriverOrganizations';
 import Layout from '../components/Layout';
 import './DriverHome.css'
-import { AiOutlineArrowUp,  AiOutlineArrowDown} from 'react-icons/ai';
 
 
 class DriverHome extends Component{
   state = {
     loading: true,
     isDriver: false,
-    points: []
+    isDriverView: false,
+    normalView: false,
+    driverViewUser: 0
   }
   
   componentDidMount() {
@@ -21,62 +24,55 @@ class DriverHome extends Component{
     .then(response => {
       this.setState({loading: false, isDriver: response.is_driver})
       if(response.is_driver){
-        this.getPoints()
+        this.getIsDriverView()
       }
     })
     .catch(err => console.error(err))
   }
 
-  isPosOrNeg = (pointValue) => {
-    const pvalue = pointValue;
-      if (pvalue > 0) {
-        return "pos";
+  getIsDriverView = () => {
+    fetch('/isdriverview')
+    .then(response => response.json())
+    .then(response => {
+      this.setState({
+        isDriverView: response.is_driverview
+      })
+      if(response.is_driverview){
+        fetch('/driverviewuser')
+        .then(response => response.json())
+        .then(response => {
+          this.setState({
+            driverViewUser: response.userType
+          })
+        })
+        .catch(err => console.error(err))
       }
-      else if (pvalue < 0) {
-        return "neg";
-  
-      }
+    })
+    .catch(err => console.error(err))
   }
   
-  getPoints = () => {
-    fetch('/get-points')
-    .then(response => response.json())
-    .then(response => this.setState({points: response.Points}))
+  normalView = () => {
+    fetch('/leavedriverview')
     .catch(err => console.error(err))
+    .then(response => {
+      if( response.status === 200 ) {
+          this.setState({normalView: true})
+      }
+    })
   }
   
     render() {
       if (this.state.isDriver){
         return (
           <Layout userType={0}>
-              <select className='SortByDrop' id='SortByDrop' defaultValue={"sort"}>
-                <option disabled hidden value="sort">Sort By</option>
-                <option>All Time</option>
-                <option>Last 24 Hours</option>
-                <option>Last 7 Days</option>
-                <option>Last 30 Days</option>
-              </select>
-  
-              {this.state.points.map((p) => {
-                return(
-                  <div className='PointDisplay'>
-                    <p>Total: {p.totalPoints},  For Sponsor (id): {p.sponsorID}</p>
-                    
-                    <p>All adjustments <br/><hr/></p>
-  
-                    <div className='ValueDisplay'>
-                    {p.adjustments.map(a => 
-                      <p>
-                        {this.isPosOrNeg(a.pointValue) === "pos" ? <span className='ArrowUp'><AiOutlineArrowUp/> {a.pointValue}</span> : <span className='ArrowDown'><AiOutlineArrowDown/> {a.pointValue}</span>}
-                         <span className='Reason'>Reason: {a.pointReason}</span> <span className='Date'>Date: {a.date} </span>       
-                        <hr/>            
-                      </p>
-                      )}   
-                      </div>   
-                  </div>
-                )}
-              )}
-            </Layout>
+              <div className='DriverHome-Body'>
+                {this.state.driverViewUser === 2 && <button className='AdminHome-Button' onClick={() => this.normalView()}>Back to Admin View</button>}
+                {(this.state.normalView && this.state.driverViewUser === 2) && <Navigate to="/adminhome"/>}
+                {this.state.driverViewUser === 1 && <button className='AdminHome-Button' onClick={() => this.normalView()}>Back to Sponsor View</button>}
+                {(this.state.normalView && this.state.driverViewUser === 1) && <Navigate to="/sponsorhome"/>}
+                <DriverOrganizations></DriverOrganizations>
+              </div>
+          </Layout>
         );
       }else{
         return (

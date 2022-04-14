@@ -5,7 +5,9 @@ class ShoppingCart extends Component{
     state = {
         quantity: [],
         total: 0,
-        error: ""
+        error: "",
+        isDriverView: false,
+        isSponsorView: false
     }
 
     componentDidMount(){
@@ -14,6 +16,8 @@ class ShoppingCart extends Component{
             return newQuantity.push(1);
         })
         this.setState({quantity: newQuantity})
+        this.getIsDriverView()
+        this.getIsSponsorView()
         this.calculateTotal()
     }
 
@@ -24,10 +28,34 @@ class ShoppingCart extends Component{
             quantity[i]=0
         }
         this.setState({quantity: quantity})
-        this.calculateTotal()
+        this.calculateTotal();
+    }
+
+    getIsDriverView = () => {
+        fetch('/isdriverview')
+        .then(response => response.json())
+        .then(response => {
+          this.setState({
+            isDriverView: response.is_driverview
+          }, this.calculateTotal)
+          console.log(response.is_driverview)
+        })
+        .catch(err => console.error(err))
+    }
+
+    getIsSponsorView = () => {
+        fetch('/issponsorview')
+        .then(response => response.json())
+        .then(response => {
+          this.setState({
+            isSponsorView: response.is_sponsorview
+          }, this.calculateTotal)
+        })
+        .catch(err => console.error(err))
     }
 
     calculateTotal = () => {
+        console.log(this.state.isDriverView)
         let total = 0;
         this.props.cart.map((item, i) => {
             return total += item.price*this.state.quantity[i]
@@ -35,7 +63,11 @@ class ShoppingCart extends Component{
         this.setState({total: total}, () =>{
             
         })
-        if(total > this.props.points){
+        if(this.state.isDriverView){
+            this.setState({error: "Cannot Place Order In Driver View"})
+        }else if(this.state.isSponsorView){
+            this.setState({error: "Cannot Place Order In Sponsor View"})
+        }else if(total > this.props.points){
             this.setState({error: "Total Exceeds Your Balance"})
         }else{
             this.setState({error: ""})
@@ -46,7 +78,7 @@ class ShoppingCart extends Component{
         if(this.state.total === 0){
             this.props.exit(1);
         }
-        else if(this.state.total <= this.props.points){
+        else if(this.state.error === ""){
             var payload = {
                 total: this.state.total,
                 cart: this.props.cart,
@@ -54,6 +86,7 @@ class ShoppingCart extends Component{
                 sponsor: this.props.sponsor,
                 sponsorName: this.props.sponsorName,
                 points: this.props.points,
+                driver: this.props.driver ? this.props.driver : '-1'
             };
             console.log(payload)
             fetch('/create-order', {
@@ -68,7 +101,7 @@ class ShoppingCart extends Component{
                 payload = {
                     add: false,
                     value: this.state.total,
-                    driver: -1,
+                    driver: this.props.driver ? this.props.driver : -1,
                     sponsor: this.props.sponsor,
                     comment: `Purchase Made on ${date}`,
                 };

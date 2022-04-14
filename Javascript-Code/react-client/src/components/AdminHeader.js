@@ -44,7 +44,11 @@ class AdminHeader extends Component {
                     <button className='NavButtons'>Catalog</button>
                 </a> */}
                 <a href='UpdateAccount'>
-                <button className='NavButtons'>Settings</button>
+                <button className='NavButtons'>Account</button>
+                </a>
+
+                <a href='AdminReporting'>
+                    <button  className='NavButtons'>Reports</button>
                 </a>
                     
                 </nav>
@@ -52,10 +56,9 @@ class AdminHeader extends Component {
                 <div className='SmallNav'>
               <button className='NavButtons'>Menu</button>
               <div className='SmallNavContents'>
-                <a href='DriverHome'>Home</a>
-                <a href='PointHistory'>Points</a>
-                <a href='CatalogPurchase'>Catalog</a>
-                <a href='UpdateAccount'>Settings</a>
+                <a href='AdminHome'>Home</a>
+                <a href='AdminReporting'>Reports</a>
+                <a href='UpdateAccount'>Account</a>
               </div>                
             </div>
 

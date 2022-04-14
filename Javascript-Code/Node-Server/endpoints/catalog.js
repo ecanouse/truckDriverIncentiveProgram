@@ -106,6 +106,7 @@ module.exports = function(app, connection){
     });
 
     app.get('/getSponsorItems', (req, res) => {
+        session = req.session;
         sponsorID = req.query.sponsorID === '-1' ? session.userid : req.query.sponsorID;
         const items_query = `SELECT listingId from new_schema.SPONSOR_CATALOG where sponsorID=${sponsorID};`;
         connection.query(items_query, function(err, result) {

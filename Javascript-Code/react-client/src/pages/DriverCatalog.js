@@ -32,10 +32,14 @@ class DriverCatalog extends Component{
   }
 
   getPoints = () => {
-    fetch('/get-points')
+    fetch('/get-points?' + new URLSearchParams({
+      driver: '-1',
+    }))
     .then(response => response.json())
     .then(response => {
-      this.setState({points: response.Points})
+      this.setState({
+        points: response.Points,
+      })
     })
     .catch(err => console.error(err))
   }
@@ -102,6 +106,7 @@ class DriverCatalog extends Component{
   }
 
   exitCart = (action) => {
+    this.getPoints();
     if(action === 0){
       this.setState({viewCart: false})
     }else{

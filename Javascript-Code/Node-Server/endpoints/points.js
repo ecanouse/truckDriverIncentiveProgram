@@ -87,7 +87,10 @@ module.exports = function(app, connection){
 
     app.get('/get-points', (req, res) => {
         session=req.session;
-        const total_query = `SELECT DPointID, totalPoints, sponsorID from new_schema.DRIVER_POINTS where uID = ${session.userid};`;
+        const driver = req.query.driver === '-1' ? session.userid : req.query.driver;
+        console.log("DRIVERQ: " + req.query.driver)
+        console.log("DRIVER: " + driver)
+        const total_query = `SELECT DPointID, totalPoints, sponsorID from new_schema.DRIVER_POINTS where uID = ${driver};`;
         connection.query(total_query, function(err, result) {
             if(err) {
                 console.log(err);

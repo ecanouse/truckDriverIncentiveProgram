@@ -31,7 +31,6 @@
 .addItem-exitbutton{
     font-size: 20px;
     border-radius: 8px;
-    width: 15%;
     margin-bottom: 15px;
     border: 2px solid lightgray;
 }
@@ -46,7 +45,6 @@
 
 .addItem-searchbutton{
     border-radius: 8px;
-    width: 15%;
     margin-bottom: 10px;
     border: 2px solid lightgray;
 }
