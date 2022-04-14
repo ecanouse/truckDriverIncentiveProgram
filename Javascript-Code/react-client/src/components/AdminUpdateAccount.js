@@ -11,7 +11,8 @@ class AdminUpdateAccount extends Component{
       fname: '',
       username: '',
       email: '',
-      phone: ''
+      phone: '',
+      newPass: ''
     }
     
     componentDidMount() {
@@ -68,7 +69,8 @@ class AdminUpdateAccount extends Component{
         fname: this.state.fname,
         username: this.state.username,
         email: this.state.email,
-        phone: this.state.phone
+        phone: this.state.phone,
+        newPass: this.state.newPass
       };
       fetch('/update-account', {
         method: 'POST',
@@ -100,8 +102,8 @@ class AdminUpdateAccount extends Component{
                   <input required type='text' id='username' name='username' size='45' value={this.state.username} onChange={this.handleChange}></input>  
                 <label className='inputs' htmlFor='email'><br/>Update Email<br/></label>
                     <input required type='email' id='email' name='email' size='45' value={this.state.email} onChange={this.handleChange}></input>
-                <label className='inputs' htmlFor='userPassword'><br/>Update Password<br/></label>
-                    <input type='password' id='userPassword' name='userPassword' placeholder='password' size='45'></input> 
+                <label className='inputs' htmlFor='newPass'><br/>Update Password<br/></label>
+                    <input type='password' id='newPass' name='newPass' placeholder='new password' size='45'></input> 
                 <label className='inputs' htmlFor='phone'><br/>Update Phone Number<br/></label>
                   <input required type='tel' id='phone' name='phone' maxLength={10} minLength={10} size='45' value={this.state.phone} onChange={this.handleChange}></input>
                 
