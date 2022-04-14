@@ -104,13 +104,9 @@ module.exports = function(app, connection){
         console.log(req.body)
 
         // TODO
-        // then add invoice & sales reporting
-        // build basic sales frontend
+        // add invoice admin reporting
 
-        // add by sponsor sales reports
-        // add invoices -- similar to by sponsor
-
-        // add all that but for sponsors
+        // add sponsor reports
         // add session compatability to all this
         // get rid of console.log()s
 
