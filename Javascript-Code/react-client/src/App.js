@@ -23,6 +23,7 @@ import PurchaseHistory from './pages/PurchaseHistory';
 import NewOrganization from './pages/NewOrganization';
 import SponsorPurchasing from './pages/SponsorPurchasing';
 import UpdateOrg from './pages/UpdateOrg';
+import InvoiceReports from './pages/InvoiceReports';
 
 class App extends Component{
   render() {
@@ -52,6 +53,7 @@ class App extends Component{
           <Route path='NewOrganization' element={<NewOrganization/>}/>
           <Route path='SponsorPurchasing' element={<SponsorPurchasing/>}/>
           <Route path='UpdateOrg' element={<UpdateOrg/>}/>
+          <Route path='/InvoiceReports' element={<InvoiceReports/>}/>
         </Routes>
       </BrowserRouter>
     )

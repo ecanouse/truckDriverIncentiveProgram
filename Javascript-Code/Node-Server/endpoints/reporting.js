@@ -486,4 +486,58 @@ module.exports = function(app, connection){
 
     });
 
+    // End of Sales Reports
+
+    // INVOICE REPORTS ----------------------------------------
+
+    app.post('/getInvoiceReport', (req, res) => {
+
+        console.log('Recieved Request for Invoice Report')
+        console.log(req.body)
+
+        const sdate = new Date(req.body.startDate);
+        const formattedStartDate = sdate.getFullYear()+'-'+(sdate.getMonth()+1)+'-'+sdate.getDate();
+        const edate = new Date(req.body.endDate);
+        const formattedEndDate = edate.getFullYear()+'-'+(edate.getMonth()+1)+'-'+edate.getDate();
+
+        //get invoice info
+        query = `select sp.orgName, dr.uID, dr.fname, dr.lname, ord.total, (ord.total * 0.01) as Fee
+        from USER as dr, new_schema.ORDER as ord, SPONSOR_ORG as sp
+            where dr.uID = ord.uID and sp.sponsorID = ord.sponsorID
+            group by ord.uID;`;
+
+        if( req.body.startDate != '' & req.body.orgName === '') {
+            query = `select sp.orgName, dr.uID, dr.fname, dr.lname, ord.total, (ord.total * 0.01) as Fee
+            from USER as dr, new_schema.ORDER as ord, SPONSOR_ORG as sp
+                where dr.uID = ord.uID and sp.sponsorID = ord.sponsorID
+                    and ord.date between '${formattedStartDate}' and '${formattedEndDate}'
+                group by ord.uID;`;
+        }
+        else if( req.body.startDate === '' & req.body.orgName != '' ) {
+            query = `select sp.orgName, dr.uID, dr.fname, dr.lname, ord.total, (ord.total * 0.01) as Fee
+            from USER as dr, new_schema.ORDER as ord, SPONSOR_ORG as sp
+                where dr.uID = ord.uID and sp.sponsorID = ord.sponsorID and sp.orgName = '${req.body.orgName}'
+                group by ord.uID;`;
+        }
+        else if(req.body.startDate != '' & req.body.orgName != '') {
+            query = `select sp.orgName, dr.uID, dr.fname, dr.lname, ord.total, (ord.total * 0.01) as Fee
+                        from USER as dr, new_schema.ORDER as ord, SPONSOR_ORG as sp
+                            where dr.uID = ord.uID and sp.sponsorID = ord.sponsorID and sp.orgName = '${req.body.orgName}'
+                                and ord.date between '${formattedStartDate}' and '${formattedEndDate}'
+                            group by ord.uID;`;
+        }
+        connection.query(query, function(err, result) {
+            if(err) {
+                console.log(err);
+                res.send({success:false})
+            }
+            else {
+
+                res.send(result)
+
+            }
+        });
+
+    });
+
 }

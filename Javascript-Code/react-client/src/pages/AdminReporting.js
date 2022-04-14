@@ -55,6 +55,7 @@ class AdminReporting extends Component{
       }
       else if( this.state.invoice ) {
         //render invoice filter
+        return(<Navigate to='/InvoiceReports'/>);
       }
       else if( this.state.sales ) {
         //render sales filter
