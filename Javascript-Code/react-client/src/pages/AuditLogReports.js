@@ -242,6 +242,7 @@ class AuditLogReports extends Component{
               <ReportsTitle content="Login Attempts"></ReportsTitle>
               <AuditLogResults data={this.state.login_data} columns={this.state.login_columns}></AuditLogResults>
               <ExportButton data={this.state.login_data}>Export</ExportButton>
+              
           </Layout>
         );
       }

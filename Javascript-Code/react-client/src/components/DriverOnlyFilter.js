@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 // instlled module for date-range-picker from https://www.npmjs.com/package/react-date-range
 
-class ReportsDriverFilter extends React.Component {
+class DriverOnlyFilter extends React.Component {
 
     state = {
 
@@ -35,7 +35,7 @@ class ReportsDriverFilter extends React.Component {
         fetch('/getDriversFromOrg', {
             method: 'POST', 
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({orgID: orgID})
+            body: JSON.stringify({orgID: this.props.orgID})
         })
         .then(response => response.json())
         .then( response => {
@@ -88,6 +88,7 @@ class ReportsDriverFilter extends React.Component {
     render() {
 
         if( !this.state.loaded ) {
+            console.log("orgid: "+this.props.orgID)
             this.getDrivers(this.props.orgID);
             this.setState({loaded: true});
         }
@@ -123,8 +124,9 @@ class ReportsDriverFilter extends React.Component {
 
 };
 
-ReportsDriverFilter.propTypes = {
-    callBack: PropTypes.func
+DriverOnlyFilter.propTypes = {
+    callBack: PropTypes.func,
+    orgID: PropTypes.any
 }
 
 export default DriverOnlyFilter;

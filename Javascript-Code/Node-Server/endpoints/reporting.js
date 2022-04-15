@@ -556,81 +556,35 @@ module.exports = function(app, connection){
         const edate = new Date(req.body.endDate);
         const formattedEndDate = edate.getFullYear()+'-'+(edate.getMonth()+1)+'-'+edate.getDate();
 
-        query = `select usr.fname, usr.lname, SUM(ord.total) as total, usr.uID
-                    from new_schema.ORDER as ord, USER as usr
-                        where usr.uID = ord.uID
-                            group by ord.uID;`;
+        query = `select * from (
+            select dr.fname, dr.lname, dp.totalPoints, pa.pointValue, pa.pointReason, pa.date, sp.orgName
+                from USER as dr, DRIVER_POINTS as dp, POINT_ADJUSTMENT as pa, SPONSOR_ORG as sp
+                where dr.uID = dp.uID and dp.DPointID = pa.DPointID and sp.sponsorID = dp.sponsorID and sp.sponsorID = '${req.body.orgID}'
+                ) as rep;`;
 
-        if( req.body.startDate != '' & req.body.orgName != '' & req.body.uID != '' ) {
-            query = `select rep.fname, rep.lname, rep.total, rep.sponsorID, rep.uID
-            from (
-                select usr.fname, usr.lname, SUM(ord.total) as total, ord.sponsorID, ord.date, sp.orgName, ord.uID
-                    from new_schema.ORDER as ord, USER as usr, SPONSOR_ORG as sp
-                    where usr.uID = ord.uID and ord.sponsorID = sp.sponsorID
-                    group by ord.uID
-            ) as rep
-            where rep.uID = ${req.body.uID} and rep.orgName = '${req.body.orgName}' and rep.date between '${formattedStartDate}' and '${formattedEndDate}';`;
-        }
-        else if( req.body.startDate != '' & req.body.orgName != '' & req.body.uID === '' ) {
-            query = `select rep.fname, rep.lname, rep.total, rep.sponsorID, rep.uID
-            from (
-                select usr.fname, usr.lname, SUM(ord.total) as total, ord.sponsorID, ord.date, sp.orgName, ord.uID
-                    from new_schema.ORDER as ord, USER as usr, SPONSOR_ORG as sp
-                    where usr.uID = ord.uID and ord.sponsorID = sp.sponsorID
-                    group by ord.uID
-            ) as rep
-            where rep.orgName = '${req.body.orgName}' and rep.date between '${formattedStartDate}' and '${formattedEndDate}';`;
-        }
-        else if( req.body.startDate != '' & req.body.orgName === '' & req.body.uID === '' ) {
-            query = `select rep.fname, rep.lname, rep.total, rep.uID
-            from (
-                select usr.fname, usr.lname, SUM(ord.total) as total, ord.sponsorID, ord.date, sp.orgName, ord.uID
-                    from new_schema.ORDER as ord, USER as usr, SPONSOR_ORG as sp
-                    where usr.uID = ord.uID and ord.sponsorID = sp.sponsorID
-                    group by ord.uID
-            ) as rep
-            where rep.date between '${formattedStartDate}' and '${formattedEndDate}';`;
-        }
-        else if( req.body.startDate === '' & req.body.orgName != '' & req.body.uID != '' ) {
-            query = `select rep.fname, rep.lname, rep.total, rep.sponsorID, rep.uID
-            from (
-                select usr.fname, usr.lname, SUM(ord.total) as total, ord.sponsorID, ord.date, sp.orgName, ord.uID
-                    from new_schema.ORDER as ord, USER as usr, SPONSOR_ORG as sp
-                    where usr.uID = ord.uID and ord.sponsorID = sp.sponsorID
-                    group by ord.uID
-            ) as rep
-            where rep.uID = ${req.body.uID} and rep.orgName = '${req.body.orgName}';`;
-        }
-        else if( req.body.startDate === '' & req.body.orgName === '' & req.body.uID != '' ) {
-            query = `select rep.fname, rep.lname, rep.total, rep.uID
-            from (
-                select usr.fname, usr.lname, SUM(ord.total) as total, ord.sponsorID, ord.date, sp.orgName, ord.uID
-                    from new_schema.ORDER as ord, USER as usr, SPONSOR_ORG as sp
-                    where usr.uID = ord.uID and ord.sponsorID = sp.sponsorID
-                    group by ord.uID
-            ) as rep
-            where rep.uID = ${req.body.uID};`;
-        }
-        else if( req.body.startDate === '' & req.body.orgName != '' & req.body.uID === '' ) {
-            query = `select rep.fname, rep.lname, rep.total, rep.sponsorID, rep.uID
-            from (
-                select usr.fname, usr.lname, SUM(ord.total) as total, ord.sponsorID, ord.date, sp.orgName, ord.uID
-                    from new_schema.ORDER as ord, USER as usr, SPONSOR_ORG as sp
-                    where usr.uID = ord.uID and ord.sponsorID = sp.sponsorID
-                    group by ord.uID
-            ) as rep
-            where rep.orgName = '${req.body.orgName}';`;
-        }
-        else if( req.body.startDate != '' & req.body.orgName === '' & req.body.uID != '' ) {
-            query = `select rep.fname, rep.lname, rep.total, rep.uID
-            from (
-                select usr.fname, usr.lname, SUM(ord.total) as total, ord.sponsorID, ord.date, sp.orgName, ord.uID
-                    from new_schema.ORDER as ord, USER as usr, SPONSOR_ORG as sp
-                    where usr.uID = ord.uID and ord.sponsorID = sp.sponsorID
-                    group by ord.uID
-            ) as rep
-            where rep.uID = ${req.body.uID} and rep.date between '${formattedStartDate}' and '${formattedEndDate}';`;
-        }
+                if( req.body.startDate != '' & req.body.uID === '') {
+                    query = `select * from (
+                        select dr.fname, dr.lname, dp.totalPoints, pa.pointValue, pa.pointReason, pa.date, sp.orgName
+                            from USER as dr, DRIVER_POINTS as dp, POINT_ADJUSTMENT as pa, SPONSOR_ORG as sp
+                            where dr.uID = dp.uID and dp.DPointID = pa.DPointID and sp.sponsorID = dp.sponsorID and sp.sponsorID = '${req.body.orgID}'
+                            ) as rep
+                            where rep.date between '${formattedStartDate}' and '${formattedEndDate}';`;
+                }
+                else if( req.body.startDate === '' & req.body.uID != '' ) {
+                    query = `select * from (
+                        select dr.fname, dr.lname, dp.totalPoints, pa.pointValue, pa.pointReason, pa.date, sp.orgName
+                            from USER as dr, DRIVER_POINTS as dp, POINT_ADJUSTMENT as pa, SPONSOR_ORG as sp
+                            where dr.uID = dp.uID and dr.uID = ${req.body.uID} and dp.DPointID = pa.DPointID and sp.sponsorID = dp.sponsorID and sp.sponsorID = '${req.body.orgID}'
+                            ) as rep;`;
+                }
+                else if(req.body.startDate != '' & req.body.uID != '') {
+                    query = `select * from (
+                        select dr.fname, dr.lname, dp.totalPoints, pa.pointValue, pa.pointReason, pa.date, sp.orgName
+                            from USER as dr, DRIVER_POINTS as dp, POINT_ADJUSTMENT as pa, SPONSOR_ORG as sp
+                            where dr.uID = dp.uID and dr.uID = ${req.body.uID} and dp.DPointID = pa.DPointID and sp.sponsorID = dp.sponsorID and sp.sponsorID = '${req.body.orgID}'
+                            ) as rep
+                            where rep.date between '${formattedStartDate}' and '${formattedEndDate}';`;
+                }
         connection.query(query, function(err, result) {
             if(err) {
                 console.log(err);

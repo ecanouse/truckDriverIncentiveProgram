@@ -16,23 +16,35 @@ class SponsorReporting extends Component{
     point: false,
   }
   
-//   componentDidMount() {
-//     this.isAdmin();
-//   }
-    // isAdmin = () => {
-    //     fetch('/isAdmin')
-    //     .then(response => response.json())
-    //     .then(response => {
-    //     this.setState({loading: false, isAdmin: response.is_admin})
-    //     if(response.is_admin){
-    //         this.getDrivers()
-    //         this.getSponsors()
-    //         this.getAdmin()
-    //     }
-    //     })
-    //     .catch(err => console.error(err))
-    // }
 
+  componentDidMount() {
+    this.isSponsor();
+  }
+
+  isSponsor = () => {
+    fetch('/isSponsor')
+    .then(response => response.json())
+    .then(response => {
+      this.setState({loading: false, isSponsor: response.is_sponsor})
+      if(response.is_sponsor){
+        this.getOrgs()
+      }
+    })
+    .catch(err => console.error(err))
+  }
+
+  getOrgs = () => {
+    fetch('/getOrganizations?' + new URLSearchParams({
+      uID: '-1',
+    }))
+    .then(response => response.json())
+    .then(response => {
+      this.setState({
+        org: response.orgs[0].sponsorID
+      })
+    })
+    .catch(err => console.error(err))
+  }
 
   handleAuditLog = () => {
     this.setState({auditLog: true})
@@ -43,7 +55,7 @@ class SponsorReporting extends Component{
   }
 
   render() {
-    // if (this.state.isSponsor){
+    if (this.state.isSponsor) {
       if( this.state.auditLog ) {
         //render audit log filter
         return(<Navigate to='/SponsorAuditLogReports'/>);
@@ -62,11 +74,11 @@ class SponsorReporting extends Component{
 
         </Layout>
       );
-    // }else{
-    //   return (
-    //     <h1>{this.state.loading ? "" : "401: Unauthorized"}</h1>
-    //   );
-    // }
+    }else{
+      return (
+        <h1>{this.state.loading ? "" : "401: Unauthorized"}</h1>
+      );
+    }
   };
 }
 
