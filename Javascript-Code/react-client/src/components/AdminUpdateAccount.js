@@ -103,7 +103,7 @@ class AdminUpdateAccount extends Component{
                 <label className='inputs' htmlFor='email'><br/>Update Email<br/></label>
                     <input required type='email' id='email' name='email' size='45' value={this.state.email} onChange={this.handleChange}></input>
                 <label className='inputs' htmlFor='newPass'><br/>Update Password<br/></label>
-                    <input type='password' id='newPass' name='newPass' placeholder='new password' size='45'></input> 
+                    <input type='password' id='newPass' name='newPass' placeholder='new password' size='45' value={this.state.newPass} onChange={this.handleChange}></input> 
                 <label className='inputs' htmlFor='phone'><br/>Update Phone Number<br/></label>
                   <input required type='tel' id='phone' name='phone' maxLength={10} minLength={10} size='45' value={this.state.phone} onChange={this.handleChange}></input>
                 
