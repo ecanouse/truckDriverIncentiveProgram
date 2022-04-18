@@ -14,7 +14,8 @@ class UpdateAccount extends Component{
     userType: -1,
     pass: '',
     newPass: '',
-    confPass: ''
+    confPass: '',
+    feedback: ''
   }
   
   componentDidMount() {
@@ -69,6 +70,7 @@ class UpdateAccount extends Component{
     this.setState({
       [name]: value
     });
+    this.setState({feedback: ""});
   };
 
   checkComplexity = (event) => {
@@ -87,6 +89,20 @@ class UpdateAccount extends Component{
       }
     }
   }
+
+  checkMatch = (event) => {
+    const target = event.target;
+    const value = target.value;
+    if(value === this.state.newPass){
+      document.getElementById("btn").disabled = false;
+      this.setState({passMsg: ""});
+    }else{
+      this.setState({passMsg: "Passwords must match."});
+      document.getElementById("btn").disabled = true;
+    }
+
+  }
+
 
   submit = (event) => {
     event.preventDefault();
@@ -107,8 +123,10 @@ class UpdateAccount extends Component{
       body: JSON.stringify(payload)
     })
     .then(response => {
-      if( response.status === 200 ) {
-      }
+      response.json().then( data => {
+        document.getElementById('login_displaybox').style.color = "red";
+        this.setState({feedback: data.msg})
+      })
     })
     .catch((error) => {
       console.error('Error', error);
@@ -122,6 +140,7 @@ class UpdateAccount extends Component{
             <div className='UpdateAccount-Page'>
             <div className='UpdateAccount-Body'>
             <form id='info-form' onSubmit={this.submit}>
+            <p className='login_displaybox' id='login_displaybox' >{this.state.feedback}</p>
               <label className='inputs' htmlFor='fname'><br/>Update your First Name<br/></label>
                 <input required type='text' id='fname' name='fname'  size='45' value={this.state.fname} onChange={this.handleChange}></input>
               <label className='inputs' htmlFor='lname'><br/>Update your Last Name<br/></label>
@@ -136,7 +155,7 @@ class UpdateAccount extends Component{
               <p className='login_displaybox' id='login_displaybox' >{this.state.passMsg}</p>
                   <input type='password' id='newPass' name='newPass' placeholder='new password' size='45' value={this.state.newPass} onChange={this.handleChange} onInput={this.checkComplexity}></input> 
               <label className='inputs' htmlFor='confPass'><br/>Confirm Password<br/></label>
-                  <input type='password' id='confPass' name='confPass' placeholder='confirm new password' size='45' value={this.state.confPass} onChange={this.handleChange}></input>
+                  <input type='password' id='confPass' name='confPass' placeholder='confirm new password' size='45' value={this.state.confPass} onChange={this.handleChange} onInput={this.checkMatch}></input>
               <label className='inputs' htmlFor='pass'><br/>Current Password<br/></label>
                   <input type='password' id='pass' name='pass' placeholder='current password' size='45' value={this.state.pass} onChange={this.handleChange}></input>
               <label className='inputs' htmlFor='phone'><br/>Update for Phone Number<br/></label>
