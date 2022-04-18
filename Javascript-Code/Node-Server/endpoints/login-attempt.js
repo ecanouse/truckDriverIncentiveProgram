@@ -79,13 +79,13 @@ module.exports = function( app, connection ) {
             }
             else if (!isEmpty) {
               console.log("Username and Password did not match");
-              logs.recordLogin(username, false, result[0], connection);
+              logs.recordLogin(username, false, result[0].uID, connection);
               res.send({success: false, msg: "Username and Password did not match"});
             }
           });
         } 
         else {
-          logs.recordLogin(username, false, connection);
+          logs.recordLogin(username, false, -1, connection);
           res.send({success: false});
           console.log('no username/password.');
           res.end()

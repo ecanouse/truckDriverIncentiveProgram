@@ -5,7 +5,9 @@
 //LOGIN <date> <username> <login attempt status --> "success"/""fail"><\n>
 function recordLogin( username, success, uID, conn ) {
     const fs = require('fs');
-    var date = new Date().toLocaleString();
+    const date = new Date().toLocaleString();
+    //const formattedDate = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
+
     var res;
     if( success ) {
         res = 1;
