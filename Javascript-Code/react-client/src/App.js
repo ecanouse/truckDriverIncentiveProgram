@@ -50,6 +50,7 @@ class App extends Component{
           <Route path='NewOrganization' element={<NewOrganization/>}/>
           <Route path='SponsorPurchasing' element={<SponsorPurchasing/>}/>
           <Route path='UpdateOrg' element={<UpdateOrg/>}/>
+          <Route path='pointHistorySort' element={<pointHistorySort/>}/>
         </Routes>
       </BrowserRouter>
     )

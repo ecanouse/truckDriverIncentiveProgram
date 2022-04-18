@@ -57,7 +57,7 @@ class SponsorHeader extends Component {
                 <div className='SmallNav'>
                     <button className='NavButtons'>Menu</button>
                     <div className='SmallNavContents'>
-                        <a href='DriverHome'>Home</a>
+                        <a href='SponsorHome'>Home</a>
                         <a href='PointAssignment'>Points</a>
                         <a href='SponsorCatalog'>Catalog</a>
                         <a href='SponsorPurchasing'>Purchasing</a>

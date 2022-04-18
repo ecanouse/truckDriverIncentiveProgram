@@ -3,6 +3,10 @@ import Layout from '../components/Layout';
 import './PointHistory.css'
 import { AiOutlineArrowUp,  AiOutlineArrowDown} from 'react-icons/ai';
 
+const oneDay = "select pointValue, pointReason, date from new_schema.POINT_ADJUSTMENT where date >= now() -interval 1 day";
+const sevenDays = "select pointValue, pointReason, date from new_schema.POINT_ADJUSTMENT where date >= now() -interval 1 day";
+const thirtyDays = "select pointValue, pointReason, date from new_schema.POINT_ADJUSTMENT where date >= now() -interval 1 day";
+
 class PointHistory extends Component{
   state = {
     loading: true,
@@ -48,14 +52,17 @@ class PointHistory extends Component{
     .catch(err => console.error(err))
   }
 
+  
+
   render() {
     if (this.state.isDriver){
       return (
         <Layout userType={0}>
+          
             <select className='SortByDrop' id='SortByDrop' defaultValue={"sort"}>
               <option disabled hidden value="sort">Sort By</option>
-              <option>All Time</option>
-              <option>Last 24 Hours</option>
+              <option type='submit'>All Time</option>
+              <option type='submit'>Today</option>
               <option>Last 7 Days</option>
               <option>Last 30 Days</option>
             </select>
