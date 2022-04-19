@@ -85,7 +85,7 @@ class DriverCatalog extends Component{
   }
 
   addToCart = (listingId, quantity, name, price) => {
-    if(!this.state.viewCart){
+    if(!this.state.viewCart && quantity>0){
       let newCart = this.state.cart;
       const item = newCart.findIndex(item => parseInt(item.listingId) === parseInt(listingId))
       if(item!==-1){
