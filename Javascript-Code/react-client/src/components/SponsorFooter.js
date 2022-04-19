@@ -6,7 +6,6 @@ class SponsorFooter extends Component {
         return (
             <div className='Sponsor-Footer'>
                 <img src="teamLogo.png" alt="The Mad Lads Team Logo" width="200" height="70"></img>
-                <button className='DriverView'>Driver View</button>
             </div>
         )
     }
