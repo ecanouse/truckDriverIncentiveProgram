@@ -95,7 +95,7 @@ class DriverCatalog extends Component{
           listingId: listingId,
           maxquantity: quantity,
           name: name,
-          price: price,
+          price: parseInt(price),
           quantity: 1
         })
       }
