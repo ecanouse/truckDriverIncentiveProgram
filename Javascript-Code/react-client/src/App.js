@@ -33,7 +33,7 @@ class App extends Component{
           <Route path="/driverhome" element={<DriverHome/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/pointassignment" element={<PointAssignment/>}/>
-          <Route path="/pointhistory" element={<PointHistory/>}/>
+          <Route path="/PointHistory" element={<PointHistory/>}/>
           <Route path="/signup" element={<Signup/>}/>
           <Route path="/sponsorapplications" element={<SponsorApplications/>}/>
           <Route path="/sponsorcatalog" element={<SponsorCatalog/>}/>
@@ -50,7 +50,6 @@ class App extends Component{
           <Route path='NewOrganization' element={<NewOrganization/>}/>
           <Route path='SponsorPurchasing' element={<SponsorPurchasing/>}/>
           <Route path='UpdateOrg' element={<UpdateOrg/>}/>
-          <Route path='pointHistorySort' element={<pointHistorySort/>}/>
         </Routes>
       </BrowserRouter>
     )
