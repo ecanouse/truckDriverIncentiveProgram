@@ -134,13 +134,14 @@ class UpdateAccount extends Component{
   }
 
   render() {
+    console.log(this.state.feedback)
     if (this.state.isLoggedIn){
       return (
           <Layout userType={this.state.userType}>
             <div className='UpdateAccount-Page'>
             <div className='UpdateAccount-Body'>
             <form id='info-form' onSubmit={this.submit}>
-            <p className='login_displaybox' id='login_displaybox' >{this.state.feedback}</p>
+            {this.state.feedback==="Information Updated" ? <p className='UpdateAccount-Success' style={{color: "black"}}id='login_displaybox' >{this.state.feedback}</p> : <p className='UpdateAccount-Error' id='login_displaybox' >{this.state.feedback}</p>}
               <label className='inputs' htmlFor='fname'><br/>Update your First Name<br/></label>
                 <input required type='text' id='fname' name='fname'  size='45' value={this.state.fname} onChange={this.handleChange}></input>
               <label className='inputs' htmlFor='lname'><br/>Update your Last Name<br/></label>

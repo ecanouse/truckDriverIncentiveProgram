@@ -99,7 +99,7 @@ class CatalogItem extends Component{
                     {this.props.item.quantity < 10 ? this.props.item.quantity===0 ? <p style={{color: 'red'}}>Out of stock!</p>  : <p style={{color: 'red'}}>Only {this.props.item.quantity} in stock!</p> : <p>{this.props.item.quantity} in stock</p>}
                   </div>
                   <p>{this.state.description}</p>
-                  <p className='Msg'>{this.state.msg}</p>
+                  {(this.props.item.quantity>0 && this.props.type === 0) && <p className='Msg'>{this.state.msg}</p>}
                   <button className='CatalogItem-Button' onClick={this.onClick}>{buttonText}</button>
                 </div> 
                 <div className='CatalogItem-ImgSide'>

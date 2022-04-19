@@ -4,6 +4,15 @@
     margin-top: 30px;
 }
 
+.UpdateAccount-Success{
+    padding-bottom:0px;
+}
+
+.UpdateAccount-Error{
+    padding-bottom:0px;
+    color: rgb(235, 31, 31);
+}
+
 .UpdateAccount-Body {
     z-index: 3;
     border: 1px solid black;
