@@ -38,7 +38,7 @@ class App extends Component{
           <Route path="/driverhome" element={<DriverHome/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/pointassignment" element={<PointAssignment/>}/>
-          <Route path="/pointhistory" element={<PointHistory/>}/>
+          <Route path="/PointHistory" element={<PointHistory/>}/>
           <Route path="/signup" element={<Signup/>}/>
           <Route path="/sponsorapplications" element={<SponsorApplications/>}/>
           <Route path="/sponsorcatalog" element={<SponsorCatalog/>}/>
