@@ -42,6 +42,9 @@ class DriverHeader extends Component {
               <a href='PointHistory'>
                 <button className='NavButtons'>Points</button>
               </a>
+              <a href='PurchaseHistory'>
+                <button className='NavButtons'>Purchases</button>
+              </a>
               <a href='CatalogPurchase'>
                 <button className='NavButtons'>Catalog</button>
               </a>
