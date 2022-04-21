@@ -73,13 +73,29 @@ class UpdateAccount extends Component{
     this.setState({feedback: ""});
   };
 
-  checkComplexity = (event) => {
+  handlePasswordChange = (event) => {
     const target = event.target;
-    const value = target.value;
+    const name = target.name
+    const value = target.value
+    
+    this.setState({
+      [name]: value
+    });
+    this.setState({feedback: ""});
+    
+
+    this.checkComplexity();
+  };
+
+
+  checkComplexity = (event) => {
+    const value = this.state.newPass;
     let strongPassword = new RegExp('((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,20}))');
     if(strongPassword.test(value)){
       this.setState({passMsg: ""})
       document.getElementById("btn").disabled = false;
+      //Call checkMatch
+      this.checkMatch();
     }else{
       if(value === ''){
         this.setState({passMsg: ""})
@@ -91,9 +107,8 @@ class UpdateAccount extends Component{
   }
 
   checkMatch = (event) => {
-    const target = event.target;
-    const value = target.value;
-    if(value === this.state.newPass){
+    const value = this.state.confPass;
+    if(value === this.state.newPass && value !== ""){
       document.getElementById("btn").disabled = false;
       this.setState({passMsg: ""});
     }else{
@@ -154,9 +169,9 @@ class UpdateAccount extends Component{
                   <input required type='email' id='email' name='email' size='45' value={this.state.email} onChange={this.handleChange}></input>
               <label className='inputs' htmlFor='newPass'><br/>Update your Password<br/></label>
               <p className='login_displaybox' id='login_displaybox' >{this.state.passMsg}</p>
-                  <input type='password' id='newPass' name='newPass' placeholder='new password' size='45' value={this.state.newPass} onChange={this.handleChange} onInput={this.checkComplexity}></input> 
+                  <input id='newPass' name='newPass' placeholder='new password' size='45' value={this.state.newPass} onChange={this.handlePasswordChange}></input> 
               <label className='inputs' htmlFor='confPass'><br/>Confirm Password<br/></label>
-                  <input type='password' id='confPass' name='confPass' placeholder='confirm new password' size='45' value={this.state.confPass} onChange={this.handleChange} onInput={this.checkMatch}></input>
+                  <input id='confPass' name='confPass' placeholder='confirm new password' size='45' value={this.state.confPass} onChange={this.handlePasswordChange}></input>
               <label className='inputs' htmlFor='pass'><br/>Current Password<br/></label>
                   <input type='password' id='pass' name='pass' placeholder='current password' size='45' value={this.state.pass} onChange={this.handleChange}></input>
               <label className='inputs' htmlFor='phone'><br/>Update for Phone Number<br/></label>

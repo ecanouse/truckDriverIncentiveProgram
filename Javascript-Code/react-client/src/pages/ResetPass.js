@@ -13,7 +13,8 @@ class ResetPass extends Component{
     newPassConf: '',
     redirect: false,
     msg: "",
-    passMsg: ""
+    passMsg: "",
+    feedback: ""
   };
 
   //handleChange takes the value from input boxes & updates the state
@@ -54,7 +55,7 @@ class ResetPass extends Component{
     console.log("Submitting to server");
     //stored data
     var payload = {
-      email: this.state.email
+      email: this.state.email.split(" ")
     };
 
     //sending data to node server
@@ -92,9 +93,9 @@ class ResetPass extends Component{
     console.log("Submitting to server");
     //stored data
     var payload = {
-      code: this.state.code,
-      newPass: this.state.newPass,
-      newPassConf: this.state.newPassConf
+      code: this.state.code.split(" "),
+      newPass: this.state.newPass.split(" "),
+      newPassConf: this.state.newPassConf.split(" ")
     };
 
     //sending data to node server
@@ -108,7 +109,7 @@ class ResetPass extends Component{
         response.json().then( data => {
           if( data.success ) {
             document.getElementById('login_displaybox').style.color = "black";
-            this.setState({passMsg: data.msg});
+            this.setState({feedback: data.msg});
             this.setState({redirect: true});
 
           }
@@ -161,6 +162,8 @@ class ResetPass extends Component{
 
         <div className='Signin-Box'>
         <form onSubmit={this.submitPass}>
+        <p className='login_displaybox' id='login_displaybox' >{this.state.feedback}</p>
+
           <h2><br/>Input Code</h2>
           <p>
             Code
