@@ -19,7 +19,7 @@ module.exports = function( app, connection ) {
         session = req.session
         const userid = session.driverview
         session.userid = userid
-        session.sponsorview = undefined
+        session.driverview = undefined
         res.send({success: true});
       });
 

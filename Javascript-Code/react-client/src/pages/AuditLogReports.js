@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import './AdminReporting.css';
+import './AuditLogReports.css';
 import AuditLogResults from '../components/AuditLogResults.js';
 import Layout from '../components/Layout';
 import ExportButton from '../components/ExportButton';
@@ -242,6 +242,7 @@ class AuditLogReports extends Component{
               <ReportsTitle content="Login Attempts"></ReportsTitle>
               <AuditLogResults data={this.state.login_data} columns={this.state.login_columns}></AuditLogResults>
               <ExportButton data={this.state.login_data}>Export</ExportButton>
+              
           </Layout>
         );
       }

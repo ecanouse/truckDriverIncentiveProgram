@@ -39,25 +39,35 @@ class AdminReporting extends Component{
     this.setState({auditLog: true})
   }
 
+  handleSalesReport = () => {
+    this.setState({sales: true})
+  }
+
+  handleInvoice = () => {
+    this.setState({invoice: true})
+  }
+
   render() {
     // if (this.state.isSponsor){
       if( this.state.auditLog ) {
         //render audit log filter
-        return(<Navigate to='/AuditLogReports'/>)
+        return(<Navigate to='/AuditLogReports'/>);
       }
       else if( this.state.invoice ) {
         //render invoice filter
+        return(<Navigate to='/InvoiceReports'/>);
       }
       else if( this.state.sales ) {
         //render sales filter
+        return(<Navigate to='/SalesReports'/>);
       }
       return (
         <Layout userType={2}>
           
           <div>
               <button  className='ReportButton' onClick={this.handleAuditLog}>Audit Log Report</button>
-              <button  className='ReportButton'>Invoice Report</button>
-              <button  className='ReportButton'>Sales Report</button>
+              <button  className='ReportButton' onClick={this.handleInvoice}>Invoice Report</button>
+              <button  className='ReportButton' onClick={this.handleSalesReport}>Sales Report</button>
           </div>
 
           <div>

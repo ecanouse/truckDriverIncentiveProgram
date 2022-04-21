@@ -1,6 +1,8 @@
 module.exports = function(app, connection){
     
-    // AUDIT LOG REPORTS
+    // ADMIN REPORTS
+
+    // AUDIT LOG REPORTS --------------------------------------------
 
     app.post('/getLoginAttempts', (req, res) => {
 
@@ -104,15 +106,9 @@ module.exports = function(app, connection){
         console.log(req.body)
 
         // TODO
-        // then add invoice & sales reporting
-        // build basic sales frontend
-        // report summary sales info for drivers
-        // report detailed sales info for drivers
-        // add filtering inputs? maybe do this before
-        // add by sponsor sales reports
-        // add invoices -- similar to by sponsor
+        // add invoice admin reporting
 
-        // add all that but for sponsors
+        // add sponsor reports
         // add session compatability to all this
         // get rid of console.log()s
 
@@ -232,5 +228,375 @@ module.exports = function(app, connection){
 
     });
 
+
+    // END OF AUDIT LOG REPORTS
+
+    // SALES REPORTS -------------------------------------------
+
+    app.post('/getDriversFromOrg', (req, res) => {
+
+        console.log('Recieved Request for Sponsor List')
+
+        const orgID = req.body.orgID;
+        let query = `select usr.uID, usr.fname, usr.lname
+                        from USER as usr, USER_SPONSOR_REL as u2s
+                        where u2s.sponsorID = ${orgID} and u2s.uID = usr.uID`
+        
+        connection.query(query, function(err, result) {
+            if( err ) {
+                console.log(err)
+                res.send({success:false})
+            }
+            else {
+                res.send(result)
+            }
+        });
+
+    });
+
+    app.post('/getSalesByDriver', (req, res) => {
+
+        console.log('Recieved Request for Sales By Driver')
+        console.log(req.body)
+
+        const sdate = new Date(req.body.startDate);
+        const formattedStartDate = sdate.getFullYear()+'-'+(sdate.getMonth()+1)+'-'+sdate.getDate();
+        const edate = new Date(req.body.endDate);
+        const formattedEndDate = edate.getFullYear()+'-'+(edate.getMonth()+1)+'-'+edate.getDate();
+
+        query = `select usr.fname, usr.lname, SUM(ord.total) as total, usr.uID
+                    from new_schema.ORDER as ord, USER as usr
+                        where usr.uID = ord.uID
+                            group by ord.uID;`;
+
+        if( req.body.startDate != '' & req.body.orgName != '' & req.body.uID != '' ) {
+            query = `select rep.fname, rep.lname, rep.total, rep.sponsorID, rep.uID
+            from (
+                select usr.fname, usr.lname, SUM(ord.total) as total, ord.sponsorID, ord.date, sp.orgName, ord.uID
+                    from new_schema.ORDER as ord, USER as usr, SPONSOR_ORG as sp
+                    where usr.uID = ord.uID and ord.sponsorID = sp.sponsorID
+                    group by ord.uID
+            ) as rep
+            where rep.uID = ${req.body.uID} and rep.orgName = '${req.body.orgName}' and rep.date between '${formattedStartDate}' and '${formattedEndDate}';`;
+        }
+        else if( req.body.startDate != '' & req.body.orgName != '' & req.body.uID === '' ) {
+            query = `select rep.fname, rep.lname, rep.total, rep.sponsorID, rep.uID
+            from (
+                select usr.fname, usr.lname, SUM(ord.total) as total, ord.sponsorID, ord.date, sp.orgName, ord.uID
+                    from new_schema.ORDER as ord, USER as usr, SPONSOR_ORG as sp
+                    where usr.uID = ord.uID and ord.sponsorID = sp.sponsorID
+                    group by ord.uID
+            ) as rep
+            where rep.orgName = '${req.body.orgName}' and rep.date between '${formattedStartDate}' and '${formattedEndDate}';`;
+        }
+        else if( req.body.startDate != '' & req.body.orgName === '' & req.body.uID === '' ) {
+            query = `select rep.fname, rep.lname, rep.total, rep.uID
+            from (
+                select usr.fname, usr.lname, SUM(ord.total) as total, ord.sponsorID, ord.date, sp.orgName, ord.uID
+                    from new_schema.ORDER as ord, USER as usr, SPONSOR_ORG as sp
+                    where usr.uID = ord.uID and ord.sponsorID = sp.sponsorID
+                    group by ord.uID
+            ) as rep
+            where rep.date between '${formattedStartDate}' and '${formattedEndDate}';`;
+        }
+        else if( req.body.startDate === '' & req.body.orgName != '' & req.body.uID != '' ) {
+            query = `select rep.fname, rep.lname, rep.total, rep.sponsorID, rep.uID
+            from (
+                select usr.fname, usr.lname, SUM(ord.total) as total, ord.sponsorID, ord.date, sp.orgName, ord.uID
+                    from new_schema.ORDER as ord, USER as usr, SPONSOR_ORG as sp
+                    where usr.uID = ord.uID and ord.sponsorID = sp.sponsorID
+                    group by ord.uID
+            ) as rep
+            where rep.uID = ${req.body.uID} and rep.orgName = '${req.body.orgName}';`;
+        }
+        else if( req.body.startDate === '' & req.body.orgName === '' & req.body.uID != '' ) {
+            query = `select rep.fname, rep.lname, rep.total, rep.uID
+            from (
+                select usr.fname, usr.lname, SUM(ord.total) as total, ord.sponsorID, ord.date, sp.orgName, ord.uID
+                    from new_schema.ORDER as ord, USER as usr, SPONSOR_ORG as sp
+                    where usr.uID = ord.uID and ord.sponsorID = sp.sponsorID
+                    group by ord.uID
+            ) as rep
+            where rep.uID = ${req.body.uID};`;
+        }
+        else if( req.body.startDate === '' & req.body.orgName != '' & req.body.uID === '' ) {
+            query = `select rep.fname, rep.lname, rep.total, rep.sponsorID, rep.uID
+            from (
+                select usr.fname, usr.lname, SUM(ord.total) as total, ord.sponsorID, ord.date, sp.orgName, ord.uID
+                    from new_schema.ORDER as ord, USER as usr, SPONSOR_ORG as sp
+                    where usr.uID = ord.uID and ord.sponsorID = sp.sponsorID
+                    group by ord.uID
+            ) as rep
+            where rep.orgName = '${req.body.orgName}';`;
+        }
+        else if( req.body.startDate != '' & req.body.orgName === '' & req.body.uID != '' ) {
+            query = `select rep.fname, rep.lname, rep.total, rep.uID
+            from (
+                select usr.fname, usr.lname, SUM(ord.total) as total, ord.sponsorID, ord.date, sp.orgName, ord.uID
+                    from new_schema.ORDER as ord, USER as usr, SPONSOR_ORG as sp
+                    where usr.uID = ord.uID and ord.sponsorID = sp.sponsorID
+                    group by ord.uID
+            ) as rep
+            where rep.uID = ${req.body.uID} and rep.date between '${formattedStartDate}' and '${formattedEndDate}';`;
+        }
+        connection.query(query, function(err, result) {
+            if(err) {
+                console.log(err);
+                res.send({success:false})
+            }
+            else {
+
+                res.send(result)
+
+            }
+        });
+
+    });
+
+    app.post('/getDetailedDriverInfo', (req, res) => {
+
+        console.log('Recieved Request for detailed driver purchase info')
+        console.log(req.body)
+
+        const sdate = new Date(req.body.startDate);
+        const formattedStartDate = sdate.getFullYear()+'-'+(sdate.getMonth()+1)+'-'+sdate.getDate();
+        const edate = new Date(req.body.endDate);
+        const formattedEndDate = edate.getFullYear()+'-'+(edate.getMonth()+1)+'-'+edate.getDate();
+
+        query = `select itm.itemID, itm.name, itm.price, itm.quantity
+                    from new_schema.ORDER_ITEMS as itm, new_schema.ORDER as ord
+                        where itm.orderID = ord.orderID and ord.uID = ${req.body.data.uID};`;
+
+        if( req.body.startDate != '' ) {
+            query = `select rep.itemID, rep.name, rep.price, rep.quantity, rep.date
+            from (
+                select itm.itemID, itm.name, itm.price, itm.quantity, ord.date
+                    from new_schema.ORDER_ITEMS as itm, new_schema.ORDER as ord
+                        where itm.orderID = ord.orderID and ord.uID = ${req.body.data.uID}
+            ) as rep
+            where rep.date between '${formattedStartDate}' and '${formattedEndDate}';`;
+        }
+        connection.query(query, function(err, result) {
+            if(err) {
+                console.log(err);
+                res.send({success:false})
+            }
+            else {
+                console.log(result)
+                res.send(result)
+
+            }
+        });
+
+    });
+
+    app.post('/getSalesBySponsor', (req, res) => {
+
+        console.log('Recieved Request for Sales By Sponsor')
+        console.log(req.body)
+
+        const sdate = new Date(req.body.startDate);
+        const formattedStartDate = sdate.getFullYear()+'-'+(sdate.getMonth()+1)+'-'+sdate.getDate();
+        const edate = new Date(req.body.endDate);
+        const formattedEndDate = edate.getFullYear()+'-'+(edate.getMonth()+1)+'-'+edate.getDate();
+
+        query = `select sp.orgName, SUM(ord.total) as total
+                        from SPONSOR_ORG as sp, new_schema.ORDER as ord
+                        where sp.sponsorID = ord.sponsorID
+                        group by ord.sponsorID;`;
+
+        if( req.body.startDate != '' & req.body.orgName != '' ) {
+            query = `select sp.orgName, SUM(rep.total) as total
+            from (
+                select * from new_schema.ORDER as ord
+                    where ord.date between '${formattedStartDate}' and '${formattedEndDate}'
+            ) as rep, SPONSOR_ORG as sp
+            where sp.sponsorID = rep.sponsorID and sp.orgName = '${req.body.orgName}'
+            group by rep.sponsorID;`;
+        }
+        else if( req.body.startDate === '' & req.body.orgName != '' ) {
+            query = `select sp.orgName, SUM(rep.total) as total
+            from (
+                select * from new_schema.ORDER as ord
+            ) as rep, SPONSOR_ORG as sp
+            where sp.sponsorID = rep.sponsorID and sp.orgName = '${req.body.orgName}'
+            group by rep.sponsorID;`;
+        }
+        else if( req.body.startDate != '' & req.body.orgName === '' ) {
+            query = `select sp.orgName, SUM(rep.total) as total
+            from (
+                select * from new_schema.ORDER as ord
+                    where ord.date between '${formattedStartDate}' and '${formattedEndDate}'
+            ) as rep, SPONSOR_ORG as sp
+            where sp.sponsorID = rep.sponsorID
+            group by rep.sponsorID;`;
+        }
+        
+        connection.query(query, function(err, result) {
+            if(err) {
+                console.log(err);
+                res.send({success:false})
+            }
+            else {
+
+                res.send(result)
+
+            }
+        });
+
+    });
+
+    app.post('/getDetailedSponsorInfo', (req, res) => {
+
+        console.log('Recieved Request for detailed sponsor purchase info')
+        console.log(req.body)
+
+        const sdate = new Date(req.body.startDate);
+        const formattedStartDate = sdate.getFullYear()+'-'+(sdate.getMonth()+1)+'-'+sdate.getDate();
+        const edate = new Date(req.body.endDate);
+        const formattedEndDate = edate.getFullYear()+'-'+(edate.getMonth()+1)+'-'+edate.getDate();
+
+        query = `select rep.itemID, rep.name, rep.price, rep.quantity, rep.date
+        from (
+            select itm.itemID, itm.name, itm.price, itm.quantity, ord.date, sp.orgName
+                from new_schema.ORDER_ITEMS as itm, new_schema.ORDER as ord, new_schema.SPONSOR_ORG as sp
+                    where itm.orderID = ord.orderID and sp.sponsorID = ord.sponsorID
+        ) as rep
+        where rep.orgName = '${req.body.data.orgName}';`;
+
+        if( req.body.startDate != '' ) {
+            query = `select rep.itemID, rep.name, rep.price, rep.quantity, rep.date
+            from (
+                select itm.itemID, itm.name, itm.price, itm.quantity, ord.date, sp.orgName
+                    from new_schema.ORDER_ITEMS as itm, new_schema.ORDER as ord, new_schema.SPONSOR_ORG as sp
+                        where itm.orderID = ord.orderID and sp.sponsorID = ord.sponsorID
+            ) as rep
+            where rep.date between '${formattedStartDate}' and '${formattedEndDate}' and rep.orgName = '${req.body.data.orgName}';`;
+        }
+
+        connection.query(query, function(err, result) {
+            if(err) {
+                console.log(err);
+                res.send({success:false})
+            }
+            else {
+                console.log(result)
+                res.send(result)
+
+            }
+        });
+
+    });
+
+    // End of Sales Reports
+
+    // INVOICE REPORTS ----------------------------------------
+
+    app.post('/getInvoiceReport', (req, res) => {
+
+        console.log('Recieved Request for Invoice Report')
+        console.log(req.body)
+
+        const sdate = new Date(req.body.startDate);
+        const formattedStartDate = sdate.getFullYear()+'-'+(sdate.getMonth()+1)+'-'+sdate.getDate();
+        const edate = new Date(req.body.endDate);
+        const formattedEndDate = edate.getFullYear()+'-'+(edate.getMonth()+1)+'-'+edate.getDate();
+
+        //get invoice info
+        query = `select sp.orgName, dr.uID, dr.fname, dr.lname, ord.total, (ord.total * 0.01) as Fee
+        from USER as dr, new_schema.ORDER as ord, SPONSOR_ORG as sp
+            where dr.uID = ord.uID and sp.sponsorID = ord.sponsorID
+            group by ord.uID;`;
+
+        if( req.body.startDate != '' & req.body.orgName === '') {
+            query = `select sp.orgName, dr.uID, dr.fname, dr.lname, ord.total, (ord.total * 0.01) as Fee
+            from USER as dr, new_schema.ORDER as ord, SPONSOR_ORG as sp
+                where dr.uID = ord.uID and sp.sponsorID = ord.sponsorID
+                    and ord.date between '${formattedStartDate}' and '${formattedEndDate}'
+                group by ord.uID;`;
+        }
+        else if( req.body.startDate === '' & req.body.orgName != '' ) {
+            query = `select sp.orgName, dr.uID, dr.fname, dr.lname, ord.total, (ord.total * 0.01) as Fee
+            from USER as dr, new_schema.ORDER as ord, SPONSOR_ORG as sp
+                where dr.uID = ord.uID and sp.sponsorID = ord.sponsorID and sp.orgName = '${req.body.orgName}'
+                group by ord.uID;`;
+        }
+        else if(req.body.startDate != '' & req.body.orgName != '') {
+            query = `select sp.orgName, dr.uID, dr.fname, dr.lname, ord.total, (ord.total * 0.01) as Fee
+                        from USER as dr, new_schema.ORDER as ord, SPONSOR_ORG as sp
+                            where dr.uID = ord.uID and sp.sponsorID = ord.sponsorID and sp.orgName = '${req.body.orgName}'
+                                and ord.date between '${formattedStartDate}' and '${formattedEndDate}'
+                            group by ord.uID;`;
+        }
+        connection.query(query, function(err, result) {
+            if(err) {
+                console.log(err);
+                res.send({success:false})
+            }
+            else {
+
+                res.send(result)
+
+            }
+        });
+
+    });
+
+    // SPONSOR REPORTS
+
+    // POINT REPORTS -----------------------------------------------------------
+
+    app.post('/getSponsorPointReport', (req, res) => {
+
+        console.log('Recieved Request for Sponsor Point by driver')
+        console.log(req.body)
+
+        const sdate = new Date(req.body.startDate);
+        const formattedStartDate = sdate.getFullYear()+'-'+(sdate.getMonth()+1)+'-'+sdate.getDate();
+        const edate = new Date(req.body.endDate);
+        const formattedEndDate = edate.getFullYear()+'-'+(edate.getMonth()+1)+'-'+edate.getDate();
+
+        query = `select * from (
+            select dr.fname, dr.lname, dp.totalPoints, pa.pointValue, pa.pointReason, pa.date, sp.orgName
+                from USER as dr, DRIVER_POINTS as dp, POINT_ADJUSTMENT as pa, SPONSOR_ORG as sp
+                where dr.uID = dp.uID and dp.DPointID = pa.DPointID and sp.sponsorID = dp.sponsorID and sp.sponsorID = '${req.body.orgID}'
+                ) as rep;`;
+
+                if( req.body.startDate != '' & req.body.uID === '') {
+                    query = `select * from (
+                        select dr.fname, dr.lname, dp.totalPoints, pa.pointValue, pa.pointReason, pa.date, sp.orgName
+                            from USER as dr, DRIVER_POINTS as dp, POINT_ADJUSTMENT as pa, SPONSOR_ORG as sp
+                            where dr.uID = dp.uID and dp.DPointID = pa.DPointID and sp.sponsorID = dp.sponsorID and sp.sponsorID = '${req.body.orgID}'
+                            ) as rep
+                            where rep.date between '${formattedStartDate}' and '${formattedEndDate}';`;
+                }
+                else if( req.body.startDate === '' & req.body.uID != '' ) {
+                    query = `select * from (
+                        select dr.fname, dr.lname, dp.totalPoints, pa.pointValue, pa.pointReason, pa.date, sp.orgName
+                            from USER as dr, DRIVER_POINTS as dp, POINT_ADJUSTMENT as pa, SPONSOR_ORG as sp
+                            where dr.uID = dp.uID and dr.uID = ${req.body.uID} and dp.DPointID = pa.DPointID and sp.sponsorID = dp.sponsorID and sp.sponsorID = '${req.body.orgID}'
+                            ) as rep;`;
+                }
+                else if(req.body.startDate != '' & req.body.uID != '') {
+                    query = `select * from (
+                        select dr.fname, dr.lname, dp.totalPoints, pa.pointValue, pa.pointReason, pa.date, sp.orgName
+                            from USER as dr, DRIVER_POINTS as dp, POINT_ADJUSTMENT as pa, SPONSOR_ORG as sp
+                            where dr.uID = dp.uID and dr.uID = ${req.body.uID} and dp.DPointID = pa.DPointID and sp.sponsorID = dp.sponsorID and sp.sponsorID = '${req.body.orgID}'
+                            ) as rep
+                            where rep.date between '${formattedStartDate}' and '${formattedEndDate}';`;
+                }
+        connection.query(query, function(err, result) {
+            if(err) {
+                console.log(err);
+                res.send({success:false})
+            }
+            else {
+
+                res.send(result)
+
+            }
+        });
+
+    });
 
 }

@@ -35,7 +35,7 @@ class SponsorHeader extends Component {
                 <img src="SponsorLogo.png" alt="The Mad Lads Team Logo" width="250" height="100"></img>
                 <nav className='Nav'>
                     <a href='SponsorHome'>
-                        <button href='DriverHome' className='NavButtons' >Home</button>
+                        <button href='SponsorHome' className='NavButtons' >Home</button>
                     </a>
                     <a href='PointAssignment'>
                         <button className='NavButtons'>Points</button>
@@ -52,17 +52,21 @@ class SponsorHeader extends Component {
                     <a href='UpdateAccount'>
                         <button className='NavButtons'>Account</button>
                     </a>
+                    <a href='SponsorReporting'>
+                        <button className='NavButtons'>Reporting</button>
+                    </a>
                 </nav>
 
                 <div className='SmallNav'>
                     <button className='NavButtons'>Menu</button>
                     <div className='SmallNavContents'>
-                        <a href='DriverHome'>Home</a>
+                        <a href='SponsorHome'>Home</a>
                         <a href='PointAssignment'>Points</a>
                         <a href='SponsorCatalog'>Catalog</a>
                         <a href='SponsorPurchasing'>Purchasing</a>
                         <a href='UpdateOrg'>Organization</a>
                         <a href='UpdateAccount'>Account</a>
+                        <a href='SponsorReporting'>Reporting</a>
                     </div>                
                 </div>
 

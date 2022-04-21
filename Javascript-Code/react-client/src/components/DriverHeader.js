@@ -31,12 +31,14 @@ class DriverHeader extends Component {
     }
     render() {
         return (
+          
           <div className='Driver-Header'>
             <link rel='icon' href='websiteicon.png'/>
             <img src="SponsorLogo.png" alt="Sponsor Logo" width="250" height="100"></img>
             <nav className='Nav'>
               <a href='DriverHome'>
-                <button href='DriverHome' className='NavButtons' >Home</button>                </a>
+                <button href='DriverHome' className='NavButtons' >Home</button>
+              </a>
               <a href='PointHistory'>
                 <button className='NavButtons'>Points</button>
               </a>
@@ -55,7 +57,7 @@ class DriverHeader extends Component {
               <button className='NavButtons'>Menu</button>
               <div className='SmallNavContents'>
                 <a href='DriverHome'>Home</a>
-                <a href='pointHistory'>Points</a>
+                <a href='PointHistory'>Points</a>
                 <a href='DriverCatalog'>Catalog</a>
                 <a href='PurchaseHistory'>Purchases</a>
                 <a href='UpdateAccount'>Account</a>

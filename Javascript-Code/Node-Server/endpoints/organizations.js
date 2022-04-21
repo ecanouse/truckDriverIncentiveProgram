@@ -86,7 +86,7 @@ module.exports = function(app, connection){
         if(err){
           console.log(err);
         }else{
-            console.log(result)
+            //console.log(result)
           return res.json({
             orgs: result
           })
