@@ -32,7 +32,7 @@ class SponsorHeader extends Component {
     render() {
         return (
             <div className='Sponsor-Header'>
-                <img src="SponsorLogo.png" alt="The Mad Lads Team Logo" width="250" height="100"></img>
+                <img src="teamLogo.png" alt="The Mad Lads Team Logo" width="250" height="100"></img>
                 <nav className='Nav'>
                     <a href='SponsorHome'>
                         <button href='SponsorHome' className='NavButtons' >Home</button>
