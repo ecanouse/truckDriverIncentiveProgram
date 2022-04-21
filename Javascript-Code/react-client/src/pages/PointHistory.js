@@ -71,7 +71,7 @@ class PointHistory extends Component{
                   {p.adjustments.map(a => 
                     <p>
                       {this.isPosOrNeg(a.pointValue) === "pos" ? <span className='ArrowUp'><AiOutlineArrowUp/> {a.pointValue}</span> : <span className='ArrowDown'><AiOutlineArrowDown/> {a.pointValue}</span>}
-                       <span className='Reason'>Reason: {a.pointReason}</span> <span className='Date'>Date: {a.date} </span>       
+                       <span className='Reason'>Reason: {a.pointReason}</span> <span type="date" className='Date'>Date: {a.date} </span>       
                       <hr/>            
                     </p>
                     )}   
