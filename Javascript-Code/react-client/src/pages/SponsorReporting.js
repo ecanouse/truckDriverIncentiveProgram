@@ -67,8 +67,9 @@ class SponsorReporting extends Component{
       return (
         <Layout userType={1}>
           
-          <div>
+          <div className='ButtonBox'>
               <button  className='ReportButton' onClick={this.handleAuditLog}>Audit Log Report</button>
+              <p></p>
               <button  className='ReportButton' onClick={this.handlePoint}>Driver Points Report</button>
           </div>
 

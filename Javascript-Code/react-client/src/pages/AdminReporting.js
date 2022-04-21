@@ -64,10 +64,14 @@ class AdminReporting extends Component{
       return (
         <Layout userType={2}>
           
-          <div>
+          <div className='ButtonBox'>
+              <p></p>
               <button  className='ReportButton' onClick={this.handleAuditLog}>Audit Log Report</button>
+              <p></p>
               <button  className='ReportButton' onClick={this.handleInvoice}>Invoice Report</button>
+              <p></p>
               <button  className='ReportButton' onClick={this.handleSalesReport}>Sales Report</button>
+              <p></p>
           </div>
 
           <div>
