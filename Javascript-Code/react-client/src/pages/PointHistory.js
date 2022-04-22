@@ -7,7 +7,10 @@ class PointHistory extends Component{
   state = {
     loading: true,
     isDriver: false,
-    points: []
+    points: [],
+    orgs: [],
+    org: 0,
+    orgName: ''
   }
   
   componentDidMount() {
@@ -21,6 +24,7 @@ class PointHistory extends Component{
       this.setState({loading: false, isDriver: response.is_driver})
       if(response.is_driver){
         this.getPoints()
+        this.getOrgs()
       }
     })
     .catch(err => console.error(err))
@@ -83,34 +87,42 @@ class PointHistory extends Component{
     if (this.state.isDriver){
       return (
         <Layout userType={0}>
-          <select className='SortByDrop' id='SortByDrop' defaultValue={"sort"} onChange={this.getPoints}>
-            <option value='allpoints'>Sort By</option>
-            <option value='allpoints' >All Time</option>
-            <option value='today'>Today</option>
-            <option value='sevenDays'>Last 7 Days</option>
-            <option value='thirtyDays'>Last 30 Days</option>
-          </select>
-   
-          {this.state.points.map((p
-          
-          ) => {
-            return(
-              <div className='PointDisplay'>
-                  <p>Total: {p.totalPoints},  For Sponsor (id): {p.sponsorID}</p>
-                  <p>All adjustments <br/><hr/></p>
-                  <div className='ValueDisplay'>
-                    {p.adjustments.map(a => 
-                      <p>
-                      {this.isPosOrNeg(a.pointValue) === "pos" ? <span className='ArrowUp'><AiOutlineArrowUp/> {a.pointValue}</span> : <span className='ArrowDown'><AiOutlineArrowDown/> {a.pointValue}</span>}
-                        <span className='Reason'>Reason: {a.pointReason}</span> <span className='Date'>Date: {a.date} </span>       
-                        <hr/>            
-                      </p>
-                    )}   
+          <div className='PointHistory-Body'>
+            <label htmlFor='SelectSponsor'>View Points From:</label>
+            <select className='PointHistory-Select' id='SelectSponsor' onChange={this.changeOrg}>
+              {this.state.orgs.map((org, i) => {return(
+                <option value={org.sponsorID} key={i}>{org.orgName}</option>
+              )})}
+            </select>
+            <select className='PointHistory-Select' id='SortByDrop' defaultValue={"sort"} onChange={this.getPoints}>
+              <option value='allpoints'>Sort By</option>
+              <option value='allpoints' >All Time</option>
+              <option value='today'>Today</option>
+              <option value='sevenDays'>Last 7 Days</option>
+              <option value='thirtyDays'>Last 30 Days</option>
+            </select>
+    
+            {this.state.points.map((p) => {
+              if(p.sponsorID === this.state.org){
+                return(
+                  <div className='PointDisplay'>
+                      <p>Total: {p.totalPoints}</p>
+                      <div className='ValueDisplay'>
+                        {p.adjustments.reverse().map(a => 
+                          <p>
+                          {this.isPosOrNeg(a.pointValue) === "pos" ? <span className='ArrowUp'><AiOutlineArrowUp/> {a.pointValue}</span> : <span className='ArrowDown'><AiOutlineArrowDown/> {a.pointValue}</span>}
+                            <span className='Reason'>Reason: {a.pointReason}</span> <span className='Date'>Date: {a.date.substring(0,10)} </span>       
+                            <hr/>            
+                          </p>
+                        )}   
+                      </div>
+                    
                   </div>
-                
-              </div>
+                )}else{return(
+                  <div></div>
+                )}}
             )}
-          )}
+          </div>
         </Layout>
       );
     }else{

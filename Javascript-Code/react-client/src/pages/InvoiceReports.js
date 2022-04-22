@@ -79,13 +79,9 @@ class InvoiceReports extends Component {
 
         }
 
-        // this.state.invoice_data.array.forEach(element => {
-        //     this.setState({
-        //         totalFee: this.state.totalFee + element.Fee
-        //     })
-        // });
-
-
+        this.setState({
+            totalFee: this.state.totalFee.toFixed(2)
+        });
 
     }
 

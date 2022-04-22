@@ -34,7 +34,7 @@ class DriverHeader extends Component {
           
           <div className='Driver-Header'>
             <link rel='icon' href='websiteicon.png'/>
-            <img src="SponsorLogo.png" alt="Sponsor Logo" width="250" height="100"></img>
+            <img src="teamLogo.png" alt="Sponsor Logo" width="250" height="100"></img>
             <nav className='Nav'>
               <a href='DriverHome'>
                 <button href='DriverHome' className='NavButtons' >Home</button>
@@ -42,11 +42,11 @@ class DriverHeader extends Component {
               <a href='PointHistory'>
                 <button className='NavButtons'>Points</button>
               </a>
+              <a href='DriverCatalog'>
+                <button className='NavButtons'>Catalog</button>
+              </a>
               <a href='PurchaseHistory'>
                 <button className='NavButtons'>Purchases</button>
-              </a>
-              <a href='CatalogPurchase'>
-                <button className='NavButtons'>Catalog</button>
               </a>
               <a href='UpdateAccount'>
               <button className='NavButtons'>Account</button>
@@ -57,7 +57,7 @@ class DriverHeader extends Component {
               <button className='NavButtons'>Menu</button>
               <div className='SmallNavContents'>
                 <a href='DriverHome'>Home</a>
-                <a href='pointHistory'>Points</a>
+                <a href='PointHistory'>Points</a>
                 <a href='DriverCatalog'>Catalog</a>
                 <a href='PurchaseHistory'>Purchases</a>
                 <a href='UpdateAccount'>Account</a>

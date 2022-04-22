@@ -141,7 +141,7 @@ class ReportsDriverFilter extends React.Component {
                 <div>
                 <p> Select Filters for Report Query</p>
                 </div>
-                <label htmlFor='SelectSponsor'>Select Sponsor:</label>
+                <label htmlFor='SelectSponsor'>  Select Sponsor:  </label>
                 <select className='DriverCatalog-Select' id='SelectSponsor' onChange={this.changeOrg}>
                     <option value="" key={0}>No Selection</option>
                     {this.state.orgs.map((org, i) => {return(
@@ -149,7 +149,7 @@ class ReportsDriverFilter extends React.Component {
                     )})}
                 </select>
 
-                <label>Select Driver From Sponsor:</label>
+                <label>   Select Driver From Sponsor:  </label>
                 <select className='DriverCatalog-Select' id='SelectDriver' onChange={this.changeDriver}>
                     <option value="" key={0}>No Selection</option>
                     {this.state.drivers.map((driver, i) => {return(
@@ -157,7 +157,7 @@ class ReportsDriverFilter extends React.Component {
                     )})}
                 </select>
 
-                <p>Select Date Range</p>
+                <p>Select Date Range:</p>
                 <p>
                     <DateRangeFilter onChange={this.onChange}/>
                 </p>

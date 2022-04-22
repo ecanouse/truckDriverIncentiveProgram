@@ -85,7 +85,7 @@ class ReportsFilter extends React.Component {
                 <div>
                 <p> Select Filters for Report Query</p>
                 </div>
-                <label htmlFor='SelectSponsor'>Select Sponsor:</label>
+                <label htmlFor='SelectSponsor'> Select Sponsor:   </label>
                 <select className='DriverCatalog-Select' id='SelectSponsor' onChange={this.changeOrg}>
                     <option value="" key={0}>No Selection</option>
                     {this.state.orgs.map((org, i) => {return(

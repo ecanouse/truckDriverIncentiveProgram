@@ -105,14 +105,6 @@ module.exports = function(app, connection){
         console.log('Recieved Request for Audit Log Report')
         console.log(req.body)
 
-        // TODO
-        // add invoice admin reporting
-
-        // add sponsor reports
-        // add session compatability to all this
-        // get rid of console.log()s
-
-
         const sdate = new Date(req.body.startDate);
         const formattedStartDate = sdate.getFullYear()+'-'+(sdate.getMonth()+1)+'-'+sdate.getDate();
         const edate = new Date(req.body.endDate);
@@ -503,26 +495,26 @@ module.exports = function(app, connection){
         const formattedEndDate = edate.getFullYear()+'-'+(edate.getMonth()+1)+'-'+edate.getDate();
 
         //get invoice info
-        query = `select sp.orgName, dr.uID, dr.fname, dr.lname, ord.total, (ord.total * 0.01) as Fee
+        query = `select sp.orgName, dr.uID, dr.fname, dr.lname, round((ord.total / sp.pointsPerDollar), 2) as total, round(((ord.total / sp.pointsPerDollar) * 0.01), 2) as Fee
         from USER as dr, new_schema.ORDER as ord, SPONSOR_ORG as sp
             where dr.uID = ord.uID and sp.sponsorID = ord.sponsorID
             group by ord.uID;`;
 
         if( req.body.startDate != '' & req.body.orgName === '') {
-            query = `select sp.orgName, dr.uID, dr.fname, dr.lname, ord.total, (ord.total * 0.01) as Fee
+            query = `select sp.orgName, dr.uID, dr.fname, dr.lname, round((ord.total / sp.pointsPerDollar), 2) as total, round(((ord.total / sp.pointsPerDollar) * 0.01), 2) as Fee
             from USER as dr, new_schema.ORDER as ord, SPONSOR_ORG as sp
                 where dr.uID = ord.uID and sp.sponsorID = ord.sponsorID
                     and ord.date between '${formattedStartDate}' and '${formattedEndDate}'
                 group by ord.uID;`;
         }
         else if( req.body.startDate === '' & req.body.orgName != '' ) {
-            query = `select sp.orgName, dr.uID, dr.fname, dr.lname, ord.total, (ord.total * 0.01) as Fee
+            query = `select sp.orgName, dr.uID, dr.fname, dr.lname, round((ord.total / sp.pointsPerDollar), 2) as total, round(((ord.total / sp.pointsPerDollar) * 0.01), 2) as Fee
             from USER as dr, new_schema.ORDER as ord, SPONSOR_ORG as sp
                 where dr.uID = ord.uID and sp.sponsorID = ord.sponsorID and sp.orgName = '${req.body.orgName}'
                 group by ord.uID;`;
         }
         else if(req.body.startDate != '' & req.body.orgName != '') {
-            query = `select sp.orgName, dr.uID, dr.fname, dr.lname, ord.total, (ord.total * 0.01) as Fee
+            query = `select sp.orgName, dr.uID, dr.fname, dr.lname, round((ord.total / sp.pointsPerDollar), 2) as total, round(((ord.total / sp.pointsPerDollar) * 0.01), 2) as Fee
                         from USER as dr, new_schema.ORDER as ord, SPONSOR_ORG as sp
                             where dr.uID = ord.uID and sp.sponsorID = ord.sponsorID and sp.orgName = '${req.body.orgName}'
                                 and ord.date between '${formattedStartDate}' and '${formattedEndDate}'

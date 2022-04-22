@@ -15,7 +15,7 @@ class UpdateAccount extends Component{
     pass: '',
     newPass: '',
     confPass: '',
-    feedback: ''
+    feedback: '',
   }
   
   componentDidMount() {

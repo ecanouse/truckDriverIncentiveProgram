@@ -202,6 +202,10 @@ class ResetPass extends Component{
           { this.state.redirect ? (<Navigate to="/login"/>) : null }
 
         </form>
+        <p>Already have an account?</p>
+        <form action="/login" class="inline">
+          <button type="submit" className='LoginButton'>Go To Log-in</button>
+        </form>
         </div>
       </div>
       </body>
