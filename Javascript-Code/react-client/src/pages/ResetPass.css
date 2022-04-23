@@ -4,15 +4,27 @@
 .Login-Header {
     background-color: #e5e8f0;
 }
-.Signin-Box {
+.Email {
     text-align: left;
     outline:solid lightgray 1px;
     width: fit-content;
+    height: 100px;
     margin: auto;
-    line-height: 0.5;
+    line-height: 1;
     padding-left: 10px;
     padding-right: 10px;
-    padding-bottom: 35px;
+    padding-bottom: 50px;
+}
+.Code {
+    text-align: left;
+    outline:solid lightgray 1px;
+    width: fit-content;
+    height: 350px;
+    margin: auto;
+    line-height: 1;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 50px;
 }
 .Seperate-SI-UN {
     display: block;
@@ -30,7 +42,7 @@
 .LoginButton {
     float:right;
     border-radius: 8px;
-    width: 25%;
+    width: 50px;
     height: 25px;
     border: 2px solid lightgray;
     margin-left: 20px;

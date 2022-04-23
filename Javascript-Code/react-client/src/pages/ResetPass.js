@@ -135,77 +135,77 @@ class ResetPass extends Component{
     return (
       <body>
         <div className='ResetPassPage'>
-        <header className='Login-Header'>
-              <img src="teamLogo.png" alt="The Mad Lads Team Logo" width="250" height="100"></img>
-        </header>
-        <div className='Signin-Box'>
-        <form onSubmit={this.submit}>
-          <h2><br/>Input Email</h2>
-          <p className='login_displaybox' id='login_displaybox' >{this.state.msg}</p>
-          <p>
-            Email
-          </p>
-          <input 
-            type="email" 
-            id="email" 
-            name="email" 
-            placeholder='email' 
-            size="55"
-            value={this.state.email}
-            onChange={this.handleChange}
-          />
-        
-          <button type="submit" class='LoginButton'>Send Reset Email</button>
-        </form>
-        </div>
+          <header className='Login-Header'>
+                <img src="teamLogo.png" alt="The Mad Lads Team Logo" width="250" height="100"></img>
+          </header>
+          <div className='Email'>
+            <form onSubmit={this.submit}>
+              <h2><br/>Input Email</h2>
+              <p className='login_displaybox' id='login_displaybox' >{this.state.msg}</p>
+              <p>
+                Email
+              </p>
+              <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                placeholder='email' 
+                size="55"
+                value={this.state.email}
+                onChange={this.handleChange}
+              />
+            
+              <button type="submit" class='LoginButton'>Send Reset Email</button>
+            </form>
+          </div>
 
-        <div className='Signin-Box'>
-        <form onSubmit={this.submitPass}>
-          <h2><br/>Input Code</h2>
-          <p>
-            Code
-          </p>
-          <input 
-            type="text" 
-            id="code" 
-            name="code" 
-            placeholder='code' 
-            size="55"
-            value={this.state.code}
-            onChange={this.handleChange}
-          />
-          <p>New Password</p>
-          <input 
-            type="password" 
-            id="newPass" 
-            name="newPass" 
-            placeholder='password' 
-            size="55"
-            value={this.state.newPass}
-            onChange={this.handleChange}
-            onInput={this.checkComplexity}
-          />
-          <p className='login_displaybox' id='login_displaybox' >{this.state.passMsg}</p>
+          <div className='Code'>
+          <form onSubmit={this.submitPass}>
+            <h2><br/>Input Code</h2>
+            <p>
+              Code
+            </p>
+            <input 
+              type="text" 
+              id="code" 
+              name="code" 
+              placeholder='code' 
+              size="55"
+              value={this.state.code}
+              onChange={this.handleChange}
+            />
+            <p>New Password</p>
+            <input 
+              type="password" 
+              id="newPass" 
+              name="newPass" 
+              placeholder='password' 
+              size="55"
+              value={this.state.newPass}
+              onChange={this.handleChange}
+              onInput={this.checkComplexity}
+            />
+            <p className='login_displaybox' id='login_displaybox' >{this.state.passMsg}</p>
 
-          <p>Confirm Password</p>
-          <input 
-            type="password" 
-            id="newPassConf" 
-            name="newPassConf" 
-            placeholder='confirm password' 
-            size="55"
-            value={this.state.newPassConf}
-            onChange={this.handleChange}
-          />  
-        
-          <button type="submit" className='LoginButton' id='btn' disabled>Reset Password</button>
-          { this.state.redirect ? (<Navigate to="/login"/>) : null }
+            <p>Confirm Password</p>
+            <input 
+              type="password" 
+              id="newPassConf" 
+              name="newPassConf" 
+              placeholder='confirm password' 
+              size="55"
+              value={this.state.newPassConf}
+              onChange={this.handleChange}
+            />  
+          
+            <button type="submit" className='LoginButton' id='btn' disabled>Reset Password</button>
+            { this.state.redirect ? (<Navigate to="/login"/>) : null }
 
-        </form>
-        <p>Already have an account?</p>
-        <form action="/login" class="inline">
-          <button type="submit" className='LoginButton'>Go To Log-in</button>
-        </form>
+          </form>
+            <p>Already have an account?</p>
+            <form action="/login" class="inline">
+              <button type="submit" className='LoginButton'>Go To Log-in</button>
+          </form>
         </div>
       </div>
       </body>

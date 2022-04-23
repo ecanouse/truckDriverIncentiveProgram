@@ -7,12 +7,13 @@
 .Signup-Box {
     text-align: left;
     outline: solid lightgray 1px;
-    width: fit-content;
+    width:fit-content;
     margin: auto;
-    line-height: 0.5;
+    line-height: 1;
     padding-left: 10px;
     padding-right: 10px;
-    padding-bottom: 10px;
+    padding-bottom: 30px;
+    
 }
 .login_displaybox {
     padding-bottom: 0px;
@@ -20,12 +21,12 @@
 }
 .Seperate-SI-UN {
     display: block;
-    margin-bottom: 3em;
 }
 .LoginButton {
     float: right;
+    text-align: center;
     border-radius: 8px;
-    width: 25%;
-    height: 25px;
+    width:10px;
+    height: 10px;
     border: 2px solid lightgray;
 }
