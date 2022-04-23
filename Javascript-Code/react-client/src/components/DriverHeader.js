@@ -34,7 +34,7 @@ class DriverHeader extends Component {
           
           <div className='Driver-Header'>
             <link rel='icon' href='websiteicon.png'/>
-            <img src="SponsorLogo.png" alt="Sponsor Logo" width="250" height="100"></img>
+            <img src="teamLogo.png" alt="Sponsor Logo" width="250" height="100"></img>
             <nav className='Nav'>
               <a href='DriverHome'>
                 <button href='DriverHome' className='NavButtons' >Home</button>

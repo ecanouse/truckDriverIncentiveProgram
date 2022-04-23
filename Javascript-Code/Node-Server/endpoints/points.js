@@ -61,7 +61,7 @@ module.exports = function(app, connection){
                                 console.log("YO")
                                 res.send({success: false})
                             }else{
-                                addAdjustment(req, sponsorID)
+                                addAdjustment(req, driverID, sponsorID)
                             }
                         })
                     }else{

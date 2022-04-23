@@ -114,8 +114,8 @@ class Login extends Component{
           { this.state.redirect && (this.state.userType === 1) ? (<Navigate to="/sponsorhome"/>) : null }
           { this.state.redirect && (this.state.userType === 2) ? (<Navigate to="/adminhome"/>) : null }
         </form>
-          <a className='Reset-UN-PASS' href='ResetPass'>Click here to reset your Password</a>
-          <a className='Reset-UN-PASS' href='Signup'><br/><br/>Click here to make a new account</a> 
+          <a className='Reset-UN-PASS' href='ResetPass'>Click here to reset your Password<br/></a>
+          <a className='Reset-UN-PASS' href='Signup'><br/>Click here to make a new account</a> 
         </div>
       </div>      
     );

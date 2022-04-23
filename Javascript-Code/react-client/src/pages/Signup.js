@@ -105,127 +105,125 @@ class Signup extends Component{
     console.log(this.state);
 
     return (
-
       <body>
       <div className='SignupPage'>
         <header className='Signup-Header'>
           <img src="teamLogo.png" alt="The Mad Lads Team Logo" width="250" height="100"></img>
         </header>
         <div className='Signup-Box'>
-        <form onSubmit={this.submit}>
-          <h2><br/>Sign-Up</h2>
-          <p className='login_displaybox' id='login_displaybox' >{this.state.msg}</p>
-          <p>
-            <span class='Seperate-SI-UN'></span>
-            Username
-          </p>
-          <input 
-            type="text" 
-            id="username" 
-            name="username" 
-            placeholder='username' 
-            size="55"
-            value={this.state.username}
-            onChange={this.handleChange}
-          />
+          <form onSubmit={this.submit}>
+            <h2><br/>Sign-Up</h2>
+            <p className='login_displaybox' id='login_displaybox' >{this.state.msg}</p>
+            <p>
+              
+              Username
+            </p>
+            <input 
+              type="text" 
+              id="username" 
+              name="username" 
+              placeholder='username' 
+              size="55"
+              value={this.state.username}
+              onChange={this.handleChange}
+            />
 
-          <p>First Name</p>
-          <input 
-            type="text" 
-            id="firstname" 
-            name="firstname" 
-            placeholder='first name' 
-            size="55"
-            value={this.state.firstname}
-            onChange={this.handleChange}
-          />
+            <p>First Name</p>
+            <input 
+              type="text" 
+              id="firstname" 
+              name="firstname" 
+              placeholder='first name' 
+              size="55"
+              value={this.state.firstname}
+              onChange={this.handleChange}
+            />
 
-          <p>Last Name</p>
-          <input 
-            type="text" 
-            id="lastname" 
-            name="lastname" 
-            placeholder='last name' 
-            size="55"
-            value={this.state.lastname}
-            onChange={this.handleChange}
-          />
+            <p>Last Name</p>
+            <input 
+              type="text" 
+              id="lastname" 
+              name="lastname" 
+              placeholder='last name' 
+              size="55"
+              value={this.state.lastname}
+              onChange={this.handleChange}
+            />
 
-          <p>Email</p>
-          <input 
-            type required="email" 
-            id="email" 
-            name="email" 
-            placeholder='email' 
-            size="55"
-            value={this.state.email}
-            onChange={this.handleChange}
-          />
+            <p>Email</p>
+            <input 
+              type required="email" 
+              id="email" 
+              name="email" 
+              placeholder='email' 
+              size="55"
+              value={this.state.email}
+              onChange={this.handleChange}
+            />
 
-          <p>Phone Number</p>
-          <input 
-            type="tel" 
-            id="phone" 
-            name="phone" 
-            placeholder='phone' 
-            size="55"
-            value={this.state.phone}
-            onChange={this.handleChange}
-          />
+            <p>Phone Number</p>
+            <input 
+              type="tel" 
+              id="phone" 
+              name="phone" 
+              placeholder='phone' 
+              size="55"
+              value={this.state.phone}
+              onChange={this.handleChange}
+            />
 
-          <p>Password</p>
-          <input 
-            type="password" 
-            id="password" 
-            name="password" 
-            placeholder='password' 
-            size="55"
-            value={this.state.password}
-            onChange={this.handleChange}
-            onInput={this.checkComplexity}
-          />
-          <p className='login_displaybox' id='login_displaybox' >{this.state.passMsg}</p>
+            <p>Password</p>
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              placeholder='password' 
+              size="55"
+              value={this.state.password}
+              onChange={this.handleChange}
+              onInput={this.checkComplexity}
+            />
+            <p className='login_displaybox' id='login_displaybox' >{this.state.passMsg}</p>
 
-          <p>Confirm Password</p>
-          <input 
-            type="password" 
-            id="confirmpassword" 
-            name="confirmpassword" 
-            placeholder='confirm password' 
-            size="55"
-            value={this.state.confirmpassword}
-            onChange={this.handleChange}
-          />  
+            <p>Confirm Password</p>
+            <input 
+              type="password" 
+              id="confirmpassword" 
+              name="confirmpassword" 
+              placeholder='confirm password' 
+              size="55"
+              value={this.state.confirmpassword}
+              onChange={this.handleChange}
+            />  
 
-          <p>For new drivers, use 0000.  To create a new organization, use 1111.  Otherwise, get your account code from your organization.</p>
-          <p>Account Code</p>
-          <input 
-            type="text" 
-            id="code" 
-            name="code" 
-            placeholder='account code' 
-            size="55"
-            value={this.state.code}
-            onChange={this.handleChange}
-          /> 
-        
-          <button type="submit" class='LoginButton' id="btn" disabled>Sign Up</button>
-          { this.state.redirect && (this.state.userType === 0) ? (<Navigate to="/driverhome"/>) : null }
-          { this.state.redirect && (this.state.userType === 1) ? (<Navigate to="/SponsorHome"/>) : null }
-          { this.state.redirect && (this.state.userType === 2) ? (<Navigate to="/AdminHome"/>) : null }
-          { this.state.redirect && (this.state.userType === 3) ? (<Navigate to="/NewOrganization"/>) : null }
-        </form>
+            <p>For new drivers, use 0000.  To create a new organization, use 1111.  Otherwise, get your account code from your organization.</p>
+            <p>Account Code</p>
+            <input 
+              type="text" 
+              id="code" 
+              name="code" 
+              placeholder='account code' 
+              size="55"
+              value={this.state.code}
+              onChange={this.handleChange}
+            /> 
+    
+            <button  className='LoginButton' type="submit" id="btn" disabled>Sign Up</button>
+            { this.state.redirect && (this.state.userType === 0) ? (<Navigate to="/driverhome"/>) : null }
+            { this.state.redirect && (this.state.userType === 1) ? (<Navigate to="/SponsorHome"/>) : null }
+            { this.state.redirect && (this.state.userType === 2) ? (<Navigate to="/AdminHome"/>) : null }
+            { this.state.redirect && (this.state.userType === 3) ? (<Navigate to="/NewOrganization"/>) : null }
+            
+          </form>
 
-        <p>Already have an account?</p>
-        <form action="/login" class="inline">
-          <button type="submit" className='LoginButton'>Go To Log-in</button>
-        </form>
+          <p>Already have an account?</p>
+          <form action="/login" class="inline">
+            <button className='LoginButton' type="submit" >Go To Log-in</button>
+            
+          </form>
         </div>
-
-
-
       </div>
-      </body>
+    </body>
       
     );
   }

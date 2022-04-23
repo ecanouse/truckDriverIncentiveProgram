@@ -120,23 +120,7 @@ class SalesReports extends Component{
         this.setState({data_fetched: true,});
 
     }
-  
-    
-  
-      // isAdmin = () => {
-      //     fetch('/isAdmin')
-      //     .then(response => response.json())
-      //     .then(response => {
-      //     this.setState({loading: false, isAdmin: response.is_admin})
-      //     if(response.is_admin){
-      //         this.getDrivers()
-      //         this.getSponsors()
-      //         this.getAdmin()
-      //     }
-      //     })
-      //     .catch(err => console.error(err))
-      // }
-  
+
       drivercallback = (data) => {
 
         this.setState({ //giving up on trying to figure out why the state is not setting /getting deleted for some reason
@@ -178,13 +162,13 @@ class SalesReports extends Component{
 
             return (
                 <Layout userType={2}>
-                    <p>Select Tye of Sales Report</p>
-                    <p>
-                        <button onClick={this.setSponsorReports}>Sales Reports By Sponsor</button>
-                    </p>
-                    <p>
-                        <button onClick={this.setDriverReports}>Sales Reports By Driver</button>
-                    </p>
+                    <div className='SalesButtonBox'>
+                        <p>Select Tye of Sales Report:</p>
+                            <button className='SalesReportButton' onClick={this.setSponsorReports}>By Sponsor</button>
+                        <p></p>
+                            <button className='SalesReportButton' onClick={this.setDriverReports}>By Driver</button>
+                        <p></p>
+                    </div>
                 </Layout>
             );
 
