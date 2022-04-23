@@ -80,22 +80,28 @@ class UpdateAccount extends Component{
     
     this.setState({
       [name]: value
-    });
+    },
+    this.checkComplexity);
     this.setState({feedback: ""});
     
 
-    this.checkComplexity();
+    //this.checkComplexity(event);
   };
 
+  /*handlePasswordChange = (event) => {
+    console.log("Arrived in handlePasswordChange");
+    this.handleChange(event);
+    this.checkComplexity(event);
+  };*/
 
-  checkComplexity = (event) => {
+  checkComplexity = () => {
     const value = this.state.newPass;
     let strongPassword = new RegExp('((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,20}))');
     if(strongPassword.test(value)){
       this.setState({passMsg: ""})
       document.getElementById("btn").disabled = false;
       //Call checkMatch
-      this.checkMatch();
+      //this.checkMatch();
     }else{
       if(value === ''){
         this.setState({passMsg: ""})
@@ -106,7 +112,7 @@ class UpdateAccount extends Component{
     }
   }
 
-  checkMatch = (event) => {
+  /*checkMatch = (event) => {
     const value = this.state.confPass;
     if(value === this.state.newPass && value !== ""){
       document.getElementById("btn").disabled = false;
@@ -116,21 +122,21 @@ class UpdateAccount extends Component{
       document.getElementById("btn").disabled = true;
     }
 
-  }
+  }*/
 
 
   submit = (event) => {
     event.preventDefault();
     var payload = {
       uID: '-1',
-      lname: this.state.lname,
-      fname: this.state.fname,
-      username: this.state.username,
-      email: this.state.email,
-      phone: this.state.phone,
-      pass: this.state.pass,
-      newPass: this.state.newPass,
-      confPass: this.state.confPass
+      lname: this.state.lname.split(" ")[0],
+      fname: this.state.fname.split(" ")[0],
+      username: this.state.username.split(" ")[0],
+      email: this.state.email.split(" ")[0],
+      phone: this.state.phone.split(" ")[0],
+      pass: this.state.pass.split(" ")[0],
+      newPass: this.state.newPass.split(" ")[0],
+      confPass: this.state.confPass.split(" ")[0]
     };
     fetch('/update-account', {
       method: 'POST',
@@ -169,10 +175,10 @@ class UpdateAccount extends Component{
                   <input required type='email' id='email' name='email' size='45' value={this.state.email} onChange={this.handleChange}></input>
               <label className='inputs' htmlFor='newPass'><br/>Update your Password<br/></label>
               <p className='login_displaybox' id='login_displaybox' >{this.state.passMsg}</p>
-                  <input id='newPass' name='newPass' placeholder='new password' size='45' value={this.state.newPass} onChange={this.handlePasswordChange}></input> 
-              <label className='inputs' htmlFor='confPass'><br/>Confirm Password<br/></label>
-                  <input id='confPass' name='confPass' placeholder='confirm new password' size='45' value={this.state.confPass} onChange={this.handlePasswordChange}></input>
-              <label className='inputs' htmlFor='pass'><br/>Current Password<br/></label>
+                  <input id='newPass' name='newPass' placeholder='new password' size='45' value={this.state.newPass} onInput={this.handlePasswordChange} ></input> 
+              {/*<label className='inputs' htmlFor='confPass'><br/>Confirm Password<br/></label>
+                  <input id='confPass' name='confPass' placeholder='confirm new password' size='45' value={this.state.confPass} onChange={this.handleChange}></input>
+              */}<label className='inputs' htmlFor='pass'><br/>Current Password<br/></label>
                   <input type='password' id='pass' name='pass' placeholder='current password' size='45' value={this.state.pass} onChange={this.handleChange}></input>
               <label className='inputs' htmlFor='phone'><br/>Update for Phone Number<br/></label>
                 <input required type='tel' id='phone' name='phone' maxLength={10} minLength={10} size='45' value={this.state.phone} onChange={this.handleChange}></input>
