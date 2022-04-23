@@ -9,16 +9,19 @@ module.exports = function( app, connection ) {
         let newPassConf = req.body.newPassConf;
 
         if(code && newPass && newPassConf){
-            if(newPass == newPassConf){
-                qstr = "SELECT * FROM new_schema.RESET_CODE WHERE code = '"+code+"' AND time >= NOW() - INTERVAL 1 DAY";
+            console.log(code);
+            console.log(newPass);
+            console.log(newPassConf);
+            console.log(newPass === newPassConf);
+            if(newPass === newPassConf){
+                qstr = `SELECT * FROM new_schema.RESET_CODE WHERE code = '${code}' AND time >= NOW() - INTERVAL 1 DAY`;
                 //check that code matches and is in range, then change password
                 connection.query(qstr, function(err, result, fields) {
                     if(err) console.log(err);
-                    if(result){
+                    if(result.length > 0){
                         console.log(result);
-                        codeConf = json[0].code;
-                        string = JSON.stringify(result);
-                        json = JSON.parse(string);
+                        codeConf = result[0].code;
+                        console.log(codeConf);
                     }else{
                         console.log('code does not match');
                         codeConf = -1;
@@ -32,7 +35,7 @@ module.exports = function( app, connection ) {
                         encryptPass = crypt.getHash(newPass);
                         //console.log('Got sign up information.');
                         console.log('updating user');
-                        qstr = "UPDATE new_schema.USER SET password = '"+encryptPass+"' WHERE email = '"+json[0].email+"'";
+                        qstr = "UPDATE new_schema.USER SET password = '"+encryptPass+"' WHERE email = '"+result[0].email+"'";
                         connection.query(qstr, function(err, result, fields) {
                           if(err) console.log(err);
                           console.log(result);
@@ -41,15 +44,13 @@ module.exports = function( app, connection ) {
 
                         //TODO query to get uId from email
                         id = "-1"
-                        qstr = "SELECT * FROM new_schema.USER WHERE email = '"+json[0].email+"'";;
+                        qstr = "SELECT * FROM new_schema.USER WHERE email = '"+result[0].email+"'";;
                         connection.query(qstr, function(err, result, fields) {
                           if(err) console.log(err);
                           console.log(result);
                           //res.redirect('/DriverHome');
                           //id = result[0].uId;
-                          string = JSON.stringify(result);
-                          json = JSON.parse(string);
-                          id = json[0].uID;
+                          id = result[0].uID;
 
                           
                             console.log('inserting into password_changes');

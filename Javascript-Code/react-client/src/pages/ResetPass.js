@@ -93,9 +93,9 @@ class ResetPass extends Component{
     console.log("Submitting to server");
     //stored data
     var payload = {
-      code: this.state.code.split(" "),
-      newPass: this.state.newPass.split(" "),
-      newPassConf: this.state.newPassConf.split(" ")
+      code: this.state.code.split(" ")[0],
+      newPass: this.state.newPass.split(" ")[0],
+      newPassConf: this.state.newPassConf.split(" ")[0]
     };
 
     //sending data to node server
@@ -116,7 +116,7 @@ class ResetPass extends Component{
           else {
             //display fail message
             console.log("Code does not match.")
-            this.setState({passMsg: "Code does not match or is expired."})
+            this.setState({passMsg: data.msg})
           }
         })
       }
@@ -179,7 +179,6 @@ class ResetPass extends Component{
           />
           <p>New Password</p>
           <input 
-            type="password" 
             id="newPass" 
             name="newPass" 
             placeholder='password' 
@@ -192,7 +191,6 @@ class ResetPass extends Component{
 
           <p>Confirm Password</p>
           <input 
-            type="password" 
             id="newPassConf" 
             name="newPassConf" 
             placeholder='confirm password' 
