@@ -1,6 +1,0 @@
-CREATE TABLE `new_schema`.`driver_points` (
-  `DPointID` INT NOT NULL AUTO_INCREMENT,
-  `uID` INT NULL,
-  `totalPoints` INT NOT NULL,
-  PRIMARY KEY (`DPointID`),
-  FOREIGN KEY ('uID') REFERENCES user('uID'));
