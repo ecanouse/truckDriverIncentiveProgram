@@ -1,7 +1,0 @@
-CREATE TABLE `new_schema`.`sponsor_catalog` (
-  `catalogID` INT NOT NULL AUTO_INCREMENT,
-  `productAmount` INT NOT NULL,
-  `productName` VARCHAR(50) NOT NULL,
-  `sponsorID` INT NOT NULL,
-  PRIMARY KEY (`catalogID`),
-  FOREIGN KEY ('sponsorID') REFERENCES sponsor_org('sponsor_id'));
