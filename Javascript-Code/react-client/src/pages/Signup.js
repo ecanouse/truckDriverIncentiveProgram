@@ -62,14 +62,14 @@ class Signup extends Component{
     console.log("Submitting to server");
     //stored data
     var payload = {
-      username: this.state.username.split(" "),
-      password: this.state.password.split(" "),
-      confirmpassword: this.state.confirmpassword.split(" "),
-      firstname: this.state.firstname.split(" "),
-      lastname: this.state.lastname.split(" "),
-      email: this.state.email.split(" "),
-      phone: this.state.phone.split(" "),
-      code: this.state.code.split(" ")
+      username: this.state.username.split(" ")[0],
+      password: this.state.password.split(" ")[0],
+      confirmpassword: this.state.confirmpassword.split(" ")[0],
+      firstname: this.state.firstname.split(" ")[0],
+      lastname: this.state.lastname.split(" ")[0],
+      email: this.state.email.split(" ")[0],
+      phone: this.state.phone.split(" ")[0],
+      code: this.state.code.split(" ")[0]
     };
 
     //sending data to node server

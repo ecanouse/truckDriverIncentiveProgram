@@ -16,6 +16,8 @@ class UpdateAccount extends Component{
     newPass: '',
     confPass: '',
     feedback: '',
+    match: false,
+    comp: false
   }
   
   componentDidMount() {
@@ -81,7 +83,9 @@ class UpdateAccount extends Component{
     this.setState({
       [name]: value
     },
-    this.checkComplexity);
+    this.checkComplexity,
+    this.checkMatch,
+    this.setBtn);
     this.setState({feedback: ""});
     
 
@@ -98,32 +102,44 @@ class UpdateAccount extends Component{
     const value = this.state.newPass;
     let strongPassword = new RegExp('((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,20}))');
     if(strongPassword.test(value)){
-      this.setState({passMsg: ""})
-      document.getElementById("btn").disabled = false;
-      //Call checkMatch
-      //this.checkMatch();
+      this.setState({passMsg: "", comp: true})
+
+      //document.getElementById("btn").disabled = false;
     }else{
       if(value === ''){
         this.setState({passMsg: ""})
       }else{
         this.setState({passMsg: "Password must be 8-20 characters long and contain a lowercase letter, a capital letter, a number, and a special character."})
-        document.getElementById("btn").disabled = true;
+        this.setState({comp: false});
+
+        //document.getElementById("btn").disabled = true;
       }
     }
   }
 
-  /*checkMatch = (event) => {
+  checkMatch = () => {
     const value = this.state.confPass;
     if(value === this.state.newPass && value !== ""){
-      document.getElementById("btn").disabled = false;
+      //document.getElementById("btn").disabled = false;
+      this.setState({match: true});
       this.setState({passMsg: ""});
     }else{
       this.setState({passMsg: "Passwords must match."});
-      document.getElementById("btn").disabled = true;
+      //document.getElementById("btn").disabled = true;
+      this.setState({match: false});
     }
 
-  }*/
+  }
 
+  setBtn = () => {
+    if(this.state.comp && this.state.match){
+      document.getElementById("btn").disabled = false;
+    }else if(this.state.newPass === ""){
+      document.getElementById("btn").disabled = false;
+    }else{
+      document.getElementById("btn").disabled = true;
+    }
+  }
 
   submit = (event) => {
     event.preventDefault();
@@ -176,9 +192,9 @@ class UpdateAccount extends Component{
               <label className='inputs' htmlFor='newPass'><br/>Update your Password<br/></label>
               <p className='login_displaybox' id='login_displaybox' >{this.state.passMsg}</p>
                   <input id='newPass' name='newPass' placeholder='new password' size='45' value={this.state.newPass} onInput={this.handlePasswordChange} ></input> 
-              {/*<label className='inputs' htmlFor='confPass'><br/>Confirm Password<br/></label>
+              <label className='inputs' htmlFor='confPass'><br/>Confirm Password<br/></label>
                   <input id='confPass' name='confPass' placeholder='confirm new password' size='45' value={this.state.confPass} onChange={this.handleChange}></input>
-              */}<label className='inputs' htmlFor='pass'><br/>Current Password<br/></label>
+              <label className='inputs' htmlFor='pass'><br/>Current Password<br/></label>
                   <input type='password' id='pass' name='pass' placeholder='current password' size='45' value={this.state.pass} onChange={this.handleChange}></input>
               <label className='inputs' htmlFor='phone'><br/>Update for Phone Number<br/></label>
                 <input required type='tel' id='phone' name='phone' maxLength={10} minLength={10} size='45' value={this.state.phone} onChange={this.handleChange}></input>
