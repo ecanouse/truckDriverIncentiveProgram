@@ -9,7 +9,7 @@ class SponsorFooter extends Component {
                 <p className='getHelp'>If you are experiencing problems with the website please email  
                     <a href="mailto:madlads4910@gmail.com"> madlads4910@gmail.com</a> 
                     with your issues.</p>
-                <button className='DriverView'>Driver View</button>
+                
             </div>
         )
     }
