@@ -1,6 +1,0 @@
-CREATE TABLE `new_schema`.`item` (
-  `itemID` INT NOT NULL AUTO_INCREMENT,
-  `itemIDNum` INT NOT NULL,
-  `orderID` INT NULL,
-  PRIMARY KEY (`itemID`),
-  FOREIGN KEY ('orderID') REFERENCES order('orderID'));

@@ -1,6 +1,0 @@
-CREATE TABLE `new_schema`.`login_attempts` (
-  `loginsID` INT NOT NULL AUTO_INCREMENT,
-  `date` VARCHAR(10) NOT NULL,
-  `username` VARCHAR(25) NOT NULL,
-  `success` INT NOT NULL,
-  PRIMARY KEY (`loginsID`));
